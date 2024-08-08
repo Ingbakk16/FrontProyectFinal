@@ -1,4 +1,3 @@
-// src/components/Register.js
 import React, { useRef, useState } from "react";
 import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
 
@@ -64,7 +63,6 @@ const Register = ({ onRegister }) => {
 
     onRegister({ email, password, name, surname });
 
-    // Reset form
     setEmail("");
     setPassword("");
     setName("");

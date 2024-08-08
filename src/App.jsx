@@ -1,43 +1,43 @@
-// src/App.js
-import React, { useEffect, useState } from 'react';
-import { getItems, createItem } from './services/itemService';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { useState } from "react";
+
+
+import Login from "./components/login/login";
+import NotFound from "./components/routes/notFound/NotFound";
+import Register from "./components/register/register";
 
 const App = () => {
-    const [items, setItems] = useState([]);
-    const [itemName, setItemName] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {
-        fetchItems();
-    }, []);
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
 
-    const fetchItems = async () => {
-        const response = await getItems();
-        setItems(response.data);
-    };
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
 
-    const handleAddItem = async () => {
-        const newItem = { name: itemName };
-        await createItem(newItem);
-        fetchItems();
-        setItemName('');
-    };
+  const router = createBrowserRouter([
+    {
+      path: "/login",
+      element: <Login onLogin={handleLogin} />,
+    },
+    {
+        path: "/register",
+        element: <Register onLogin={handleLogin} />,
+      },
+    {
+      path: "*",
+      element: <NotFound />
+    }
+  ]);
 
-    return (
-        <div>
-            <h1>Items</h1>
-            <input 
-                type="text" 
-                value={itemName} 
-                onChange={(e) => setItemName(e.target.value)} 
-            />
-            <button onClick={handleAddItem}>Add Item</button>
-            <ul>
-                {items.map(item => (
-                    <li key={item.id}>{item.name}</li>
-                ))}
-            </ul>
-        </div>
-    );
+
+  return (
+    <div>
+      <RouterProvider router={router} />
+    </div>
+  );
 };
 
-export default App
+export default App;
