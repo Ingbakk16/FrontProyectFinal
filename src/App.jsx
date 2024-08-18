@@ -5,6 +5,7 @@ import { useState } from "react";
 import Login from "./components/login/login";
 import NotFound from "./components/routes/notFound/NotFound";
 import Register from "./components/register/register";
+import Profile from "./components/usaerData/Profile";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,6 +26,10 @@ const App = () => {
     {
         path: "/register",
         element: <Register onLogin={handleLogin} />,
+      },
+      {
+        path: "/profile",
+        element: <Profile onLogin={handleLogin} />,
       },
     {
       path: "*",
