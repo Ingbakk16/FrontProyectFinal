@@ -31,6 +31,10 @@ const App = () => {
         path: "/profile",
         element: <Profile onLogin={handleLogin} />,
       },
+      {
+        path: "/",
+        element: <Login onLogin={handleLogin} />,
+      },
     {
       path: "*",
       element: <NotFound />
