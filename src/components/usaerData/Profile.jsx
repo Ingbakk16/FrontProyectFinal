@@ -3,8 +3,11 @@ import { Button, Card, Form, Container, Row, Col, Image } from 'react-bootstrap'
 import PropTypes from 'prop-types';
 import Header from '../header/header';
 import Footer from '../footer/footer';
+import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
+import { useContext } from 'react';
 
-const user = {
+const mono = {
   Name: "Jose Luis",
   Email: "JoseLuis@gmail.com",
   Surname: "Carlos Bodoque",
@@ -14,15 +17,19 @@ const user = {
 
 const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const { handleLogout } = useContext(AuthenticationContext);
   const [formData, setFormData] = useState({
-    Name: Name || user.Name,
-    Email: Email || user.Email,
-    Surname: Surname || user.Surname,
-    Password: Password || user.Password,
-    profileImage: profileImage || user.profileImage,
+    Name: Name || mono.Name,
+    Email: Email || mono.Email,
+    Surname: Surname || mono.Surname,
+    Password: Password || mono.Password,
+    profileImage: profileImage || mono.profileImage,
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -34,20 +41,23 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
   };
 
   const handleSaveClick = () => {
-    // Aquí puedes agregar la lógica para guardar los cambios
     setIsEditing(false);
   };
 
   const handleCancelClick = () => {
-    // Restablecer los valores originales
+
     setFormData({
-      Name: Name || user.Name,
-      Email: Email || user.Email,
-      Surname: Surname || user.Surname,
-      Password: Password || user.Password,
-      profileImage: profileImage || user.profileImage,
+      Name: Name || mono.Name,
+      Email: Email || mono.Email,
+      Surname: Surname || mono.Surname,
+      Password: Password || mono.Password,
+      profileImage: profileImage || mono.profileImage,
     });
     setIsEditing(false);
+  };
+
+  const backHandler =() => {
+    navigate("/");
   };
 
   return (
@@ -61,8 +71,11 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
               <Row>
                 <Col md={6}>
                   <div className="d-flex align-items-center mb-4">
-                    <Button variant="link" className="text-light">
-                      <i className="bi bi-arrow-left"></i>
+                    <Button variant="link" className="text-light" onClick={handleLogout}  >
+                      <i className="bi bi-arrow-left text-dark">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                      <path d="M400-120 160-360l241-241 56 57-144 144h367v-400h80v480H313l144 143-57 57Z"/></svg>
+                      </i>
                     </Button>
                   </div>
                   <div className="text-center mb-4">
@@ -152,10 +165,10 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
 };
 
 Profile.propTypes = {
-  Name: PropTypes.string.isRequired,
-  Email: PropTypes.string.isRequired,
-  Surname: PropTypes.string.isRequired,
-  Password: PropTypes.string.isRequired,
+  Name: PropTypes.string,
+  Email: PropTypes.string,
+  Surname: PropTypes.string,
+  Password: PropTypes.string,
   profileImage: PropTypes.string
 };
 

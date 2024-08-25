@@ -1,11 +1,17 @@
+import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-const Protected = ({ isSignedIn }) => {
-    if (!isSignedIn)
-        return <Navigate to="/login" />;
+import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 
-    return <Outlet />;
+const Protected = () => {
+    const { user } = useContext(AuthenticationContext);
+
+    if (!user)
+        return <Navigate to="/login"/>;
+
+    return <Outlet/>;
 
 };
 
 export default Protected;
+

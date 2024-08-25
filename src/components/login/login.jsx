@@ -1,7 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { Button, Card, Form, FormGroup } from "react-bootstrap";
+import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
+  const { handleLogin } = useContext(AuthenticationContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({
@@ -9,6 +12,7 @@ const Login = ({ onLogin }) => {
     password: false,
   });
 
+  const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
@@ -24,19 +28,21 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
 
     if (emailRef.current.value.length <= 0) {
-      emailRef.current.focus();
-      setErrors({ email: true, password: false });
-      return;
+        emailRef.current.focus();
+        setErrors({ email: true, password: false });
+        return;
     }
 
     if (password.length <= 0) {
-      passwordRef.current.focus();
-      setErrors({ email: false, password: true });
-      return;
+        passwordRef.current.focus();
+        setErrors({ email: false, password: true });
+        return;
     }
 
-    onLogin();
-  };
+    handleLogin(email);
+
+    navigate("/profile");
+};
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100" 

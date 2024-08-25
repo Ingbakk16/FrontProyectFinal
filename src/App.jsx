@@ -1,51 +1,40 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { useState } from "react";
-
-
+import { AuthenticationContextProvider } from "./components/services/authenticationContext/authentication.context";
+import Protected from "./components/routes/protected/Protected";
 import Login from "./components/login/login";
 import NotFound from "./components/routes/notFound/NotFound";
 import Register from "./components/register/register";
 import Profile from "./components/usaerData/Profile";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
-
   const router = createBrowserRouter([
     {
       path: "/login",
-      element: <Login onLogin={handleLogin} />,
+      element: <Login />,
     },
     {
-        path: "/register",
-        element: <Register onLogin={handleLogin} />,
-      },
-      {
-        path: "/profile",
-        element: <Profile onLogin={handleLogin} />,
-      },
-      {
-        path: "/",
-        element: <Login onLogin={handleLogin} />,
-      },
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/",
+      element: <Protected />,  
+      children: [{
+          path: "/profile",
+          element: <Profile />,
+        },
+      ],
+    },
     {
       path: "*",
-      element: <NotFound />
-    }
+      element: <NotFound />,
+    },
   ]);
 
-
   return (
-    <div>
+    <AuthenticationContextProvider>
       <RouterProvider router={router} />
-    </div>
+    </AuthenticationContextProvider>
   );
 };
 
