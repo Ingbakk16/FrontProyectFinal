@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import { useNavigate } from "react-router-dom";
-import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
-import { useContext } from 'react';
+
 
 const mono = {
   Name: "Jose Luis",
@@ -17,7 +16,7 @@ const mono = {
 
 const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const { handleLogout } = useContext(AuthenticationContext);
+  
   const [formData, setFormData] = useState({
     Name: Name || mono.Name,
     Email: Email || mono.Email,
@@ -71,7 +70,7 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
               <Row>
                 <Col md={6}>
                   <div className="d-flex align-items-center mb-4">
-                    <Button variant="link" className="text-light" onClick={handleLogout}  >
+                    <Button variant="link" className="text-light" onClick={backHandler}  >
                       <i className="bi bi-arrow-left text-dark">
                       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                       <path d="M400-120 160-360l241-241 56 57-144 144h367v-400h80v480H313l144 143-57 57Z"/></svg>

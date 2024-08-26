@@ -4,7 +4,7 @@ import Protected from "./components/routes/protected/Protected";
 import Login from "./components/login/login";
 import NotFound from "./components/routes/notFound/NotFound";
 import Register from "./components/register/register";
-import Profile from "./components/usaerData/Profile";
+import Profile from "./components/userData/Profile";
 
 const App = () => {
   const router = createBrowserRouter([
