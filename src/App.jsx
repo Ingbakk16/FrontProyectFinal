@@ -5,6 +5,8 @@ import Login from "./components/login/login";
 import NotFound from "./components/routes/notFound/NotFound";
 import Register from "./components/register/register";
 import Profile from "./components/userData/Profile";
+import MainPage from "./components/mainMenu/mainPage";
+import RegisterWorker from "./components/worker Register/RegisterWorker";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -15,6 +17,14 @@ const App = () => {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/mainPage",
+      element: <MainPage />,
+    },
+    {
+      path: "/RegisterWorker",
+      element: <RegisterWorker />,
     },
     {
       path: "/",

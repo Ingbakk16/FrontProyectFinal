@@ -1,22 +1,37 @@
 import React, { useRef, useState } from "react";
-import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
+import { Button, Card, Form, FormGroup } from "react-bootstrap";
 
-const Register = ({ onRegister }) => {
+const Register = () => {
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
   const [errors, setErrors] = useState({
+    username: false,
+    name: false,
+    lastname: false,
     email: false,
     password: false,
-    name: false,
-    surname: false,
   });
 
+  const usernameRef = useRef(null);
+  const nameRef = useRef(null);
+  const lastnameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const nameRef = useRef(null);
-  const surnameRef = useRef(null);
+
+  const changeUsernameHandler = (event) => {
+    setUsername(event.target.value);
+  };
+
+  const changeNameHandler = (event) => {
+    setName(event.target.value);
+  };
+
+  const changeLastnameHandler = (event) => {
+    setLastname(event.target.value);
+  };
 
   const changeEmailHandler = (event) => {
     setEmail(event.target.value);
@@ -26,82 +41,97 @@ const Register = ({ onRegister }) => {
     setPassword(event.target.value);
   };
 
-  const changeNameHandler = (event) => {
-    setName(event.target.value);
-  };
-
-  const changeSurnameHandler = (event) => {
-    setSurname(event.target.value);
-  };
-
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (emailRef.current.value.length <= 0) {
-      emailRef.current.focus();
-      setErrors({ email: true, password: false, name: false, surname: false });
-      return;
-    }
-
-    if (passwordRef.current.value.length <= 0) {
-      passwordRef.current.focus();
-      setErrors({ email: false, password: true, name: false, surname: false });
+    if (usernameRef.current.value.length <= 0) {
+      usernameRef.current.focus();
+      setErrors({ username: true, name: false, lastname: false, email: false, password: false });
       return;
     }
 
     if (nameRef.current.value.length <= 0) {
       nameRef.current.focus();
-      setErrors({ email: false, password: false, name: true, surname: false });
+      setErrors({ username: false, name: true, lastname: false, email: false, password: false });
       return;
     }
 
-    if (surnameRef.current.value.length <= 0) {
-      surnameRef.current.focus();
-      setErrors({ email: false, password: false, name: false, surname: true });
+    if (lastnameRef.current.value.length <= 0) {
+      lastnameRef.current.focus();
+      setErrors({ username: false, name: false, lastname: true, email: false, password: false });
       return;
     }
 
-    onRegister({ email, password, name, surname });
+    if (emailRef.current.value.length <= 0) {
+      emailRef.current.focus();
+      setErrors({ username: false, name: false, lastname: false, email: true, password: false });
+      return;
+    }
 
-    setEmail("");
-    setPassword("");
-    setName("");
-    setSurname("");
+    if (passwordRef.current.value.length <= 0) {
+      passwordRef.current.focus();
+      setErrors({ username: false, name: false, lastname: false, email: false, password: true });
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8081/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          name,
+          lastname,
+          email,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        alert("Registro exitoso");
+        // Limpiar el formulario
+        setUsername("");
+        setName("");
+        setLastname("");
+        setEmail("");
+        setPassword("");
+      } else {
+        throw new Error("Error en el registro");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Hubo un error al registrarse. Por favor, intente nuevamente.");
+    }
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100"
-      style={{ background: "linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94 )" }}>
-      <Card className="p-4 shadow" style={{ width: '25rem', borderRadius: "5vh" }}>
+    <div
+      className="d-flex justify-content-center align-items-center vh-100"
+      style={{
+        background: "linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94 )",
+      }}
+    >
+      <Card className="p-4 shadow" style={{ width: "25rem", borderRadius: "5vh" }}>
         <Card.Body>
-          <h2 className="text-center mb-4">
-            Registro
-          </h2>
+          <h2 className="text-center mb-4">Registro</h2>
           <p className="text-center mb-4">
             Regístrese para formar parte de esta gran familia!
           </p>
           <Form onSubmit={submitHandler}>
             <FormGroup className="mb-3">
               <Form.Control
-                className={errors.email ? "border border-danger" : ""}
-                ref={emailRef}
-                value={email}
-                onChange={changeEmailHandler}
-                type="email"
-                placeholder="E-mail"
+                className={errors.username ? "border border-danger" : ""}
+                ref={usernameRef}
+                value={username}
+                onChange={changeUsernameHandler}
+                type="text"
+                placeholder="Nombre de usuario"
               />
-              {errors.email && <p className="pt-2 text-danger">El email es obligatorio</p>}
-            </FormGroup>
-            <FormGroup className="mb-3">
-              <Form.Control
-                className={errors.password ? "border border-danger" : ""}
-                ref={passwordRef}
-                value={password}
-                onChange={changePasswordHandler}
-                type="password"
-                placeholder="Password"
-              />
-              {errors.password && <p className="pt-2 text-danger">La contraseña es obligatoria</p>}
+              {errors.username && (
+                <p className="pt-2 text-danger">El nombre de usuario es obligatorio</p>
+              )}
             </FormGroup>
             <FormGroup className="mb-3">
               <Form.Control
@@ -112,18 +142,48 @@ const Register = ({ onRegister }) => {
                 type="text"
                 placeholder="Nombre"
               />
-              {errors.name && <p className="pt-2 text-danger">El nombre es obligatorio</p>}
+              {errors.name && (
+                <p className="pt-2 text-danger">El nombre es obligatorio</p>
+              )}
             </FormGroup>
             <FormGroup className="mb-3">
               <Form.Control
-                className={errors.surname ? "border border-danger" : ""}
-                ref={surnameRef}
-                value={surname}
-                onChange={changeSurnameHandler}
+                className={errors.lastname ? "border border-danger" : ""}
+                ref={lastnameRef}
+                value={lastname}
+                onChange={changeLastnameHandler}
                 type="text"
                 placeholder="Apellido"
               />
-              {errors.surname && <p className="pt-2 text-danger">El apellido es obligatorio</p>}
+              {errors.lastname && (
+                <p className="pt-2 text-danger">El apellido es obligatorio</p>
+              )}
+            </FormGroup>
+            <FormGroup className="mb-3">
+              <Form.Control
+                className={errors.email ? "border border-danger" : ""}
+                ref={emailRef}
+                value={email}
+                onChange={changeEmailHandler}
+                type="email"
+                placeholder="E-mail"
+              />
+              {errors.email && (
+                <p className="pt-2 text-danger">El email es obligatorio</p>
+              )}
+            </FormGroup>
+            <FormGroup className="mb-3">
+              <Form.Control
+                className={errors.password ? "border border-danger" : ""}
+                ref={passwordRef}
+                value={password}
+                onChange={changePasswordHandler}
+                type="password"
+                placeholder="Contraseña"
+              />
+              {errors.password && (
+                <p className="pt-2 text-danger">La contraseña es obligatoria</p>
+              )}
             </FormGroup>
             <Button variant="primary" type="submit" className="w-100">
               Regístrame
@@ -139,3 +199,4 @@ const Register = ({ onRegister }) => {
 };
 
 export default Register;
+

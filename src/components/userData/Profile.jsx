@@ -44,7 +44,6 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
   };
 
   const handleCancelClick = () => {
-
     setFormData({
       Name: Name || mono.Name,
       Email: Email || mono.Email,
