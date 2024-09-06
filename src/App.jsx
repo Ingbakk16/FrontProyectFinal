@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import React, { useEffect } from "react";
 import { AuthenticationContextProvider } from "./components/services/authenticationContext/authentication.context";
 import Protected from "./components/routes/protected/Protected";
 import Login from "./components/login/login";
@@ -40,6 +41,20 @@ const App = () => {
       element: <NotFound />,
     },
   ]);
+
+  // Usar el evento "beforeunload" para borrar el localStorage al cerrar la pestaña o refrescar
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("user");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Cleanup para eliminar el evento cuando el componente se desmonte
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <AuthenticationContextProvider>

@@ -91,7 +91,7 @@ const Register = () => {
 
       if (response.ok) {
         alert("Registro exitoso");
-        // Limpiar el formulario
+        // Limpia el formulario
         setUsername("");
         setName("");
         setLastname("");

@@ -36,7 +36,7 @@ const MainPage = () => {
                 name={worker.user.name}
                 lastname={worker.user.lastname}
                 description={worker.description}
-                profession={worker.user.profession}  // si el objeto tiene una propiedad profession
+                profession={worker.user.profession}  // a futuro llera la profesion 
                 rating={worker.rating}
               />
             </Col>

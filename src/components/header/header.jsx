@@ -1,4 +1,3 @@
-// src/components/Header.js
 import React from 'react';
 import { Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
