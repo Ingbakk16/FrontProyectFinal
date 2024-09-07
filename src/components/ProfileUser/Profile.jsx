@@ -58,6 +58,10 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
     navigate("/");
   };
 
+  const WorkerRegisterHandler =() => {
+    navigate("/RegisterWorker");
+  };
+
   return (
     <>
       <Header />
@@ -146,11 +150,24 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
                 </Col>
 
                 <Col md={6} className="d-flex align-items-center justify-content-center">
-                  <div className="text-center " style={{ border: "2px dashed #00FFFF", borderRadius: "10px", padding: "20px", width: "auto", height: "auto" }}>
-                    <div style={{ fontSize: "60px", color: "#00FFFF" }}>+</div>
-                    <p className="text-light">Tienes una habilidad práctica o útil? Agrega una profesión sin costo y espera a ser contactado por un cliente!</p>
-                  </div>
-                </Col>
+                <Button
+                  className="text-center"
+                  onClick={WorkerRegisterHandler} 
+                  style={{
+                    border: "2px dashed #00FFFF",
+                    borderRadius: "10px",
+                    padding: "20px",
+                    width: "auto",
+                    height: "auto",
+                    backgroundColor: "transparent", // Hacer que parezca que no es un botón estándar
+                  }}
+                >
+                  <div style={{ fontSize: "60px", color: "#00FFFF" }}>+</div>
+                  <p className="text-light">
+                    ¿Tienes una habilidad práctica o útil? Agrega una profesión sin costo y espera a ser contactado por un cliente!
+                  </p>
+                </Button>
+              </Col>
               </Row>
             </Card>
           </Col>
