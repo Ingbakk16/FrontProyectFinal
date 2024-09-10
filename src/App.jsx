@@ -8,6 +8,7 @@ import Register from "./components/register/register";
 import Profile from "./components/ProfileUser/Profile";
 import MainPage from "./components/mainMenu/mainPage";
 import RegisterWorkerFinal from "./components/worker Register/RegisterWrokerFinal";
+import WorkerProfile from "./components/WorkerProfile/WorkerProfile";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const App = () => {
     {
       path: "/RegisterWorker",
       element: <RegisterWorkerFinal />,
+    },
+    {
+      path: "/WorkerProfile",
+      element: <WorkerProfile />,
     },
     {
       path: "/",

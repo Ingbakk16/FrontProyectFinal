@@ -121,7 +121,7 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label className="text-dark">Apellido:</Form.Label>
+                      <Form.Label className="text-light">Apellido:</Form.Label>
                       <Form.Control
                         plaintext={!isEditing}
                         readOnly={!isEditing}
