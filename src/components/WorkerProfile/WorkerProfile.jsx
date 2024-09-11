@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Card, Button, Image, Container, Row, Col } from 'react-bootstrap';
 import Header from '../header/header';
 import Footer from '../footer/footer';
+import Accordion from 'react-bootstrap/Accordion';
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
+
+
 
 const WorkerProfile = () => {
   const worker = {
@@ -17,7 +21,17 @@ const WorkerProfile = () => {
     ]
   };
 
+  const comments = [
+    { name: "Ana", comment: "Excelente trabajo, muy recomendado!", rating: 5 },
+    { name: "Pedro", comment: "Muy profesional, volveré a contratar.", rating: 4 },
+    { name: "Maria", comment: "Instaló el sistema eléctrico en mi casa, muy puntual y profesional.", rating: 5 },
+    { name: "Juan", comment: "Buen trabajo, pero podría haber sido más rápido.", rating: 3 },
+    { name: "Luisa", comment: "Muy buen servicio!", rating: 5 },
+    // Puedes agregar más comentarios aquí para probar
+  ];
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showComments, setShowComments] = useState(false);
 
   const handlePreviousImage = () => {
     setCurrentImageIndex((prevIndex) => 
@@ -29,6 +43,10 @@ const WorkerProfile = () => {
     setCurrentImageIndex((prevIndex) => 
       prevIndex === worker.workImages.length - 1 ? 0 : prevIndex + 1
     );
+  };
+
+  const toggleComments = () => {
+    setShowComments(!showComments);
   };
 
   const hasWorkImages = worker.workImages.length > 0;
@@ -49,6 +67,7 @@ const WorkerProfile = () => {
               <h5>{worker.profession}</h5>
               <p style={{ fontStyle: 'italic', margin: '20px 0' }}>"{worker.description}"</p>
 
+              {/* Carrusel de imágenes de trabajo */}
               {hasWorkImages ? (
                 <div className="d-flex justify-content-center align-items-center">
                   <Button variant="link" onClick={handlePreviousImage}>
@@ -71,9 +90,43 @@ const WorkerProfile = () => {
                 <p>No work images available</p>
               )}
 
-              <Button variant="primary" className="mt-4" style={{ backgroundColor: '#4A67C3', borderRadius: '20px', padding: '10px 40px' }}>
-                See Comments
+              {/* Botón para mostrar/ocultar comentarios */}
+              <Button
+                variant="primary"
+                className="mt-4"
+                style={{ backgroundColor: '#4A67C3', borderRadius: '20px', padding: '10px 40px' }}
+                onClick={toggleComments}
+              >
+                {showComments ? 'HIDE COMMENTS' : 'SHOW COMMENTS'}
               </Button>
+
+              {/* Sección de comentarios */}
+              {showComments && (
+                <div
+                  className="mt-4"
+                  style={{
+                    maxHeight: '200px', // Altura máxima ajustada para la caja de comentarios
+                    overflowY: 'auto',  // Barra de desplazamiento para contenido desbordante
+                    backgroundColor: '#f0f0f0',
+                    borderRadius: '10px',
+                    padding: '10px',
+                    color: '#000', // Color del texto para un mejor contraste
+                  }}
+                >
+                  <h4>Comments:</h4>
+                  {comments.length > 0 ? (
+                    comments.map((comment, index) => (
+                      <div key={index} className="text-left my-2 p-2" style={{ borderBottom: '1px solid #ddd' }}>
+                        <strong>{comment.name}</strong>
+                        <p>{comment.comment}</p>
+                        <p>Rating: {'★'.repeat(comment.rating)}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No comments available</p>
+                  )}
+                </div>
+              )}
             </Card>
           </Col>
         </Row>
@@ -84,4 +137,3 @@ const WorkerProfile = () => {
 };
 
 export default WorkerProfile;
-

@@ -25,18 +25,18 @@ const App = () => {
       element: <MainPage />,
     },
     {
-      path: "/RegisterWorker",
+      path: "/registerWorker",
       element: <RegisterWorkerFinal />,
     },
     {
-      path: "/WorkerProfile",
+      path: "/workerProfile",
       element: <WorkerProfile />,
     },
     {
       path: "/",
       element: <Protected />,  
       children: [{
-          path: "/profile",
+          path: "/userProfile",
           element: <Profile />,
         },
       ],
