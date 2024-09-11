@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Card, Button, Image, Container, Row, Col } from 'react-bootstrap';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import Accordion from 'react-bootstrap/Accordion';
-import { useAccordionButton } from 'react-bootstrap/AccordionButton';
+
 
 
 
