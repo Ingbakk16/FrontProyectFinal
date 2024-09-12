@@ -36,7 +36,7 @@ const App = () => {
       path: "/",
       element: <Protected />,  
       children: [{
-          path: "/userProfile",
+          path: "/profile",
           element: <Profile />,
         },
       ],

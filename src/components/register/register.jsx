@@ -73,7 +73,7 @@ const Register = () => {
       setErrors({ username: false, name: false, lastname: false, email: false, password: true });
       return;
     }
-
+    
     try {
       const response = await fetch("http://localhost:8081/api/users/register", {
         method: "POST",

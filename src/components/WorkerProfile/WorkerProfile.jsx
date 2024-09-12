@@ -26,7 +26,7 @@ const WorkerProfile = () => {
     { name: "Maria", comment: "Instaló el sistema eléctrico en mi casa, muy puntual y profesional.", rating: 5 },
     { name: "Juan", comment: "Buen trabajo, pero podría haber sido más rápido.", rating: 3 },
     { name: "Luisa", comment: "Muy buen servicio!", rating: 5 },
-    // Puedes agregar más comentarios aquí para probar
+    // agregar comentarios aqui 
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -91,49 +91,49 @@ const WorkerProfile = () => {
 
               {/* Botón para mostrar/ocultar comentarios */}
               <Button
-  variant="primary"
-  className="mt-4"
-  style={{ backgroundColor: '#4A67C3', borderRadius: '20px', padding: '10px 40px' }}
-  onClick={toggleComments}
->
-  {showComments ? 'HIDE COMMENTS' : 'SHOW COMMENTS'}
-</Button>
+                variant="primary"
+                className="mt-4"
+                style={{ backgroundColor: '#4A67C3', borderRadius: '20px', padding: '10px 40px' }}
+                onClick={toggleComments}
+              >
+                {showComments ? 'HIDE COMMENTS' : 'SHOW COMMENTS'}
+              </Button>
 
-{/* Sección de comentarios */}
-{showComments && (
-  <div
-    className={`mt-4 comments-section ${showComments ? 'show' : 'hide'}`}
-    style={{
-      maxHeight: '200px', // Altura máxima ajustada para la caja de comentarios
-      overflowY: 'auto',  // Barra de desplazamiento para contenido desbordante
-      backgroundColor: '#f0f0f0',
-      borderRadius: '10px',
-      padding: '10px',
-      color: '#000', // Color del texto para un mejor contraste
-      transition: 'max-height 0.5s ease-in-out', // Add transition effect
-    }}
-  >
-    <h4>Comments:</h4>
-    {comments.length > 0 ? (
-      comments.map((comment, index) => (
-        <div key={index} className="text-left my-2 p-2" style={{ borderBottom: '1px solid #ddd' }}>
-          <strong>{comment.name}</strong>
-          <p>{comment.comment}</p>
-          <p>Rating: {'★'.repeat(comment.rating)}</p>
-        </div>
-      ))
-    ) : (
-      <p>No comments available</p>
-    )}
-  </div>
-)}
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-      <Footer />
-    </>
-  );
-};
+              {/* Sección de comentarios */}
+              {showComments && (
+                <div
+                  className={`mt-4 comments-section ${showComments ? 'show' : 'hide'}`}
+                  style={{
+                    maxHeight: '200px', // Altura máxima ajustada para la caja de comentarios
+                    overflowY: 'auto',  // Barra de desplazamiento para contenido desbordante
+                    backgroundColor: '#f0f0f0',
+                    borderRadius: '10px',
+                    padding: '10px',
+                    color: '#000', // Color del texto para un mejor contraste
+                    transition: 'max-height 0.5s ease-in-out', // Add transition effect
+                  }}
+                >
+                  <h4>Comments:</h4>
+                  {comments.length > 0 ? (
+                    comments.map((comment, index) => (
+                      <div key={index} className="text-left my-2 p-2" style={{ borderBottom: '1px solid #ddd' }}>
+                        <strong>{comment.name}</strong>
+                        <p>{comment.comment}</p>
+                        <p>Rating: {'★'.repeat(comment.rating)}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No comments available</p>
+                  )}
+                </div>
+              )}
+                          </Card>
+                        </Col>
+                      </Row>
+                    </Container>
+                    <Footer />
+                  </>
+                );
+              };
 
 export default WorkerProfile;
