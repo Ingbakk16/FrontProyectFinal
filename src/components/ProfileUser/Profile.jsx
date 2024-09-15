@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
-import { Button, Card, Form, Container, Row, Col, Image } from 'react-bootstrap';
+import { Button, Card, Form, Container, Row, Col, Image, Carousel } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import { useNavigate } from "react-router-dom";
-
 
 const mono = {
   Name: "Jose Luis",
   Email: "JoseLuis@gmail.com",
   Surname: "Carlos Bodoque",
   Password: "asdf1234",
-  profileImage: "https://via.placeholder.com/100"
+  profileImage: "https://via.placeholder.com/100",
+  profession: "Ingeniero"
 };
 
 const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
   const [isEditing, setIsEditing] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     Name: Name || mono.Name,
     Email: Email || mono.Email,
@@ -28,7 +28,6 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -54,12 +53,16 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
     setIsEditing(false);
   };
 
-  const backHandler =() => {
+  const backHandler = () => {
     navigate("/");
   };
 
-  const WorkerRegisterHandler =() => {
+  const WorkerRegisterHandler = () => {
     navigate("/RegisterWorker");
+  };
+
+  const EditWorkerHandler = () => {
+    navigate("/EditWorker");
   };
 
   return (
@@ -68,20 +71,22 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
 
       <Container fluid className="py-4" style={{ background: "linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF)", minHeight: "calc(100vh - 56px - 40px)" }}>
         <Row className="justify-content-center">
-          <Col md={8}>
+          <Col md={8} xs={12}>
             <Card className="p-4 shadow-lg" style={{ backgroundColor: "#8677C2", borderRadius: "20px" }}>
               <Row>
-                <Col md={6}>
+                {/* Izquierda - Información de perfil */}
+                <Col md={6} xs={12}>
                   <div className="d-flex align-items-center mb-4">
-                    <Button variant="link" className="text-light" onClick={backHandler}  >
+                    <Button variant="link" className="text-light" onClick={backHandler}>
                       <i className="bi bi-arrow-left text-dark">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-                      <path d="M400-120 160-360l241-241 56 57-144 144h367v-400h80v480H313l144 143-57 57Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                          <path d="M400-120 160-360l241-241 56 57-144 144h367v-400h80v480H313l144 143-57 57Z" />
+                        </svg>
                       </i>
                     </Button>
                   </div>
                   <div className="text-center mb-4">
-                    <Image src={formData.profileImage} roundedCircle />
+                    <Image src={formData.profileImage} roundedCircle className="img-fluid" />
                   </div>
                   <Form>
                     <Form.Group className="mb-3">
@@ -149,25 +154,47 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
                   </Form>
                 </Col>
 
-                <Col md={6} className="d-flex align-items-center justify-content-center">
-                <Button
-                  className="text-center"
-                  onClick={WorkerRegisterHandler} 
-                  style={{
-                    border: "2px dashed #00FFFF",
-                    borderRadius: "10px",
-                    padding: "20px",
-                    width: "auto",
-                    height: "auto",
-                    backgroundColor: "transparent", // Hacer que parezca que no es un botón estándar
-                  }}
-                >
-                  <div style={{ fontSize: "60px", color: "#00FFFF" }}>+</div>
-                  <p className="text-light">
-                    ¿Tienes una habilidad práctica o útil? Agrega una profesión sin costo y espera a ser contactado por un cliente!
-                  </p>
-                </Button>
-              </Col>
+                {/* Derecha - Carrusel con WorkerProfile Preview y Agregar Profesión */}
+                <Col md={6} xs={12} className="d-flex flex-column align-items-center">
+                  <Carousel indicators={false} controls={true} className="w-100 h-100">
+                    <Carousel.Item>
+                      <div className="d-flex flex-column justify-content-center align-items-center text-light"
+                        style={{
+                          border: "1px solid #00FFFF",
+                          borderRadius: "10px",
+                          padding: "10px",
+                          backgroundColor: "#2D195C",
+                          height: "50vh"  // Cambiar a 50vh para altura adaptable al viewport
+                        }}>
+                        <Image src={formData.profileImage} roundedCircle className="mb-2 img-fluid" style={{ width: "60px", height: "60px" }} />
+                        <h5>{formData.Name}</h5>
+                        <p>Profesion: {mono.profession}</p>
+                        <Button onClick={EditWorkerHandler} variant="primary">
+                          Ver Perfil
+                        </Button>
+                      </div>
+                    </Carousel.Item>
+
+                    <Carousel.Item>
+                      <div className="d-flex flex-column justify-content-center align-items-center"
+                        style={{
+                          border: "2px dashed #00FFFF",
+                          borderRadius: "10px",
+                          padding: "20px",
+                          backgroundColor: "#322A94",
+                          height: "50vh"  // Cambiar a 50vh para altura adaptable al viewport
+                        }}>
+                        <div style={{ fontSize: "60px", color: "#00FFFF" }}>+</div>
+                        <p className="text-light text-center">
+                          ¿Tienes una habilidad práctica o útil? Agrega una profesión sin costo y espera a ser contactado por un cliente!
+                        </p>
+                        <Button className="w-100" onClick={WorkerRegisterHandler} variant="primary">
+                          Agregar Profesión
+                        </Button>
+                      </div>
+                    </Carousel.Item>
+                  </Carousel>
+                </Col>
               </Row>
             </Card>
           </Col>
@@ -188,4 +215,5 @@ Profile.propTypes = {
 };
 
 export default Profile;
+
 
