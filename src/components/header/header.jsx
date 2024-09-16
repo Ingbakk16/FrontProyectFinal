@@ -15,6 +15,7 @@ const Header = () => {
 
   return (
     <div >
+      {/* recorar, header = div con color del fondo + header + contenido + /div */}
       {/* Header Navbar */}
       <Navbar expand="lg" className="p-3" style={{ backgroundColor:'#25206A' }}>
         <Container fluid className="justify-content-between">
