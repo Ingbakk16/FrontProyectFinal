@@ -1,0 +1,13 @@
+.headers-buttons {
+    border-bottom-left-radius: 3vw; /* Esquina inferior izquierda circular */
+    border-bottom-right-radius: 3vw; /* Esquina inferior derecha circular */
+    border-top-left-radius: 0;  /* Esquinas superiores planas */
+    border-top-right-radius: 0;  /* Esquinas superiores planas */
+    height: 3vw;  /* Altura */
+    border-color: #000000;
+    width: 15vw;  /* Ancho */
+    color: #000000;
+    background-color: #C8C3FC;
+    padding: 2px;  /* Padding igual al p-2 de Bootstrap */
+  }
+  

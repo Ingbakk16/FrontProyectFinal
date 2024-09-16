@@ -66,7 +66,7 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
   };
 
   return (
-    <>
+    <div  style={{ background: "linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF)"}}>
       <Header />
 
       <Container fluid className="py-4" style={{ background: "linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF)", minHeight: "calc(100vw - 56px - 40px)" }}>
@@ -203,7 +203,7 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
       </Container>
 
       <Footer />
-    </>
+    </div>
   );
 };
 

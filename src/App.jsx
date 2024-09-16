@@ -33,17 +33,12 @@ const App = () => {
       element: <WorkerProfile />,
     },
     {
-      path: "/",
-      element: <Protected />,  
-      children: [{
-          path: "/profile",
-          element: <Profile />,
-        },
-      ],
-    },
-    {
       path: "*",
       element: <NotFound />,
+    },
+    {
+    path: "/profile",
+    element: <Profile />,
     },
   ]);
 
