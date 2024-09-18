@@ -37,10 +37,14 @@ const App = () => {
       element: <NotFound />,
     },
     {
-    path: "/profile",
-    element: <Profile />,
-    },
-  ]);
+    path: "/",
+    element: <Protected />,  
+    children: [{
+        path: "/profile",
+        element: <Profile />,
+      },
+    ],
+}]);
 
   // Usar el evento "beforeunload" para borrar el localStorage al cerrar la pestaña o refrescar
   useEffect(() => {
