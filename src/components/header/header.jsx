@@ -17,6 +17,9 @@ const Header = () => {
 
   const settingsHandler = () => navigate("/settings");
   const helpHandler = () => navigate("/help");
+  const EditHandler = () => navigate("/Profile");
+  const EditWorkerHandler = () => navigate("/EditWorker");
+  const SavedWorkerHandler = () => navigate("/SavedWorker");
 
   // Cargar categorías desde una fuente de datos (simulada)
   useEffect(() => {
@@ -122,9 +125,10 @@ const Header = () => {
           <Collapse in={showProfile}>
             <div className="menu-dropdown">
               <ul>
-                <li>Edit</li>
-                <li>Saved workers</li>
-                <li>Become worker</li>
+              <li><a onClick={EditHandler}>Edit</a></li> {/* Texto ahora está dentro del enlace */}
+              <li><a onClick={SavedWorkerHandler}>Saved workers</a></li> {/* Asegúrate de agregar enlaces si es necesario */}
+              <li><a onClick={EditWorkerHandler}>Edit Worker</a></li>
+              <li><a onClick={settingsHandler}>Settings</a></li>
               </ul>
             </div>
           </Collapse>

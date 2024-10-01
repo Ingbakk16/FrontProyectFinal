@@ -1,15 +1,10 @@
 import React from "react";
 import { Card, Row, Col, Image, Badge } from "react-bootstrap";
+import './WorkerCard.css';  // Import the CSS file
 
 const WorkerCard = ({ name, lastname, description, profession, rating }) => {
   return (
-    <Card
-      className="p-3"
-      style={{
-        borderRadius: "1rem",
-        background: "linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5)",
-      }}
-    >
+    <Card className="worker-card">
       <Card.Body>
         <Row className="align-items-center">
           <Col xs={3} className="text-center">
@@ -18,6 +13,7 @@ const WorkerCard = ({ name, lastname, description, profession, rating }) => {
               roundedCircle
               fluid
               alt="Worker Avatar"
+              className="worker-avatar"
             />
           </Col>
           <Col xs={9}>
@@ -29,9 +25,9 @@ const WorkerCard = ({ name, lastname, description, profession, rating }) => {
           </Col>
         </Row>
         <Row>
-          <Col className="text-center mt-2">
+          <Col className="text-center worker-rating">
             {[...Array(rating)].map((_, idx) => (
-              <Badge key={idx} pill bg="primary" className="me-1">
+              <Badge key={idx} pill bg="primary" className="me-1 worker-badge">
                 ★
               </Badge>
             ))}

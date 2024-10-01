@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, Alert, ProgressBar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"; 
+import './RegisterWorkerFinal.css';
 
 const RegisterWorkerFinal = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     dni: "",
-    job: "",
+    job: [], // Array para manejar múltiples trabajos seleccionados
     password: "",
     contact: "",
     profilePicture: null,
@@ -17,9 +18,33 @@ const RegisterWorkerFinal = () => {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate(); 
 
+  const availableJobs = ["Ingeniero", "Arquitecto", "Doctor", "Carpintero", "Gasista", "Otro"];
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleJobCheckboxChange = (job) => {
+    const isChecked = formData.job.includes(job);
+
+    if (isChecked) {
+      // Si ya está seleccionado, lo eliminamos
+      setFormData({ 
+        ...formData, 
+        job: formData.job.filter(selectedJob => selectedJob !== job)
+      });
+    } else {
+      // Si aún no está seleccionado y no se ha excedido el límite de 3
+      if (formData.job.length < 3) {
+        setFormData({
+          ...formData,
+          job: [...formData.job, job],
+        });
+      } else {
+        alert("Solo puedes seleccionar hasta 3 trabajos.");
+      }
+    }
   };
 
   const handleImageChange = (e, key) => {
@@ -38,6 +63,7 @@ const RegisterWorkerFinal = () => {
       if (!formData.dni.match(/^\d{8}$/)) newErrors.push("El DNI debe tener 8 números.");
       if (formData.password.length < 6) newErrors.push("La contraseña debe tener al menos 6 caracteres.");
       if (!formData.contact.match(/^\+?\d{10,15}$/)) newErrors.push("El contacto debe ser un número válido.");
+      if (formData.job.length === 0) newErrors.push("Debe seleccionar al menos un trabajo.");
     } else if (step === 2) {
       if (!formData.profilePicture) newErrors.push("Debe subir una foto de perfil.");
       if (formData.description.trim() === "") newErrors.push("La descripción es obligatoria.");
@@ -67,8 +93,9 @@ const RegisterWorkerFinal = () => {
     setErrors([]);
     setStep(1);
 
-    
-    navigate("/Profile");
+    setTimeout(() => {
+      navigate("/Profile");
+    }, 2000);
   };
 
   const renderStep = () => {
@@ -77,13 +104,18 @@ const RegisterWorkerFinal = () => {
         return (
           <>
             <InputField label="DNI" name="dni" type="text" value={formData.dni} onChange={handleChange} />
-            <InputField label="Trabajo" name="job" as="select" value={formData.job} onChange={handleChange}>
-              <option value="">Seleccione su trabajo</option>
-              <option value="Ingeniero">Ingeniero</option>
-              <option value="Arquitecto">Arquitecto</option>
-              <option value="Doctor">Doctor</option>
-              <option value="Otro">Otro</option>
-            </InputField>
+            <div className="mt-3">
+              <Form.Label>Selecciona hasta 3 trabajos</Form.Label>
+              {availableJobs.map((job, index) => (
+                <Form.Check
+                  key={index}
+                  type="checkbox"
+                  label={job}
+                  checked={formData.job.includes(job)}
+                  onChange={() => handleJobCheckboxChange(job)}
+                />
+              ))}
+            </div>
             <InputField label="Contraseña" name="password" type="password" value={formData.password} onChange={handleChange} />
             <InputField label="Contacto" name="contact" type="text" value={formData.contact} onChange={handleChange} />
           </>
@@ -110,7 +142,7 @@ const RegisterWorkerFinal = () => {
               <p key={idx}>
                 <strong>{key}:</strong> 
                 {Array.isArray(value)
-                  ? value.map((img) => img.name).join(", ") // Mostrar nombres de archivos si es una lista de imágenes
+                  ? value.join(", ") // Mostrar los trabajos seleccionados
                   : value instanceof File
                   ? value.name // Mostrar el nombre del archivo si es un objeto File
                   : value || "N/A"}
@@ -124,21 +156,21 @@ const RegisterWorkerFinal = () => {
   };
 
   return (
-    <Container fluid className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh", background: "linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94)" }}>
+    <Container fluid className="register-container">
       <Row>
-        <Col xs={12} md={8} lg={10}>
-          <Form onSubmit={step === 3 ? handleSubmit : handleNext} className="p-4" style={{ backgroundColor: "#f8f9fa", borderRadius: "1rem", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)" }}>
-            <h3 className="text-center mb-4">Registro de Trabajador</h3>
-            <p className="text-center">¡Regístrese para formar parte de esta gran familia!</p>
+        <Col xs={12} md={8} lg={10} className="register-col">
+          <Form onSubmit={step === 3 ? handleSubmit : handleNext} className="register-form">
+            <h3 className="register-title">Registro de Trabajador</h3>
+            <p className="register-subtitle">¡Regístrese para formar parte de esta gran familia!</p>
 
             {errors.length > 0 && <Alert variant="danger">{errors.join(", ")}</Alert>}
             {success && <Alert variant="success">¡Registro exitoso!</Alert>}
 
-            <ProgressBar now={(step / 3) * 100} className="mb-4" />
+            <ProgressBar now={(step / 3) * 100} className="progress-bar-custom" />
 
             {renderStep()}
 
-            <div className="d-flex justify-content-between mt-4">
+            <div className="button-container">
               {step > 1 && <Button variant="secondary" onClick={handleBack}>Atrás</Button>}
               {step < 3 ? <Button variant="primary" type="submit">{step === 1 ? "Revisar" : "Continuar"}</Button> : <Button variant="success" type="submit">Registrarse</Button>}
             </div>

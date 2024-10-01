@@ -9,6 +9,7 @@ import Profile from "./components/ProfileUser/Profile";
 import MainPage from "./components/mainMenu/mainPage";
 import RegisterWorkerFinal from "./components/worker Register/RegisterWrokerFinal";
 import WorkerProfile from "./components/WorkerProfile/WorkerProfile";
+import CategoriesPage from "./components/categories/CategoriesPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -31,6 +32,10 @@ const App = () => {
     {
       path: "/workerProfile",
       element: <WorkerProfile />,
+    },
+    {
+      path: "/categories",
+      element: <CategoriesPage />,
     },
     {
       path: "*",

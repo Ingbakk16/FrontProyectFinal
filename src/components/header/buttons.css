@@ -22,16 +22,16 @@
 
 /* Estilos de los botones */
 .menu-button {
-  background-color: #C8C3FC;  /* Color de fondo */
-  color: #000000;  /* Color del texto */
-  border-bottom-left-radius: 3vw;  /* Esquina inferior izquierda circular */
-  border-bottom-right-radius: 3vw;  /* Esquina inferior derecha circular */
-  border-top-left-radius: 0;  /* Esquinas superiores planas */
-  border-top-right-radius: 0;  /* Esquinas superiores planas */
-  height: 3vw;  /* Altura del botón */
-  width: 15vw;  /* Ancho del botón */
+  background-color: #C8C3FC;  
+  color: #000000;  
+  border-bottom-left-radius: 3vw;  
+  border-bottom-right-radius: 3vw;  
+  border-top-left-radius: 0;  
+  border-top-right-radius: 0;  
+  height: 3vw;  
+  width: 15vw;  
   padding: 2vw;  
-  border-color: #000000;  /* Color del borde */
+  border-color: #000000;  
   border-width: 1px;
   border-style: solid;
   display: flex;
@@ -51,15 +51,16 @@
 
 /* Menú desplegable */
 .menu-dropdown {
+  cursor: pointer;
   position: absolute;
-  top: 100%;  /* Justo debajo del botón */
+  top: 100%;  
   left: 0;
   background-color: #C6B8FF;
-  border-radius: 0 0 8px 8px;  /* Solo bordes inferiores redondeados */
+  border-radius: 0 0 8px 8px; 
   padding: 5px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 100;
-  width: 100%;  /* Alinear el ancho del menú con el botón */
+  width: 100%;  
 }
 
 .menu-dropdown ul {

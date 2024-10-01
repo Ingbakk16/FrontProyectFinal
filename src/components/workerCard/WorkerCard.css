@@ -1,0 +1,19 @@
+.worker-card {
+    border-radius: 1rem;
+    background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
+    padding: 1.5rem;
+  }
+  
+  .worker-avatar {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .worker-rating {
+    margin-top: 1rem;
+  }
+  
+  .worker-badge {
+    background-color: #4A67C3;
+  }
+  
