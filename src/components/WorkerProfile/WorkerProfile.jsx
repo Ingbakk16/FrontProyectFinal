@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Button, Image, Container, Row, Col } from 'react-bootstrap';
 import Header from '../header/header';
 import Footer from '../footer/footer';
+import profileSVG from '../svg back/profile.svg';
 import './WorkerStyle.css'; // Import the CSS file
 
 const WorkerProfile = () => {
@@ -9,7 +10,7 @@ const WorkerProfile = () => {
     name: "Jose Luis",
     profession: "Electricista",
     description: "Especialista en instalaciones eléctricas, con más de 10 años de experiencia en el sector.",
-    profileImage: "https://via.placeholder.com/150",
+    profileImage: "/assets/images/profile.svg", // Ruta al archivo SVG
     workImages: [
       "https://via.placeholder.com/200x150", 
       "https://via.placeholder.com/150", 

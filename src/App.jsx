@@ -10,12 +10,17 @@ import MainPage from "./components/mainMenu/mainPage";
 import RegisterWorkerFinal from "./components/worker Register/RegisterWrokerFinal";
 import WorkerProfile from "./components/WorkerProfile/WorkerProfile";
 import CategoriesPage from "./components/categories/CategoriesPage";
+import HelpSeccion from "./components/help/help";
 
 const App = () => {
   const router = createBrowserRouter([
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/help",
+      element: <HelpSeccion />,
     },
     {
       path: "/register",

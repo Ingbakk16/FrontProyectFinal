@@ -1,0 +1,40 @@
+/* Estilo del contenedor principal */
+.help-container {
+    padding: 5vh;
+    min-height: 100vh;
+    background-color:linear-gradient(to bottom, #e1bce7, #bc5ef2);
+  }
+  
+  /* Estilo para alinear verticalmente */
+  .full-height-row {
+    min-height: 100vh;
+  }
+  
+  /* Estilo del formulario */
+  .help-form {
+    background-color: #c57dff;
+    border-radius: 1rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+  }
+  
+  /* Estilo de los títulos del formulario */
+  .help-form h3 {
+    text-align: center;
+  }
+  
+  .help-form p {
+    text-align: center;
+  }
+  
+  /* Estilo del botón de enviar */
+  .form-submit-btn {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+  
+  /* Estilo de las alertas */
+  .alert {
+    margin-top: 1rem;
+  }
+  
