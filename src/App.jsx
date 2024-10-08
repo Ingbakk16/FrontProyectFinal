@@ -56,19 +56,6 @@ const App = () => {
     ],
 }]);
 
-  // Usar el evento "beforeunload" para borrar el localStorage al cerrar la pestaña o refrescar
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      localStorage.removeItem("user");
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    // Cleanup para eliminar el evento cuando el componente se desmonte
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
 
   return (
     <AuthenticationContextProvider>
