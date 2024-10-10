@@ -17,8 +17,8 @@ const Header = () => {
 
   const settingsHandler = () => navigate("/settings");
   const helpHandler = () => navigate("/help");
-  const EditHandler = () => navigate("/Profile");
-  const EditWorkerHandler = () => navigate("/EditWorker");
+  const EditHandler = () => navigate("/profile");
+  const EditWorkerHandler = () => navigate("/editWorker");
   const SavedWorkerHandler = () => navigate("/SavedWorker");
 
   // Cargar categorías desde una fuente de datos (simulada)

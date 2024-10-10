@@ -1,31 +1,56 @@
-import React, { useState } from 'react';
-import { Button, Card, Form, Container, Row, Col, Image, Carousel } from 'react-bootstrap';
+import React, { useState, useEffect, useContext } from 'react';
+import { Button, Card, Form, Container, Row, Col, Image } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from '../services/authenticationContext/authentication.context'; 
 
-const mono = {
-  Name: "Jose Luis",
-  Email: "JoseLuis@gmail.com",
-  Surname: "Carlos Bodoque",
-  Password: "asdf1234",
-  profileImage: "https://via.placeholder.com/100",
-  profession: "Ingeniero"
-};
-
-const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
+const Profile = () => {
+  const { user,token } = useContext(AuthenticationContext); 
   const [isEditing, setIsEditing] = useState(false);
-
   const [formData, setFormData] = useState({
-    Name: Name || mono.Name,
-    Email: Email || mono.Email,
-    Surname: Surname || mono.Surname,
-    Password: Password || mono.Password,
-    profileImage: profileImage || mono.profileImage,
+    Name: '',
+    Email: '',
+    Surname: '',
+    profileImage: '', 
   });
 
   const navigate = useNavigate();
+
+  // Fetch del perfil de usuario usando el token desde el contexto
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+  
+
+      try {
+        const response = await fetch('http://localhost:8081/api/users/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` 
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile data');
+        }
+
+        const data = await response.json();
+        // Actualiza el estado con los datos recibidos
+        setFormData({
+          Name: data.name,
+          Email: data.email,
+          Surname: data.lastname,
+          profileImage: 'https://via.placeholder.com/100' 
+        });
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [user?.token]);
 
   const handleChange = (e) => {
     setFormData({
@@ -40,33 +65,20 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
 
   const handleSaveClick = () => {
     setIsEditing(false);
+    
   };
 
   const handleCancelClick = () => {
-    setFormData({
-      Name: Name || mono.Name,
-      Email: Email || mono.Email,
-      Surname: Surname || mono.Surname,
-      Password: Password || mono.Password,
-      profileImage: profileImage || mono.profileImage,
-    });
     setIsEditing(false);
+  
   };
 
   const backHandler = () => {
-    navigate("/");
-  };
-
-  const WorkerRegisterHandler = () => {
-    navigate("/RegisterWorker");
-  };
-
-  const EditWorkerHandler = () => {
-    navigate("/EditWorker");
+    navigate('/');
   };
 
   return (
-    <div  style={{ background: "linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF)"}}>
+    <div style={{ background: "linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF)" }}>
       <Header />
 
       <Container fluid className="py-4" style={{ background: "linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF)", minHeight: "calc(100vw - 56px - 40px)" }}>
@@ -108,18 +120,6 @@ const Profile = ({ Name, Email, Surname, Password, profileImage }) => {
                         type="email"
                         name="Email"
                         value={formData.Email}
-                        onChange={handleChange}
-                        className="text-dark"
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label className="text-light">Password:</Form.Label>
-                      <Form.Control
-                        plaintext={!isEditing}
-                        readOnly={!isEditing}
-                        type="password"
-                        name="Password"
-                        value={formData.Password}
                         onChange={handleChange}
                         className="text-dark"
                       />
@@ -167,7 +167,6 @@ Profile.propTypes = {
   Name: PropTypes.string,
   Email: PropTypes.string,
   Surname: PropTypes.string,
-  Password: PropTypes.string,
   profileImage: PropTypes.string
 };
 
