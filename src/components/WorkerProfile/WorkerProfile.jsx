@@ -1,30 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Card, Button, Image, Container, Row, Col } from 'react-bootstrap';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import profileSVG from '../svg back/profile.svg';
-import './WorkerStyle.css'; // Import the CSS file
+import { useParams } from 'react-router-dom'; // Para obtener el ID
+import { AuthenticationContext } from "../services/authenticationContext/authentication.context"; 
 
 const WorkerProfile = () => {
-  const worker = {
-    name: "Jose Luis",
-    profession: "Electricista",
-    description: "Especialista en instalaciones eléctricas, con más de 10 años de experiencia en el sector.",
-    profileImage: "/assets/images/profile.svg", // Ruta al archivo SVG
-    workImages: [
-      "https://via.placeholder.com/200x150", 
-      "https://via.placeholder.com/150", 
-      "https://via.placeholder.com/200x150/0000FF/FFFFFF?text=Work+Image", 
-      "https://place.dog/200/150"
-    ]
-  };
+  const { id } = useParams(); // Obtener el ID del trabajador desde la URL
+  const { token } = useContext(AuthenticationContext); // Obtener el token desde el contexto
 
-  const [showCommentForm, setShowCommentForm] = useState(false);
-  const toggleCommentForm = () => {
-    setShowCommentForm(!showCommentForm);
-  };
+  const [worker, setWorker] = useState(null); // Estado para los datos del trabajador
+  const [loading, setLoading] = useState(true); // Estado de carga
 
-  const [newComment, setNewComment] = useState({ name: '', comment: '', rating: 0 });
+  // Comentarios estáticos (puedes reemplazarlos con comentarios dinámicos más adelante)
   const [comments, setComments] = useState([
     { name: "Ana", comment: "Excelente trabajo, muy recomendado!", rating: 5 },
     { name: "Pedro", comment: "Muy profesional, volveré a contratar.", rating: 4 },
@@ -33,38 +21,75 @@ const WorkerProfile = () => {
     { name: "Luisa", comment: "Muy buen servicio!", rating: 5 },
   ]);
   
+  const [newComment, setNewComment] = useState({ name: '', comment: '', rating: 0 });
+  const [showComments, setShowComments] = useState(false);
+  const [showCommentForm, setShowCommentForm] = useState(false); // Estado para mostrar/ocultar el formulario
+
+  useEffect(() => {
+    const fetchWorkerProfile = async () => {
+      if (!token) {
+        console.error("No token available.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8081/api/workers/all`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Error fetching worker profile");
+        }
+
+        const data = await response.json();
+        const workerData = data.find((worker) => worker.id === id); // Buscar el trabajador por ID
+
+        if (!workerData) {
+          throw new Error("Worker not found");
+        }
+
+        setWorker(workerData); // Establecer los datos del trabajador
+        setLoading(false); // Desactivar el estado de carga
+      } catch (error) {
+        console.error("Error fetching worker profile:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchWorkerProfile();
+  }, [id, token]);
+
   const handleCommentChange = (e) => {
     const { name, value } = e.target;
     setNewComment({ ...newComment, [name]: value });
   };
-  
+
   const handleAddComment = () => {
     if (newComment.name && newComment.comment && newComment.rating > 0) {
       setComments([...comments, newComment]);
-      setNewComment({ name: '', comment: '', rating: 0 }); // Limpiar formulario
+      setNewComment({ name: '', comment: '', rating: 0 }); // Limpiar el formulario
     }
-  };
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showComments, setShowComments] = useState(false);
-
-  const handlePreviousImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      prevIndex === 0 ? worker.workImages.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      prevIndex === worker.workImages.length - 1 ? 0 : prevIndex + 1
-    );
   };
 
   const toggleComments = () => {
     setShowComments(!showComments);
   };
 
-  const hasWorkImages = worker.workImages.length > 0;
+  const toggleCommentForm = () => {
+    setShowCommentForm(!showCommentForm);
+  };
+
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (!worker) {
+    return <p>Datos no disponibles</p>;
+  }
 
   return (
     <>
@@ -75,32 +100,20 @@ const WorkerProfile = () => {
             <Col md={8}>
               <Card className="p-4 shadow-lg text-center d-flex justify-content-center align-items-center card-custom">
                 <Image 
-                  src={worker.profileImage}
+                  src={worker.user?.profileImage || 'https://via.placeholder.com/100'} // Placeholder o imagen de perfil
                   roundedCircle
                   className="card-image"
                 />
-                <h3>{worker.name}</h3>
-                <h5>{worker.profession}</h5>
-                <p className="worker-description">"{worker.description}"</p>
+                <h3>{worker.user?.name || "Nombre no disponible"}</h3>
+                <h5>{worker.jobTitles?.join(", ") || "Profesión no disponible"}</h5>
+                <p className="worker-description">"{worker.description || "Sin descripción"}"</p>
 
                 {/* Carrusel de imágenes de trabajo */}
-                {hasWorkImages ? (
+                {worker.workImages?.length > 0 ? (
                   <div className="work-images-carousel">
-                    <Button variant="link" onClick={handlePreviousImage}>
-                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-                        <path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/>
-                      </svg>
-                    </Button>
-                    <Image
-                      src={worker.workImages[currentImageIndex]}
-                      rounded
-                      className="work-image"
-                    />
-                    <Button variant="link" onClick={handleNextImage}>
-                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-                        <path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/>
-                      </svg>
-                    </Button>
+                    {worker.workImages.map((image, index) => (
+                      <Image key={index} src={image} rounded className="work-image" />
+                    ))}
                   </div>
                 ) : (
                   <p>No work images available</p>
@@ -142,7 +155,7 @@ const WorkerProfile = () => {
                   {showCommentForm ? 'HIDE ADD COMMENT' : 'SHOW ADD COMMENT'}
                 </Button>
 
-                {/* Formulario de agregar comentario con animación */}
+                {/* Formulario de agregar comentario */}
                 {showCommentForm && (
                   <div className={`add-comment-form mt-4 ${showCommentForm ? 'show' : 'hide'}`}>
                     <h5>Add a new comment</h5>

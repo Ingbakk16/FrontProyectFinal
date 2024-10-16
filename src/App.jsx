@@ -12,7 +12,7 @@ import WorkerProfile from "./components/WorkerProfile/WorkerProfile";
 import CategoriesPage from "./components/categories/CategoriesPage";
 import HelpSeccion from "./components/help/help";
 import EditWorkerProfile from "./components/EditWorkerProfile/EditWorkerProfile";
-import FavoritesPage from "./components/favoritesPage/FavoritesPage";
+
 
 const App = () => {
   const router = createBrowserRouter([
@@ -23,10 +23,6 @@ const App = () => {
     {
       path: "/help",
       element: <HelpSeccion />,
-    },
-    {
-      path: "/favoritesPage",
-      element: <FavoritesPage />,
     },
     {
       path: "/register",
@@ -41,7 +37,7 @@ const App = () => {
       element: <RegisterWorkerFinal />,
     },
     {
-      path: "/workerProfile",
+      path: "/workerProfile/:id", // Ruta con parámetro ID para WorkerProfile
       element: <WorkerProfile />,
     },
     {

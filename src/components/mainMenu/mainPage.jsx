@@ -3,13 +3,15 @@ import { Container, Row, Col } from "react-bootstrap";
 import WorkerCard from "../workerCard/workerCard";
 import Header from "../header/header";
 import Footer from "../footer/footer";
-import { AuthenticationContext } from "../services/authenticationContext/authentication.context"; 
+import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
+import { useNavigate } from "react-router-dom"; // Importar para navegación
 import './mainPage.css';
 
 const MainPage = () => {
   const [workers, setWorkers] = useState([]);
   const { token } = useContext(AuthenticationContext); // Obtener el token desde el contexto
   const [favorites, setFavorites] = useState([]); // Estado para los favoritos
+  const navigate = useNavigate(); // Hook para navegación
 
   // Cargar favoritos desde el localStorage al montar el componente
   useEffect(() => {
@@ -25,6 +27,11 @@ const MainPage = () => {
 
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Guardar en localStorage
+  };
+
+  // Navegar al perfil del trabajador
+  const handleWorkerClick = (workerId) => {
+    navigate(`/workerProfile/${workerId}`); // Redirigir al perfil del trabajador usando el ID
   };
 
   useEffect(() => {
@@ -48,7 +55,6 @@ const MainPage = () => {
         }
 
         const data = await response.json();
-        console.log("Trabajadores obtenidos:", data);
         setWorkers(data); // Establecer los datos obtenidos en el estado
       } catch (error) {
         console.error("Error al obtener los trabajadores:", error);
@@ -69,13 +75,14 @@ const MainPage = () => {
               <Col key={index} md={6} className="mb-4">
                 <WorkerCard
                   id={worker.id} // Pasar el ID del trabajador
-                  name={worker.user?.name || "Nombre no disponible"}
+                  name={worker.user?.name }
                   lastname={worker.user?.lastname || "Apellido no disponible"}
                   description={worker.description || "Sin descripción"}
                   profession={worker.jobTitles?.join(", ") || "Profesión no disponible"}
                   rating={worker.rating || 0}
                   isFavorite={favorites.includes(worker.id)} // Verificar si es favorito
                   toggleFavorite={() => toggleFavorite(worker.id)} // Pasar la función para alternar favoritos
+                  onClick={() => handleWorkerClick(worker.id)} // Redirigir al perfil del trabajador
                 />
               </Col>
             ))}

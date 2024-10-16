@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context'; 
 
 const Profile = () => {
-  const { user,token } = useContext(AuthenticationContext); 
+  const { token } = useContext(AuthenticationContext); // Obtener solo el token
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     Name: '',
@@ -21,14 +21,17 @@ const Profile = () => {
   // Fetch del perfil de usuario usando el token desde el contexto
   useEffect(() => {
     const fetchUserProfile = async () => {
-  
+      if (!token) {
+        console.error("No token available.");
+        return; // No hacer nada si no hay token
+      }
 
       try {
         const response = await fetch('http://localhost:8081/api/users/profile', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` 
+            'Authorization': `Bearer ${token}` // Usar el token para la autorización
           }
         });
 
@@ -42,7 +45,7 @@ const Profile = () => {
           Name: data.name,
           Email: data.email,
           Surname: data.lastname,
-          profileImage: 'https://via.placeholder.com/100' 
+          profileImage: 'https://via.placeholder.com/100' // Aquí puedes asignar una imagen predeterminada
         });
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -50,7 +53,7 @@ const Profile = () => {
     };
 
     fetchUserProfile();
-  }, [user?.token]);
+  }, [token]); // El efecto se dispara cuando cambia el token
 
   const handleChange = (e) => {
     setFormData({
@@ -65,12 +68,11 @@ const Profile = () => {
 
   const handleSaveClick = () => {
     setIsEditing(false);
-    
+    // Aquí puedes hacer una llamada al backend para actualizar los datos si es necesario
   };
 
   const handleCancelClick = () => {
     setIsEditing(false);
-  
   };
 
   const backHandler = () => {
