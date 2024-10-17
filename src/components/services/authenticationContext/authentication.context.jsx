@@ -1,36 +1,59 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const AuthenticationContext = createContext();
 
-// Obtener datos del localStorage
 const storedUser = JSON.parse(localStorage.getItem("user"));
-const storedToken = localStorage.getItem("token");
+// const storedToken = localStorage.getItem("token");
 
 export const AuthenticationContextProvider = ({ children }) => {
-    // Almacenar tanto el usuario como el token en el estado
-    const [user, setUser] = useState(storedUser);
-    const [token, setToken] = useState(storedToken);
+  const [user, setUser] = useState(storedUser);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [isWorker, setIsWorker] = useState(false); // Nuevo estado para verificar si es trabajador
 
-    // Manejar el inicio de sesión, almacenando el token y el usuario
-    const handleLogin = (username, token) => {
-        const newUser = { username };
-        localStorage.setItem("user", JSON.stringify(newUser));
-        // localStorage.setItem("token", token);  // Almacenar el token en el localStorage
-        setUser(newUser);
-        setToken(token);  // Guardar el token en el estado
+  // Verificar si el usuario es un trabajador
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (!token) return;
+
+      try {
+        const response = await fetch('http://localhost:8081/api/users/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+        if (data.role?.name === "ROLE_WORKER") {
+          setIsWorker(true); // Si el rol es "trabajador", actualizamos el estado
+        }
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
     };
 
-    // Manejar el cierre de sesión, eliminando el token y el usuario
-    const handleLogout = () => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
-        setUser(null);
-        setToken(null);  // Limpiar el token del estado
-    };
+    fetchUserRole();
+  }, [token]); // Se ejecutará al inicio o cuando cambie el token
+  
 
-    return (
-        <AuthenticationContext.Provider value={{ user, token, handleLogin, handleLogout }}>
-            {children}
-        </AuthenticationContext.Provider>
-    );
+  const handleLogin = (username, tokenVal) => {
+    const newUser = { username };
+    localStorage.setItem("user", JSON.stringify(newUser));
+    setUser(newUser);
+    setToken(tokenVal);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    setToken(null);
+    setIsWorker(false); // Resetear el estado cuando se cierra sesión
+  };
+
+  return (
+    <AuthenticationContext.Provider value={{ user, token, handleLogin, handleLogout, isWorker }}>
+      {children}
+    </AuthenticationContext.Provider>
+  );
 };

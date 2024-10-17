@@ -12,6 +12,7 @@ import WorkerProfile from "./components/WorkerProfile/WorkerProfile";
 import CategoriesPage from "./components/categories/CategoriesPage";
 import HelpSeccion from "./components/help/help";
 import EditWorkerProfile from "./components/EditWorkerProfile/EditWorkerProfile";
+import FavoritesPage from "./components/savedWorkers/savedWorkers";
 
 
 const App = () => {
@@ -43,6 +44,10 @@ const App = () => {
     {
       path: "/categories",
       element: <CategoriesPage />,
+    },
+    {
+      path: "/favWorkers",
+      element: <FavoritesPage />,
     },
     {
       path: "/editWorker",

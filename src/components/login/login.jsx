@@ -57,14 +57,13 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        debugger;
         const { token } = data;
 
         // Guardar el token en el localStorage
         localStorage.setItem("token", token);
 
         // Manejar el login en el contexto
-        handleLogin(username);
+        handleLogin(username,token);
 
         // Navegar al perfil del usuario
         navigate("/profile");

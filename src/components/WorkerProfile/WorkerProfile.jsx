@@ -152,7 +152,7 @@ const WorkerProfile = () => {
                   className="mt-4 comments-toggle-button"
                   onClick={toggleCommentForm}
                 >
-                  {showCommentForm ? 'HIDE ADD COMMENT' : 'SHOW ADD COMMENT'}
+                  {showCommentForm ? 'HIDE ADD COMMENT' : 'ADD COMMENT'}
                 </Button>
 
                 {/* Formulario de agregar comentario */}
