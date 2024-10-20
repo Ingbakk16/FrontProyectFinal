@@ -13,6 +13,8 @@ import CategoriesPage from "./components/categories/CategoriesPage";
 import HelpSeccion from "./components/help/help";
 import EditWorkerProfile from "./components/EditWorkerProfile/EditWorkerProfile";
 import FavoritesPage from "./components/savedWorkers/savedWorkers";
+import SysAdmin from "./components/admin components/admin page/adminPage";
+import EditUserForm from "./components/admin components/editUserAdmin/EditUser";
 
 
 const App = () => {
@@ -57,7 +59,14 @@ const App = () => {
       path: "*",
       element: <NotFound />,
     },
-    
+    {
+      path: "/Admin",
+      element: <SysAdmin />,
+    },
+    {
+      path: "/editUserAdmin",
+      element: <EditUserForm />,
+    },
     {
     path: "/",
     element: <Protected />,  
