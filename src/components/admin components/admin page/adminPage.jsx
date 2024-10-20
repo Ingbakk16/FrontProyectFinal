@@ -9,20 +9,20 @@ import SidebarButton from '../sidebar button/sidebarMenu';
 const SysAdmin = () => {
   const navigate = useNavigate();
   
-  const handleEdit = (username) => {
-    // Lógica para editar el usuario
-    console.log(`Editar: ${username}`);
-    navigate(`/editUserAdmin`);
+  const handleEdit = (isWorker) => {
+    if (isWorker) {
+      navigate(`/AdminEditWorkers`);
+    } else {
+      navigate(`/editUserAdmin`);
+    }
   };
 
   const handleDelete = (username) => {
-    // Lógica para eliminar el usuario
     console.log(`Eliminar: ${username}`);
   };
 
-  const handleViewProfile = (username) => {
-    // Lógica para ver el perfil del usuario
-    console.log(`Ver Perfil: ${username}`);
+  const handleViewWorkerProfile = (username) => {
+    console.log(`Ver Perfil del Trabajador: ${username}`);
   };
 
   return (
@@ -30,7 +30,6 @@ const SysAdmin = () => {
       <Header />
       <Container fluid className="d-flex" style={{ minHeight: "90vh" }}>
         <Col md={2} className="bg-dark text-light sidebar-button-padding">
-          {/* SidebarButton Componente */}
           <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
@@ -40,12 +39,14 @@ const SysAdmin = () => {
                 username="josefasio_malandro"
                 role="Admin"
                 email="josefasio@example.com"
-                onEdit={() => handleEdit("josefasio_malandro")}
+                onEdit={handleEdit}
                 onDelete={() => handleDelete("josefasio_malandro")}
-                onViewProfile={() => handleViewProfile("josefasio_malandro")}
+                onViewProfile={() => handleViewWorkerProfile("josefasio_malandro")}
+                showViewProfile={false} // Puedes cambiar esto según lo necesites
+                isWorker={false} // Poner en true si es un trabajador
               />
             </Col>
-            {/* Puedes repetir la tarjeta o hacer un .map() */}
+            {/* Repetir la tarjeta o usar un .map() */}
           </Row>
         </Col>
       </Container>

@@ -8,10 +8,10 @@ const SidebarMenu = () => {
   const navigate = useNavigate();
 
   // Funciones de manejo de navegación
-  const handleEditUser = () => navigate('/editUser');
+  const handleEditUser = () => navigate('/Admin');
   const handleDeleteReview = () => navigate('/deleteReview');
-  const handleEditCategory = () => navigate('/editCategory');
-  const handleEditWorker = () => navigate('/editWorker');
+  const handleEditCategory = () => navigate('/AdminEditCategory');
+  const handleEditWorker = () => navigate('/adminWorkersPage');
 
   return (
     <div className="sidebar-container">

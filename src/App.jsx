@@ -15,7 +15,10 @@ import EditWorkerProfile from "./components/EditWorkerProfile/EditWorkerProfile"
 import FavoritesPage from "./components/savedWorkers/savedWorkers";
 import SysAdmin from "./components/admin components/admin page/adminPage";
 import EditUserForm from "./components/admin components/editUserAdmin/EditUser";
-
+import AdminWorkersPage from "./components/admin components/AdminWorkersPage/AdminWorkersPage";
+import WorkerForm from "./components/admin components/editWorkerPage/WorkerForm";
+import CategoryForm from "./components/admin components/AdminCategoryForm/CategoryForm ";
+import AdminCategoriesPage from "./components/admin components/EDitCategoryAdmin/EditCategory";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -40,7 +43,7 @@ const App = () => {
       element: <RegisterWorkerFinal />,
     },
     {
-      path: "/workerProfile/:id", // Ruta con parámetro ID para WorkerProfile
+      path: "/workerProfile/:id", 
       element: <WorkerProfile />,
     },
     {
@@ -66,6 +69,22 @@ const App = () => {
     {
       path: "/editUserAdmin",
       element: <EditUserForm />,
+    },
+    {
+      path: "/adminWorkersPage",
+      element: <AdminWorkersPage />,
+    },
+    {
+      path: "/adminWorkersEdit",
+      element: <WorkerForm />,
+    },
+    {
+      path: "/AdminEditCategory",
+      element: <AdminCategoriesPage />,
+    },
+    {
+      path: "/AdminCategoryForm/:categoryId",
+      element: <CategoryForm />,
     },
     {
     path: "/",

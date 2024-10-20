@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import Sidebar from '../sidebar button/sidebarMenu'; // Asumiendo que ya tienes el sidebar como componente
+import { useNavigate } from 'react-router-dom'; // Importar el hook useNavigate
 import './EditUserForm.css';
 
 const EditUserForm = () => {
@@ -13,6 +14,8 @@ const EditUserForm = () => {
     password: 'Jose',
     profileImage: null,
   });
+
+  const navigate = useNavigate(); // Inicializar el hook useNavigate
 
   const handleChange = (e) => {
     setFormData({
@@ -35,8 +38,7 @@ const EditUserForm = () => {
   };
 
   const handleCancel = () => {
-    // Lógica para cancelar o resetear el formulario
-    console.log('Cancelado');
+    navigate(-1); // Navegar a la página anterior
   };
 
   return (
