@@ -1,71 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Form, Button, Container, Row, Col, Alert, ProgressBar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"; 
+import { AuthenticationContext } from "../services/authenticationContext/authentication.context"; 
 import './RegisterWorkerFinal.css';
 
 const RegisterWorkerFinal = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     dni: "",
-    job: [], // Array para manejar múltiples trabajos seleccionados
-    password: "",
-    contact: "",
-    profilePicture: null,
+    jobId: "", 
+    direccion: "",
     description: "",
-    workImages: [],
+    workImages: [], 
+    rating: 0, 
   });
+  const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState([]);
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  
+  const { token } = useContext(AuthenticationContext);
+ 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('http://localhost:8081/api/jobs/all', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        setCategories(data); 
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setErrors(['Error al obtener las categorías de trabajo']);
+      }
+    };
 
-  const availableJobs = ["Ingeniero", "Arquitecto", "Doctor", "Carpintero", "Gasista", "Otro"];
+    fetchCategories();
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleJobCheckboxChange = (job) => {
-    const isChecked = formData.job.includes(job);
-
-    if (isChecked) {
-      // Si ya está seleccionado, lo eliminamos
-      setFormData({ 
-        ...formData, 
-        job: formData.job.filter(selectedJob => selectedJob !== job)
-      });
-    } else {
-      // Si aún no está seleccionado y no se ha excedido el límite de 3
-      if (formData.job.length < 3) {
-        setFormData({
-          ...formData,
-          job: [...formData.job, job],
-        });
-      } else {
-        alert("Solo puedes seleccionar hasta 3 trabajos.");
-      }
-    }
-  };
-
-  const handleImageChange = (e, key) => {
-    const file = e.target.files[0];
-    setFormData({ ...formData, [key]: file });
-  };
-
   const handleMultipleImagesChange = (e) => {
     const files = Array.from(e.target.files);
-    setFormData({ ...formData, workImages: files });
+    const imageUrls = files.map(file => URL.createObjectURL(file)); 
+    setFormData({ ...formData, workImages: imageUrls });
   };
 
   const validateStep = () => {
     const newErrors = [];
     if (step === 1) {
       if (!formData.dni.match(/^\d{8}$/)) newErrors.push("El DNI debe tener 8 números.");
-      if (formData.password.length < 6) newErrors.push("La contraseña debe tener al menos 6 caracteres.");
-      if (!formData.contact.match(/^\+?\d{10,15}$/)) newErrors.push("El contacto debe ser un número válido.");
-      if (formData.job.length === 0) newErrors.push("Debe seleccionar al menos un trabajo.");
+      if (!formData.jobId) newErrors.push("Debe seleccionar un trabajo.");
+      if (formData.direccion.trim() === "") newErrors.push("La dirección es obligatoria.");
     } else if (step === 2) {
-      if (!formData.profilePicture) newErrors.push("Debe subir una foto de perfil.");
+      if (formData.workImages.length === 0) newErrors.push("Debe subir al menos una imagen de su trabajo.");
       if (formData.description.trim() === "") newErrors.push("La descripción es obligatoria.");
     }
     return newErrors;
@@ -84,19 +79,51 @@ const RegisterWorkerFinal = () => {
     setStep(step - 1);
   };
 
-  const handleSubmit = (e) => {
+  const handleCancel = () => {
+    navigate(-1); 
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validateStep();
     if (formErrors.length > 0) return setErrors(formErrors);
 
-    setSuccess(true);
-    setErrors([]);
-    setStep(1);
+    const payload = {
+      description: formData.description,
+      dni: formData.dni,
+      direccion: formData.direccion, 
+      rating: 0, 
+      jobId: formData.jobId,
+      imageUrl: formData.workImages[0],
+    };
+    try {
+      const response = await fetch('http://localhost:8081/api/workers/worker', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      
+      if (response.ok) {
+        setSuccess(true);
+        setErrors([]);
+        setStep(1);
 
-    setTimeout(() => {
-      navigate("/Profile");
-    }, 2000);
-  };
+        handleLogout(); 
+
+        navigate("/login");
+
+      } else {
+        const errorData = await response.json();
+        setErrors([errorData.message]);
+      }
+    } catch (error) {
+      setErrors(["Error al registrar el trabajador."]);
+      console.error("Error submitting form:", error);
+    }
+};
 
   const renderStep = () => {
     switch (step) {
@@ -104,34 +131,28 @@ const RegisterWorkerFinal = () => {
         return (
           <>
             <InputField label="DNI" name="dni" type="text" value={formData.dni} onChange={handleChange} />
-            <div className="mt-3">
-              <Form.Label>Selecciona hasta 3 trabajos</Form.Label>
-              {availableJobs.map((job, index) => (
-                <Form.Check
-                  key={index}
-                  type="checkbox"
-                  label={job}
-                  checked={formData.job.includes(job)}
-                  onChange={() => handleJobCheckboxChange(job)}
-                />
-              ))}
-            </div>
-            <InputField label="Contraseña" name="password" type="password" value={formData.password} onChange={handleChange} />
-            <InputField label="Contacto" name="contact" type="text" value={formData.contact} onChange={handleChange} />
+            <Form.Group controlId="jobId" className="mt-3">
+              <Form.Label>Selecciona un Trabajo</Form.Label>
+              <Form.Control as="select" name="jobId" value={formData.jobId} onChange={handleChange} required>
+                <option value="">Selecciona una opción</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.title}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <InputField label="Dirección" name="direccion" type="text" value={formData.direccion} onChange={handleChange} />
           </>
         );
       case 2:
         return (
           <>
-            <Form.Group controlId="profilePicture">
-              <Form.Label>Foto de Perfil</Form.Label>
-              <Form.Control type="file" accept="image/*" onChange={(e) => handleImageChange(e, "profilePicture")} />
-            </Form.Group>
-            <InputField label="Descripción" name="description" as="textarea" rows={3} value={formData.description} onChange={handleChange} />
             <Form.Group controlId="workImages">
-              <Form.Label>Imágenes de su Trabajo (opcional)</Form.Label>
+              <Form.Label>Imágenes de Trabajo</Form.Label>
               <Form.Control type="file" accept="image/*" multiple onChange={handleMultipleImagesChange} />
             </Form.Group>
+            <InputField label="Descripción" name="description" as="textarea" rows={3} value={formData.description} onChange={handleChange} />
           </>
         );
       case 3:
@@ -139,14 +160,13 @@ const RegisterWorkerFinal = () => {
           <div className="text-center">
             <h4>Revisa tu información</h4>
             {Object.entries(formData).map(([key, value], idx) => (
+              key !== 'rating' && ( 
               <p key={idx}>
                 <strong>{key}:</strong> 
                 {Array.isArray(value)
-                  ? value.join(", ") // Mostrar los trabajos seleccionados
-                  : value instanceof File
-                  ? value.name // Mostrar el nombre del archivo si es un objeto File
+                  ? value.join(", ")
                   : value || "N/A"}
-              </p>
+              </p>)
             ))}
           </div>
         );
@@ -161,7 +181,7 @@ const RegisterWorkerFinal = () => {
         <Col xs={12} md={8} lg={10} className="register-col">
           <Form onSubmit={step === 3 ? handleSubmit : handleNext} className="register-form">
             <h3 className="register-title">Registro de Trabajador</h3>
-            <p className="register-subtitle">¡Regístrese para formar parte de esta gran familia!</p>
+            <p className="register-subtitle">¡Regístrate para formar parte de nuestra comunidad!</p>
 
             {errors.length > 0 && <Alert variant="danger">{errors.join(", ")}</Alert>}
             {success && <Alert variant="success">¡Registro exitoso!</Alert>}
@@ -170,9 +190,12 @@ const RegisterWorkerFinal = () => {
 
             {renderStep()}
 
-            <div className="button-container">
-              {step > 1 && <Button variant="secondary" onClick={handleBack}>Atrás</Button>}
-              {step < 3 ? <Button variant="primary" type="submit">{step === 1 ? "Revisar" : "Continuar"}</Button> : <Button variant="success" type="submit">Registrarse</Button>}
+            <div className="button-container d-flex justify-content-between">
+              <Button variant="danger" onClick={handleCancel}>Cancelar</Button>
+              <div>
+                {step > 1 && <Button variant="secondary" className="me-2" onClick={handleBack}>Atrás</Button>}
+                {step < 3 ? <Button variant="primary" type="submit">Continuar</Button> : <Button variant="success" type="submit">Registrarse</Button>}
+              </div>
             </div>
           </Form>
         </Col>
