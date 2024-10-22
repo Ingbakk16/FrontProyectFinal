@@ -19,8 +19,8 @@ const RegisterWorkerFinal = () => {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   
-  const { token } = useContext(AuthenticationContext);
- 
+  const { token, handleLogout } = useContext(AuthenticationContext); // Se agrega handleLogout
+  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -111,9 +111,9 @@ const RegisterWorkerFinal = () => {
         setErrors([]);
         setStep(1);
 
-        handleLogout(); 
+        handleLogout(); // Llamar a handleLogout para desconectar al usuario
 
-        navigate("/login");
+        navigate("/login"); // Redirigir al login
 
       } else {
         const errorData = await response.json();
@@ -123,7 +123,7 @@ const RegisterWorkerFinal = () => {
       setErrors(["Error al registrar el trabajador."]);
       console.error("Error submitting form:", error);
     }
-};
+  };
 
   const renderStep = () => {
     switch (step) {

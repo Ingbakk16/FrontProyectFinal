@@ -1,7 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Button, Card, Form, FormGroup } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
   const [lastname, setLastname] = useState("");
@@ -97,6 +99,10 @@ const Register = () => {
         setLastname("");
         setEmail("");
         setPassword("");
+
+        // Redirigir a la página de login
+        navigate("/login");
+
       } else {
         throw new Error("Error en el registro");
       }
@@ -199,4 +205,3 @@ const Register = () => {
 };
 
 export default Register;
-
