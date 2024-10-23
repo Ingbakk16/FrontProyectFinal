@@ -1,4 +1,4 @@
-/* General header styles */
+
 .header-navbar {
   background-color: #685BEB;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -20,7 +20,7 @@
 
 }
 
-/* Estilos de los botones */
+
 .menu-button {
   background-color: #C8C3FC;  
   color: #000000;  
@@ -49,7 +49,7 @@
   margin-right: 4px;
 }
 
-/* Menú desplegable */
+
 .menu-dropdown {
   cursor: pointer;
   position: absolute;

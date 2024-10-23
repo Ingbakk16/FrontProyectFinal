@@ -1,19 +1,37 @@
 .worker-card {
-    border-radius: 1rem;
-    background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
-    padding: 1.5rem;
-  }
-  
-  .worker-avatar {
-    width: 20%;
-    height: 1vw;
-  }
-  
-  .worker-rating {
-    margin-top: 1rem;
-  }
-  
-  .worker-badge {
-    background-color: #4A67C3;
-  }
-  
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
+  padding: 1.5rem;
+  cursor: pointer;
+  color: white;
+  margin-bottom: 1rem; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; 
+}
+
+.worker-avatar-initials {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #4A67C3; 
+  color: white;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.worker-rating {
+  margin-top: 1rem;
+}
+
+.worker-badge {
+  background-color: #4A67C3;
+}
+
+.worker-card-body {
+  flex-grow: 1; 
+}

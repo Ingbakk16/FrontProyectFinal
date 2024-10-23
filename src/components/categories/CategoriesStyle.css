@@ -4,7 +4,10 @@
     flex-direction: column;
     height: 100vh;
     background: linear-gradient(to bottom, #C3BCE7, #7161EF); 
+}
 
+.categories-page-background{
+    background: linear-gradient(to bottom, #C3BCE7, #7161EF); 
 }
 
 .categories-container {

@@ -1,39 +1,36 @@
 import React from "react";
-import { Card, Row, Col, Image, Badge, Button } from "react-bootstrap";
+import { Card, Row, Col, Badge, Button } from "react-bootstrap";
+import './WorkerCard.css';
 
 const WorkerCard = ({ id, name, lastname, description, profession, rating, isFavorite, toggleFavorite, onClick }) => {
+
+  // Función para obtener las iniciales del nombre y apellido
+  const getInitials = (name, lastname) => {
+    if (!name || !lastname) return '';
+    return `${name[0]}${lastname[0]}`.toUpperCase();
+  };
+
   return (
-    <Card
-      className="p-3"
-      style={{
-        borderRadius: "1rem",
-        background: "linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5)",
-        cursor: "pointer", 
-      }}
-      onClick={onClick} 
-    >
+    <Card className="worker-card" onClick={onClick}>
       <Card.Body>
         <Row className="align-items-center">
           <Col xs={3} className="text-center">
-            <Image
-              src="https://via.placeholder.com/50" // Placeholder para imagen de perfil
-              roundedCircle
-              fluid
-              alt="Worker Avatar"
-            />
+            <div className="worker-avatar-initials">
+              {getInitials(name, lastname)}
+            </div>
           </Col>
           <Col xs={9}>
             <Card.Title>
-              Nombre: {name} {lastname}
+              Full name: {name} {lastname}
             </Card.Title>
-            <Card.Text>Descripción: {description}</Card.Text>
-            <Card.Text>Profesión: {profession}</Card.Text>
+            <Card.Text>Description: {description}</Card.Text>
+            <Card.Text>Profession: {profession}</Card.Text>
           </Col>
         </Row>
         <Row className="align-items-center justify-content-between">
-          <Col className="text-center mt-2">
+          <Col className="worker-rating text-center">
             {[...Array(Math.round(rating))].map((_, idx) => (
-              <Badge key={idx} pill bg="primary" className="me-1">
+              <Badge key={idx} pill bg="primary" className="worker-badge me-1">
                 ★
               </Badge>
             ))}
@@ -42,7 +39,7 @@ const WorkerCard = ({ id, name, lastname, description, profession, rating, isFav
             <Button
               variant={isFavorite ? "warning" : "outline-warning"}
               onClick={(e) => {
-                e.stopPropagation(); // Evitar que el clic del botón desencadene el evento del card
+                e.stopPropagation();
                 toggleFavorite(id);
               }}
             >

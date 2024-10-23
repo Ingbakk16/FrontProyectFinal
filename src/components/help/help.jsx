@@ -59,11 +59,11 @@ const HelpSeccion = () => {
         <Row className="justify-content-center align-items-center w-100 full-height-row">
           <Col lg={5} md={4} sm={5}>
             <div className="help-form">
-              <h3>¿Tienes problemas?</h3>
-              <p>Rellena este formulario y nos comunicaremos contigo lo antes posible.</p>
+              <h3>¿Problems?</h3>
+              <p>Fill out this form and we will contact you as soon as possible.</p>
 
               {errors.length > 0 && <Alert variant="danger">{errors.join(", ")}</Alert>}
-              {success && <Alert variant="success">¡Formulario enviado con éxito!</Alert>}
+              {success && <Alert variant="success">¡Form Send!</Alert>}
 
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formEmail">
@@ -71,30 +71,30 @@ const HelpSeccion = () => {
                   <Form.Control
                     type="email"
                     name="email"
-                    placeholder="Ingrese su E-mail"
+                    placeholder="submit your E-mail"
                     value={formData.email}
                     onChange={handleChange}
                   />
                 </Form.Group>
 
                 <Form.Group controlId="formProblem" className="mt-3">
-                  <Form.Label>Problema</Form.Label>
+                  <Form.Label>Problem/bug/Issue</Form.Label>
                   <Form.Control
                     as="textarea"
                     name="problem"
                     rows={3}
-                    placeholder="Describa su problema"
+                    placeholder="detail your problem"
                     value={formData.problem}
                     onChange={handleChange}
                   />
                 </Form.Group>
 
                 <Form.Group controlId="formName" className="mt-3">
-                  <Form.Label>Nombre</Form.Label>
+                  <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
                     name="name"
-                    placeholder="Ingrese su nombre"
+                    placeholder="submit your name"
                     value={formData.name}
                     onChange={handleChange}
                   />
@@ -105,7 +105,7 @@ const HelpSeccion = () => {
                   <Form.Control
                     type="text"
                     name="dni"
-                    placeholder="Ingrese su DNI"
+                    placeholder="submit your DNI"
                     value={formData.dni}
                     onChange={handleChange}
                   />
@@ -113,7 +113,7 @@ const HelpSeccion = () => {
 
                 <div className="form-submit-btn">
                   <Button variant="primary" type="submit">
-                    Enviar
+                    Send
                   </Button>
                 </div>
               </Form>

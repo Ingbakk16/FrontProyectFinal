@@ -2,41 +2,45 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Navbar, Form, FormControl, Button, Container, Collapse } from 'react-bootstrap';
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
 import { useNavigate } from "react-router-dom";
-import './buttons.css'; 
+import './buttons.css';
 
 const Header = () => {
-  const { handleLogout, isWorker } = useContext(AuthenticationContext);
+  const { handleLogout } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
   const [showCategories, setShowCategories] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
   const [categories, setCategories] = useState([]);
-
+  const [loading, setLoading] = useState(true);
+  const { token } = useContext(AuthenticationContext);
   const toggleCategories = () => setShowCategories(!showCategories);
-  const toggleProfile = () => setShowProfile(!showProfile);
 
-  const settingsHandler = () => navigate("/settings");
-  const helpHandler = () => navigate("/help");
-  const EditHandler = () => navigate("/profile");
-  const EditWorkerHandler = () => navigate("/editWorker");
-  const BecomeWorkerHandler = () => navigate("/registerWorker");
-  const SavedWorkerHandler = () => navigate("/favWorkers");
-  const AdminHandler = () => navigate("/Admin");
-
-  // Cargar categorías desde una fuente de datos (simulada)
+  // Cargar categorías desde el backend
   useEffect(() => {
     const fetchCategories = async () => {
-      const fetchedCategories = [
-        { id: 1, name: "Gardener", link: "/categories/gardener" },
-        { id: 2, name: "Mechanic", link: "/categories/mechanic" },
-        { id: 3, name: "Electrician", link: "/categories/electrician" },
-        { id: 4, name: "Plumber", link: "/categories/plumber" },
-      ];
-      setCategories(fetchedCategories);
+      try {
+        const response = await fetch('http://localhost:8081/api/jobs/all', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`, 
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        setCategories(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setLoading(false);
+      }
     };
 
     fetchCategories();
   }, []);
+
+  const settingsHandler = () => navigate("/settings");
+  const helpHandler = () => navigate("/help");
+  const EditHandler = () => navigate("/profile");
+  const AdminHandler = () => navigate("/Admin");
 
   return (
     <div className="header-container">
@@ -68,13 +72,9 @@ const Header = () => {
       {/* Menu Row */}
       <div className="menu-row">
         <Container className="d-flex justify-content-center">
-          
           {/* Categories Button */}
           <div className="menu-container">
-            <Button 
-              className="menu-button" 
-              onClick={toggleCategories}
-            >
+            <Button className="menu-button" onClick={toggleCategories}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M3 4h4v4H3zm0 6h4v4H3zm0 6h4v4H3zm6-12h12v4H9zm0 6h12v4H9zm0 6h12v4H9z"/>
               </svg>
@@ -83,14 +83,21 @@ const Header = () => {
 
             <Collapse in={showCategories}>
               <div className="menu-dropdown">
-                <ul>
-                  {categories.map(category => (
-                    <li key={category.id}>
-                      <a href={category.link}>{category.name}</a>
-                    </li>
-                  ))}
-                  <li><a href="/categories">Show All...</a></li>
-                </ul>
+                {loading ? (
+                  <p>Loading categories...</p>
+                ) : (
+                  <ul>
+                    {/* Mostrar solo las primeras 4 categorías */}
+                    {categories.slice(0, 4).map(category => (
+                      <li key={category.id}>
+                        <a href={`/categories/${category.id}`}>{category.title}</a>
+                      </li>
+                    ))}
+                    <li>
+                      <a href="/categories">Show All...</a>
+                    </li> {/* Enlace para ver todas las categorías */}
+                  </ul>
+                )}
               </div>
             </Collapse>
           </div>
@@ -102,14 +109,13 @@ const Header = () => {
             </svg>
             <span>Settings</span>
           </Button>
-                    
-          {/* aadmin button Button */}
-          
+
+          {/* Admin Button */}
           <Button className="menu-button" onClick={AdminHandler}>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" 
-            width="24px" fill="#e8eaed">
-            <path d="M480-440q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0-80q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0 440q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-400Zm0-315-240 90v189q0 54 15 105t41 96q42-21 88-33t96-12q50 0 96 12t88 33q26-45 41-96t15-105v-189l-240-90Zm0 515q-36 0-70 8t-65 22q29 30 63 52t72 34q38-12 72-34t63-52q-31-14-65-22t-70-8Z"/></svg>
-            <span>admin</span>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+              <path d="M480-440q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0-80q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0 440q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-400Zm0-315-240 90v189q0 54 15 105t41 96q42-21 88-33t96-12q50 0 96 12t88 33q26-45 41-96t15-105v-189l-240-90Zm0 515q-36 0-70 8t-65 22q29 30 63 52t72 34q38-12 72-34t63-52q-31-14-65-22t-70-8Z"/>
+            </svg>
+            <span>Admin</span>
           </Button>
 
           {/* Help Button */}
@@ -119,32 +125,6 @@ const Header = () => {
             </svg>
             <span>Help</span>
           </Button>
-             {/* Profile Button */}
-             <div className="menu-container">
-          <Button 
-            className="menu-button" 
-            onClick={toggleProfile}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path d="M12 12a4 4 0 1 1 0-8a4 4 0 0 1 0 8m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
-            <span className="color" >Profile</span>
-          </Button>
-          <Collapse in={showProfile}>
-            <div className="menu-dropdown">
-              <ul>
-              {isWorker ? (
-                  <li><a onClick={EditWorkerHandler}>Edit Worker Profile</a></li>
-                ) : (
-                  <li><a onClick={BecomeWorkerHandler}>Become a Worker</a></li>
-                )}
-              <li><a onClick={EditHandler}>Edit</a></li> {/* Texto ahora está dentro del enlace */}
-              <li><a onClick={SavedWorkerHandler}>Favourite workers</a></li> {/* Asegúrate de agregar enlaces si es necesario */}
-              <li><a onClick={settingsHandler}>Settings</a></li>
-              </ul>
-            </div>
-          </Collapse>
-          </div>
         </Container>
       </div>
     </div>
