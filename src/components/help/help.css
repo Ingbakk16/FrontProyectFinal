@@ -1,16 +1,16 @@
-/* Estilo del contenedor principal */
+
 .help-container {
     padding: 5vh;
     min-height: 100vh;
     background-color:linear-gradient(to bottom, #e1bce7, #bc5ef2);
   }
   
-  /* Estilo para alinear verticalmente */
+  
   .full-height-row {
     min-height: 100vh;
   }
   
-  /* Estilo del formulario */
+  
   .help-form {
     background-color: #c57dff;
     border-radius: 1rem;

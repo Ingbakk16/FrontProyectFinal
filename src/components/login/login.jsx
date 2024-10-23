@@ -11,8 +11,7 @@ const Login = () => {
     username: false,
     password: false,
   });
-  const [loginError, setLoginError] = useState(""); // Para mostrar error de inicio de sesión
-
+  const [loginError, setLoginError] = useState(""); 
   const navigate = useNavigate();
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
@@ -40,8 +39,7 @@ const Login = () => {
       setErrors({ username: false, password: true });
       return;
     }
-
-    // Realizar la solicitud al backend
+    
     try {
       const response = await fetch("http://localhost:8081/api/auth/login", {
         method: "POST",
@@ -59,16 +57,16 @@ const Login = () => {
       if (response.ok) {
         const { token } = data;
 
-        // Guardar el token en el localStorage
+        
         localStorage.setItem("token", token);
 
-        // Manejar el login en el contexto
+        
         handleLogin(username,token);
 
-        // Navegar al perfil del usuario
+        
         navigate("/profile");
       } else {
-        // Manejar errores de autenticación
+        
         setLoginError("Usuario o contraseña incorrectos.");
       }
     } catch (error) {
@@ -85,7 +83,7 @@ const Login = () => {
                 <h2 className="text-center mb-4">Iniciar Sesión</h2>
                 <p className="text-center mb-4">Inicie sesión para disfrutar de todos nuestros servicios</p>
                 <Form onSubmit={submitHandler}>
-                    {loginError && <p className="text-danger text-center">{loginError}</p>} {/* Mostrar error de autenticación */}
+                    {loginError && <p className="text-danger text-center">{loginError}</p>} 
                     <FormGroup className="mb-3">
                         <Form.Control
                             className={errors.username ? "border border-danger" : ""}

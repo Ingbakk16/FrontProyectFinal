@@ -10,7 +10,6 @@ const AdminWorkersPage = () => {
   const navigate = useNavigate();
   
   const handleEditWorker = (workerName) => {
-    // Lógica para editar el perfil del trabajador
     console.log(`Editar Trabajador: ${workerName}`);
     navigate(`/adminWorkersEdit`);
   };
@@ -42,11 +41,11 @@ const AdminWorkersPage = () => {
                 onEdit={() => handleEditWorker("trabajador_ejemplo")}
                 onDelete={() => handleDeleteWorker("trabajador_ejemplo")}
                 onViewProfile={() => handleViewWorkerProfile("trabajador_ejemplo")}
-                showViewProfile={false} // Mostramos el botón de "Ver Perfil"
-                isWorker={true} // Indicamos que es un trabajador
+                showViewProfile={false} 
+                isWorker={true} 
               />
             </Col>
-            {/* Repetir la tarjeta o usar un .map() */}
+            
           </Row>
         </Col>
       </Container>

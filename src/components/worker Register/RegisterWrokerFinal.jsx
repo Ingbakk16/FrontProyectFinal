@@ -19,7 +19,7 @@ const RegisterWorkerFinal = () => {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   
-  const { token, handleLogout } = useContext(AuthenticationContext); // Se agrega handleLogout
+  const { token, handleLogout } = useContext(AuthenticationContext); 
   
   useEffect(() => {
     const fetchCategories = async () => {
@@ -111,9 +111,9 @@ const RegisterWorkerFinal = () => {
         setErrors([]);
         setStep(1);
 
-        handleLogout(); // Llamar a handleLogout para desconectar al usuario
+        handleLogout(); 
 
-        navigate("/login"); // Redirigir al login
+        navigate("/login"); 
 
       } else {
         const errorData = await response.json();

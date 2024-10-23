@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import './SidebarMenu.css'; // Archivo de estilos
+import './SidebarMenu.css'; 
 
 
 const SidebarMenu = () => {
   const navigate = useNavigate();
 
-  // Funciones de manejo de navegación
+  
   const handleEditUser = () => navigate('/Admin');
   const handleDeleteReview = () => navigate('/deleteReview');
   const handleEditCategory = () => navigate('/AdminEditCategory');

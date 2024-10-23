@@ -1,29 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Card, Form, Container, Row, Col, Image } from 'react-bootstrap';
+import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context'; 
+import './Profile.css';  
 
 const Profile = () => {
-  const { token } = useContext(AuthenticationContext); // Obtener solo el token
+  const { token } = useContext(AuthenticationContext); 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    Name: '',
-    Email: '',
-    Surname: '',
-    profileImage: '', 
+    name: '',
+    email: '',
+    lastname: '',
+    username: '',
   });
 
   const navigate = useNavigate();
 
-  // Fetch del perfil de usuario usando el token desde el contexto
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (!token) {
         console.error("No token available.");
-        return; // No hacer nada si no hay token
+        return; 
       }
 
       try {
@@ -31,7 +31,7 @@ const Profile = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Usar el token para la autorización
+            'Authorization': `Bearer ${token}`
           }
         });
 
@@ -40,12 +40,11 @@ const Profile = () => {
         }
 
         const data = await response.json();
-        // Actualiza el estado con los datos recibidos
         setFormData({
-          Name: data.name,
-          Email: data.email,
-          Surname: data.lastname,
-          profileImage: 'https://via.placeholder.com/100' // Aquí puedes asignar una imagen predeterminada
+          name: data.name,
+          email: data.email,
+          lastname: data.lastname,
+          username: data.username,
         });
       } catch (error) {
         console.error('Error fetching user profile:', error);
@@ -53,7 +52,7 @@ const Profile = () => {
     };
 
     fetchUserProfile();
-  }, [token]); // El efecto se dispara cuando cambia el token
+  }, [token]);
 
   const handleChange = (e) => {
     setFormData({
@@ -68,7 +67,6 @@ const Profile = () => {
 
   const handleSaveClick = () => {
     setIsEditing(false);
-    // Aquí puedes hacer una llamada al backend para actualizar los datos si es necesario
   };
 
   const handleCancelClick = () => {
@@ -79,16 +77,22 @@ const Profile = () => {
     navigate('/');
   };
 
+  const getInitials = () => {
+    const { name, lastname } = formData;
+    if (!name || !lastname) return '';
+    return `${name.charAt(0).toUpperCase()}${lastname.charAt(0).toUpperCase()}`;
+  };
+
   return (
-    <div style={{ background: "linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF)" }}>
+    <div className="profile-container-Background">
       <Header />
-      <Container fluid className="py-4" style={{ background: "linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF)", minHeight: "calc(100vw - 56px - 40px)" }}>
-        <Row className="justify-content-center">
-          <Col md={6}>
-            <Card className="p-4 shadow-lg" style={{ backgroundColor: "#8677C2", borderRadius: "20px" }}>
+      <Container fluid className="profile-container">
+  <Row className="justify-content-center">
+    <Col md={6}>
+      <Card className="p-4 shadow-lg" style={{ backgroundColor: "#8677C2", borderRadius: "20px" }}>
               <Row>
                 <Col md={6}>
-                  <div className="d-flex align-items-center mb-4">
+                  <div className="back-button">
                     <Button variant="link" className="text-light" onClick={backHandler}>
                       <i className="bi bi-arrow-left text-dark">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
@@ -97,18 +101,32 @@ const Profile = () => {
                       </i>
                     </Button>
                   </div>
-                  <div className="text-center mb-4">
-                    <Image src={formData.profileImage} roundedCircle />
+
+                  <div className="profile-initials-circle">
+                    {getInitials()}
                   </div>
+
                   <Form>
                     <Form.Group className="mb-3">
-                      <Form.Label className="text-light">Nombre:</Form.Label>
+                      <Form.Label className="text-light">Username:</Form.Label>
                       <Form.Control
                         plaintext={!isEditing}
                         readOnly={!isEditing}
                         type="text"
-                        name="Name"
-                        value={formData.Name}
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        className="text-dark"
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label className="text-light">Name:</Form.Label>
+                      <Form.Control
+                        plaintext={!isEditing}
+                        readOnly={!isEditing}
+                        type="text"
+                        name="name"
+                        value={formData.name}
                         onChange={handleChange}
                         className="text-dark"
                       />
@@ -119,20 +137,20 @@ const Profile = () => {
                         plaintext={!isEditing}
                         readOnly={!isEditing}
                         type="email"
-                        name="Email"
-                        value={formData.Email}
+                        name="email"
+                        value={formData.email}
                         onChange={handleChange}
                         className="text-dark"
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label className="text-light">Apellido:</Form.Label>
+                      <Form.Label className="text-light">Last Name:</Form.Label>
                       <Form.Control
                         plaintext={!isEditing}
                         readOnly={!isEditing}
                         type="text"
-                        name="Surname"
-                        value={formData.Surname}
+                        name="lastname"
+                        value={formData.lastname}
                         onChange={handleChange}
                         className="text-dark"
                       />
@@ -140,15 +158,15 @@ const Profile = () => {
                     {isEditing ? (
                       <>
                         <Button variant="primary" className="w-100" onClick={handleSaveClick}>
-                          Guardar
+                          Save
                         </Button>
                         <Button variant="secondary" className="w-100 mt-2" onClick={handleCancelClick}>
-                          Cancelar
+                          Cancel
                         </Button>
                       </>
                     ) : (
                       <Button onClick={handleEditClick} variant="primary" className="w-100">
-                        Editar
+                        Edit
                       </Button>
                     )}
                   </Form>
@@ -158,17 +176,16 @@ const Profile = () => {
           </Col>
         </Row>
       </Container>
-
       <Footer />
     </div>
   );
 };
 
 Profile.propTypes = {
-  Name: PropTypes.string,
-  Email: PropTypes.string,
-  Surname: PropTypes.string,
-  profileImage: PropTypes.string
+  name: PropTypes.string,
+  email: PropTypes.string,
+  lastname: PropTypes.string,
+  username: PropTypes.string,
 };
 
 export default Profile;

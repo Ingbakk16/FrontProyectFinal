@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import SidebarButton from '../sidebar button/sidebarMenu';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
   const [worker, setWorker] = useState({
@@ -15,7 +15,7 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
     description: initialWorker.description || '',
   });
 
-  const navigate = useNavigate(); // Hook para navegar a la página anterior
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +31,7 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
   };
 
   const handleCancel = () => {
-    navigate(-1); // Navegar a la página anterior
+    navigate(-1); 
   };
 
   return (

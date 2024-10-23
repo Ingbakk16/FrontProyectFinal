@@ -2,17 +2,17 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Card, Button, Image, Container, Row, Col } from 'react-bootstrap';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import { useParams } from 'react-router-dom'; // Para obtener el ID
+import { useParams } from 'react-router-dom'; 
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context"; 
 
 const WorkerProfile = () => {
-  const { id } = useParams(); // Obtener el ID del trabajador desde la URL
-  const { token } = useContext(AuthenticationContext); // Obtener el token desde el contexto
+  const { id } = useParams(); 
+  const { token } = useContext(AuthenticationContext); 
 
-  const [worker, setWorker] = useState(null); // Estado para los datos del trabajador
-  const [loading, setLoading] = useState(true); // Estado de carga
+  const [worker, setWorker] = useState(null); 
+  const [loading, setLoading] = useState(true); 
 
-  // Comentarios estáticos (puedes reemplazarlos con comentarios dinámicos más adelante)
+  // Comentarios estáticos 
   const [comments, setComments] = useState([
     { name: "Ana", comment: "Excelente trabajo, muy recomendado!", rating: 5 },
     { name: "Pedro", comment: "Muy profesional, volveré a contratar.", rating: 4 },
@@ -20,10 +20,10 @@ const WorkerProfile = () => {
     { name: "Juan", comment: "Buen trabajo, pero podría haber sido más rápido.", rating: 3 },
     { name: "Luisa", comment: "Muy buen servicio!", rating: 5 },
   ]);
-  
+
   const [newComment, setNewComment] = useState({ name: '', comment: '', rating: 0 });
   const [showComments, setShowComments] = useState(false);
-  const [showCommentForm, setShowCommentForm] = useState(false); // Estado para mostrar/ocultar el formulario
+  const [showCommentForm, setShowCommentForm] = useState(false); 
 
   useEffect(() => {
     const fetchWorkerProfile = async () => {
@@ -52,7 +52,8 @@ const WorkerProfile = () => {
           throw new Error("Worker not found");
         }
 
-        setWorker(workerData); // Establecer los datos del trabajador
+        setWorker(workerData); 
+        debugger;
         setLoading(false); // Desactivar el estado de carga
       } catch (error) {
         console.error("Error fetching worker profile:", error);
@@ -71,7 +72,7 @@ const WorkerProfile = () => {
   const handleAddComment = () => {
     if (newComment.name && newComment.comment && newComment.rating > 0) {
       setComments([...comments, newComment]);
-      setNewComment({ name: '', comment: '', rating: 0 }); // Limpiar el formulario
+      setNewComment({ name: '', comment: '', rating: 0 });
     }
   };
 
@@ -100,7 +101,7 @@ const WorkerProfile = () => {
             <Col md={8}>
               <Card className="p-4 shadow-lg text-center d-flex justify-content-center align-items-center card-custom">
                 <Image 
-                  src={worker.user?.profileImage || 'https://via.placeholder.com/100'} // Placeholder o imagen de perfil
+                  src={worker.imageUrl || 'https://via.placeholder.com/100'} // Placeholder o imagen del trabajador
                   roundedCircle
                   className="card-image"
                 />
@@ -109,67 +110,61 @@ const WorkerProfile = () => {
                 <p className="worker-description">"{worker.description || "Sin descripción"}"</p>
 
                 {/* Carrusel de imágenes de trabajo */}
-                {worker.workImages?.length > 0 ? (
+                {worker.imageUrl ? (
                   <div className="work-images-carousel">
-                    {worker.workImages.map((image, index) => (
-                      <Image key={index} src={image} rounded className="work-image" />
-                    ))}
+                    <Image src={worker.imageUrl} rounded className="work-image" />
                   </div>
                 ) : (
-                  <p>No work images available</p>
+                  <p>No hay imágenes de trabajo disponibles</p>
                 )}
 
-                {/* Botón para mostrar/ocultar comentarios */}
                 <Button
                   variant="primary"
                   className="mt-4 comments-toggle-button"
                   onClick={toggleComments}
                 >
-                  {showComments ? 'HIDE COMMENTS' : 'SHOW COMMENTS'}
+                  {showComments ? 'OCULTAR COMENTARIOS' : 'MOSTRAR COMENTARIOS'}
                 </Button>
 
-                {/* Sección de comentarios */}
                 {showComments && (
                   <div className={`mt-4 comments-section`}>
-                    <h4>Comments:</h4>
+                    <h4>Comentarios:</h4>
                     {comments.length > 0 ? (
                       comments.map((comment, index) => (
                         <div key={index} className="comment">
                           <strong>{comment.name}</strong>
                           <p>{comment.comment}</p>
-                          <p>Rating: {'★'.repeat(comment.rating)}</p>
+                          <p>Calificación: {'★'.repeat(comment.rating)}</p>
                         </div>
                       ))
                     ) : (
-                      <p>No comments available</p>
+                      <p>No hay comentarios disponibles</p>
                     )}
                   </div>
                 )}
 
-                {/* Botón para mostrar/ocultar el formulario de agregar comentarios */}
                 <Button
                   variant="primary"
                   className="mt-4 comments-toggle-button"
                   onClick={toggleCommentForm}
                 >
-                  {showCommentForm ? 'HIDE ADD COMMENT' : 'ADD COMMENT'}
+                  {showCommentForm ? 'OCULTAR AGREGAR COMENTARIO' : 'AGREGAR COMENTARIO'}
                 </Button>
 
-                {/* Formulario de agregar comentario */}
                 {showCommentForm && (
                   <div className={`add-comment-form mt-4 ${showCommentForm ? 'show' : 'hide'}`}>
-                    <h5>Add a new comment</h5>
+                    <h5>Añadir un nuevo comentario</h5>
                     <input
                       type="text"
                       name="name"
-                      placeholder="Your name"
+                      placeholder="Tu nombre"
                       value={newComment.name}
                       onChange={handleCommentChange}
                       className="form-control mb-2"
                     />
                     <textarea
                       name="comment"
-                      placeholder="Your comment"
+                      placeholder="Tu comentario"
                       value={newComment.comment}
                       onChange={handleCommentChange}
                       className="form-control mb-2"
@@ -180,7 +175,7 @@ const WorkerProfile = () => {
                       onChange={handleCommentChange}
                       className="form-control mb-2"
                     >
-                      <option value="0">Select rating</option>
+                      <option value="0">Selecciona una calificación</option>
                       <option value="1">★</option>
                       <option value="2">★★</option>
                       <option value="3">★★★</option>
@@ -188,7 +183,7 @@ const WorkerProfile = () => {
                       <option value="5">★★★★★</option>
                     </select>
                     <Button variant="success" onClick={handleAddComment}>
-                      Add Comment
+                      Añadir Comentario
                     </Button>
                   </div>
                 )}

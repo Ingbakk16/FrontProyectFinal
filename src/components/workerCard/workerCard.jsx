@@ -8,9 +8,9 @@ const WorkerCard = ({ id, name, lastname, description, profession, rating, isFav
       style={{
         borderRadius: "1rem",
         background: "linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5)",
-        cursor: "pointer", // Añadir estilo de cursor
+        cursor: "pointer", 
       }}
-      onClick={onClick} // Añadir el evento de clic
+      onClick={onClick} 
     >
       <Card.Body>
         <Row className="align-items-center">

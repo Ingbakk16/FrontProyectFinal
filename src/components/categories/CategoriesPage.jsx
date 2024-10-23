@@ -7,7 +7,7 @@ import Footer from '../footer/footer';
 const CategoriesPage = () => {
     const [categories, setCategories] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const categoriesPerPage = 6;  // Número de categorías por página
+    const categoriesPerPage = 6;  
     const totalPages = Math.ceil(categories.length / categoriesPerPage);
 
     const navigate = useNavigate();

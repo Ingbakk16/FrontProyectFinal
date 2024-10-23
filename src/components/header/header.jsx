@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Navbar, Form, FormControl, Button, Container, Collapse } from 'react-bootstrap';
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
 import { useNavigate } from "react-router-dom";
-import './buttons.css'; // Estilos actualizados
+import './buttons.css'; 
 
 const Header = () => {
   const { handleLogout, isWorker } = useContext(AuthenticationContext);
@@ -25,15 +25,12 @@ const Header = () => {
 
   // Cargar categorías desde una fuente de datos (simulada)
   useEffect(() => {
-    // Aquí podrías hacer una petición al backend
     const fetchCategories = async () => {
-      // Ejemplo: obtener categorías de una API
       const fetchedCategories = [
         { id: 1, name: "Gardener", link: "/categories/gardener" },
         { id: 2, name: "Mechanic", link: "/categories/mechanic" },
         { id: 3, name: "Electrician", link: "/categories/electrician" },
         { id: 4, name: "Plumber", link: "/categories/plumber" },
-        // Puedes agregar más categorías o cargarlas dinámicamente
       ];
       setCategories(fetchedCategories);
     };
@@ -60,7 +57,7 @@ const Header = () => {
           <Form className="d-flex search-form mx-auto my-2">
             <FormControl 
               type="text" 
-              placeholder="buscar" 
+              placeholder="search" 
               className="me-2" 
               aria-label="Buscar" 
             />
@@ -81,7 +78,7 @@ const Header = () => {
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M3 4h4v4H3zm0 6h4v4H3zm0 6h4v4H3zm6-12h12v4H9zm0 6h12v4H9zm0 6h12v4H9z"/>
               </svg>
-              <span>Categorías</span>
+              <span>Category</span>
             </Button>
 
             <Collapse in={showCategories}>
@@ -92,7 +89,7 @@ const Header = () => {
                       <a href={category.link}>{category.name}</a>
                     </li>
                   ))}
-                  <li><a href="/categories">ver todas...</a></li>
+                  <li><a href="/categories">Show All...</a></li>
                 </ul>
               </div>
             </Collapse>

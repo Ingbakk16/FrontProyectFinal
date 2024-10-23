@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
-import Sidebar from '../sidebar button/sidebarMenu'; // Asumiendo que ya tienes el sidebar como componente
-import { useNavigate } from 'react-router-dom'; // Importar el hook useNavigate
+import Sidebar from '../sidebar button/sidebarMenu';
+import { useNavigate } from 'react-router-dom'; 
 import './EditUserForm.css';
 
 const EditUserForm = () => {
@@ -15,7 +15,7 @@ const EditUserForm = () => {
     profileImage: null,
   });
 
-  const navigate = useNavigate(); // Inicializar el hook useNavigate
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     setFormData({
@@ -33,12 +33,11 @@ const EditUserForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes hacer la lógica para guardar los cambios
     console.log('Formulario enviado', formData);
   };
 
   const handleCancel = () => {
-    navigate(-1); // Navegar a la página anterior
+    navigate(-1); 
   };
 
   return (

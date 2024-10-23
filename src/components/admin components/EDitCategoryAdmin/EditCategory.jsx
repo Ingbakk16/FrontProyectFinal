@@ -3,13 +3,13 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import SidebarButton from '../sidebar button/sidebarMenu';
-import CategoryCard from '../EditCategoryCard/CategoryCard '; // Componente para mostrar categorías
+import CategoryCard from '../EditCategoryCard/CategoryCard '; 
 import { useNavigate } from 'react-router-dom';
 
 const AdminCategoriesPage = () => {
   const navigate = useNavigate();
 
-  // Función para navegar al formulario de edición de categoría
+  
   const handleEditCategory = (categoryId) => {
     navigate(`/AdminCategoryForm/${categoryId}`); // Navega hacia el form pasando el ID de la categoría
   };
@@ -31,7 +31,7 @@ const AdminCategoriesPage = () => {
             <Col md={12} className="mb-3">
               <CategoryCard
                 categoryName="Ingeniero"
-                onEdit={() => handleEditCategory("1")} // ID de ejemplo, ajusta según el dato
+                onEdit={() => handleEditCategory("1")} 
                 onDelete={() => handleDeleteCategory("1")}
               />
             </Col>

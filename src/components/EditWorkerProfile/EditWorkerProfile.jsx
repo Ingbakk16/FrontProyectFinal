@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import { Card, Button, Image, Container, Row, Col } from 'react-bootstrap';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import profileSVG from '../svg back/profile.svg';
-import '../WorkerProfile/WorkerStyle.css'; // Import the CSS file
-import { useNavigate } from 'react-router-dom'; // Para manejar la navegación
+import '../WorkerProfile/WorkerStyle.css'; 
+import { useNavigate } from 'react-router-dom'; 
 
 const EditWorkerProfile = () => {
-  const navigate = useNavigate(); // Navegación para editar el perfil
+  const navigate = useNavigate(); 
 
   const worker = {
     name: "Jose Luis",
     profession: "Electricista",
     description: "Especialista en instalaciones eléctricas, con más de 10 años de experiencia en el sector.",
-    profileImage: "/assets/images/profile.svg", // Ruta al archivo SVG
+    profileImage: "/assets/images/profile.svg", 
     workImages: [
       "https://via.placeholder.com/200x150", 
       "https://via.placeholder.com/150", 

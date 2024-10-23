@@ -93,14 +93,13 @@ const Register = () => {
 
       if (response.ok) {
         alert("Registro exitoso");
-        // Limpia el formulario
         setUsername("");
         setName("");
         setLastname("");
         setEmail("");
         setPassword("");
 
-        // Redirigir a la página de login
+        
         navigate("/login");
 
       } else {

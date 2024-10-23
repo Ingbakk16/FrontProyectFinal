@@ -18,7 +18,6 @@ const FavoritesPage = () => {
     setFavorites(storedFavorites);
   }, []);
 
-  // Filtrar los trabajadores para obtener solo los favoritos
   const favoriteWorkers = workers.filter(worker => favorites.includes(worker.id));
 
   useEffect(() => {

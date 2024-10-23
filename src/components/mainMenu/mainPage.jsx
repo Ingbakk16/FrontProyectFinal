@@ -4,14 +4,14 @@ import WorkerCard from "../workerCard/workerCard";
 import Header from "../header/header";
 import Footer from "../footer/footer";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
-import { useNavigate } from "react-router-dom"; // Importar para navegación
+import { useNavigate } from "react-router-dom"; 
 import './mainPage.css';
 
 const MainPage = () => {
   const [workers, setWorkers] = useState([]);
-  const { token } = useContext(AuthenticationContext); // Obtener el token desde el contexto
-  const [favorites, setFavorites] = useState([]); // Estado para los favoritos
-  const navigate = useNavigate(); // Hook para navegación
+  const { token } = useContext(AuthenticationContext);
+  const [favorites, setFavorites] = useState([]); 
+  const navigate = useNavigate(); 
 
   // Cargar favoritos desde el localStorage al montar el componente
   useEffect(() => {
@@ -19,19 +19,19 @@ const MainPage = () => {
     setFavorites(storedFavorites);
   }, []);
 
-  // Función para alternar el estado de favorito
+  
   const toggleFavorite = (workerId) => {
     const updatedFavorites = favorites.includes(workerId)
       ? favorites.filter((id) => id !== workerId) // Remover de favoritos si ya está marcado
       : [...favorites, workerId]; // Agregar a favoritos si no está marcado
 
     setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Guardar en localStorage
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); 
   };
 
-  // Navegar al perfil del trabajador
+ 
   const handleWorkerClick = (workerId) => {
-    navigate(`/workerProfile/${workerId}`); // Redirigir al perfil del trabajador usando el ID
+    navigate(`/workerProfile/${workerId}`); 
   };
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const MainPage = () => {
         const response = await fetch("http://localhost:8081/api/workers/all", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // Incluir el token en el header
+            Authorization: `Bearer ${token}`, 
             "Content-Type": "application/json",
           },
         });
@@ -55,7 +55,7 @@ const MainPage = () => {
         }
 
         const data = await response.json();
-        setWorkers(data); // Establecer los datos obtenidos en el estado
+        setWorkers(data); 
       } catch (error) {
         console.error("Error al obtener los trabajadores:", error);
       }
@@ -69,20 +69,20 @@ const MainPage = () => {
       <Header />
       <div className="content">
         <Container>
-          <h1 className="text-center my-4">Lista de Trabajadores</h1>
+          <h1 className="text-center my-4">Workers List</h1>
           <Row>
             {workers.map((worker, index) => (
               <Col key={index} md={6} className="mb-4">
                 <WorkerCard
-                  id={worker.id} // Pasar el ID del trabajador
+                  id={worker.id} 
                   name={worker.user?.name }
                   lastname={worker.user?.lastname || "Apellido no disponible"}
                   description={worker.description || "Sin descripción"}
                   profession={worker.jobTitles?.join(", ") || "Profesión no disponible"}
                   rating={worker.rating || 0}
-                  isFavorite={favorites.includes(worker.id)} // Verificar si es favorito
-                  toggleFavorite={() => toggleFavorite(worker.id)} // Pasar la función para alternar favoritos
-                  onClick={() => handleWorkerClick(worker.id)} // Redirigir al perfil del trabajador
+                  isFavorite={favorites.includes(worker.id)} 
+                  toggleFavorite={() => toggleFavorite(worker.id)} 
+                  onClick={() => handleWorkerClick(worker.id)} 
                 />
               </Col>
             ))}

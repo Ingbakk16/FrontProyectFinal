@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import Header from "../header/header";
 import Footer from "../footer/footer";
-import './help.css';  // Importar el archivo CSS
+import './help.css';  
 
 const HelpSeccion = () => {
   const [formData, setFormData] = useState({

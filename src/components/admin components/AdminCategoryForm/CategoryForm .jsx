@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
-import SidebarButton from '../sidebar button/sidebarMenu'; // Sidebar menu
-import { useNavigate } from 'react-router-dom'; // Importar el hook para navegar
+import SidebarButton from '../sidebar button/sidebarMenu'; 
+import { useNavigate } from 'react-router-dom'; 
 
 const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -11,7 +11,7 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
     description: initialCategory.description,
   });
 
-  const navigate = useNavigate(); // Inicializar el hook useNavigate
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,11 +20,11 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData); // Función para manejar el envío de los datos
+    onSubmit(formData); 
   };
 
   const handleCancel = () => {
-    navigate(-1); // Navegar hacia la página anterior
+    navigate(-1); 
   };
 
   return (

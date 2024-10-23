@@ -42,11 +42,11 @@ const SysAdmin = () => {
                 onEdit={handleEdit}
                 onDelete={() => handleDelete("josefasio_malandro")}
                 onViewProfile={() => handleViewWorkerProfile("josefasio_malandro")}
-                showViewProfile={false} // Puedes cambiar esto según lo necesites
-                isWorker={false} // Poner en true si es un trabajador
+                showViewProfile={false} 
+                isWorker={false} 
               />
             </Col>
-            {/* Repetir la tarjeta o usar un .map() */}
+            
           </Row>
         </Col>
       </Container>

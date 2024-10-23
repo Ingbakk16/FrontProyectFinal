@@ -8,7 +8,7 @@ const storedUser = JSON.parse(localStorage.getItem("user"));
 export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState(storedUser);
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [isWorker, setIsWorker] = useState(false); // Nuevo estado para verificar si es trabajador
+  const [isWorker, setIsWorker] = useState(false); 
 
   // Verificar si el usuario es un trabajador
   useEffect(() => {
@@ -25,7 +25,7 @@ export const AuthenticationContextProvider = ({ children }) => {
 
         const data = await response.json();
         if (data.role?.name === "ROLE_WORKER") {
-          setIsWorker(true); // Si el rol es "trabajador", actualizamos el estado
+          setIsWorker(true); 
         }
       } catch (error) {
         console.error('Error fetching user role:', error);
@@ -33,7 +33,7 @@ export const AuthenticationContextProvider = ({ children }) => {
     };
 
     fetchUserRole();
-  }, [token]); // Se ejecutará al inicio o cuando cambie el token
+  }, [token]); 
   
 
   const handleLogin = (username, tokenVal) => {
@@ -48,7 +48,7 @@ export const AuthenticationContextProvider = ({ children }) => {
     localStorage.removeItem("token");
     setUser(null);
     setToken(null);
-    setIsWorker(false); // Resetear el estado cuando se cierra sesión
+    setIsWorker(false); 
   };
 
   return (
