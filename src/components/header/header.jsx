@@ -5,14 +5,24 @@ import { useNavigate } from "react-router-dom";
 import './buttons.css';
 
 const Header = () => {
-  const { handleLogout } = useContext(AuthenticationContext);
-  const navigate = useNavigate();
 
+  const { handleLogout, isWorker } = useContext(AuthenticationContext);
+  const navigate = useNavigate();
+  const [showProfile, setShowProfile] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useContext(AuthenticationContext);
   const toggleCategories = () => setShowCategories(!showCategories);
+  const toggleProfile = () => setShowProfile(!showProfile);
+
+  const settingsHandler = () => navigate("/settings");
+  const helpHandler = () => navigate("/help");
+  const EditHandler = () => navigate("/profile");
+  const EditWorkerHandler = () => navigate("/editWorker");
+  const BecomeWorkerHandler = () => navigate("/registerWorker");
+  const SavedWorkerHandler = () => navigate("/favWorkers");
+  const AdminHandler = () => navigate("/Admin");
 
   // Cargar categorías desde el backend
   useEffect(() => {
@@ -37,10 +47,6 @@ const Header = () => {
     fetchCategories();
   }, []);
 
-  const settingsHandler = () => navigate("/settings");
-  const helpHandler = () => navigate("/help");
-  const EditHandler = () => navigate("/profile");
-  const AdminHandler = () => navigate("/Admin");
 
   return (
     <div className="header-container">
@@ -125,7 +131,35 @@ const Header = () => {
             </svg>
             <span>Help</span>
           </Button>
+          {/* Profile Button */}
+         <div className="menu-container">
+          <Button 
+            className="menu-button" 
+            onClick={toggleProfile}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M12 12a4 4 0 1 1 0-8a4 4 0 0 1 0 8m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            <span className="color" >Profile</span>
+          </Button>
+          <Collapse in={showProfile}>
+            <div className="menu-dropdown">
+              <ul>
+              {isWorker ? (
+                  <li><a onClick={EditWorkerHandler}>Edit Worker Profile</a></li>
+                ) : (
+                  <li><a onClick={BecomeWorkerHandler}>Become a Worker</a></li>
+                )}
+              <li><a onClick={EditHandler}>Edit</a></li> {/* Texto ahora está dentro del enlace */}
+              <li><a onClick={SavedWorkerHandler}>Favourite workers</a></li> {/* Asegúrate de agregar enlaces si es necesario */}
+              <li><a onClick={settingsHandler}>Settings</a></li>
+              </ul>
+            </div>
+          </Collapse>
+          </div>
         </Container>
+        
+
       </div>
     </div>
   );
