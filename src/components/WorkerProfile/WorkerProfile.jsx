@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Card, Button, Image, Container, Row, Col } from 'react-bootstrap';
+import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import { useParams } from 'react-router-dom'; 
@@ -12,7 +12,6 @@ const WorkerProfile = () => {
   const [worker, setWorker] = useState(null); 
   const [loading, setLoading] = useState(true); 
 
-  // Comentarios estáticos 
   const [comments, setComments] = useState([
     { name: "Ana", comment: "Excelente trabajo, muy recomendado!", rating: 5 },
     { name: "Pedro", comment: "Muy profesional, volveré a contratar.", rating: 4 },
@@ -46,15 +45,14 @@ const WorkerProfile = () => {
         }
 
         const data = await response.json();
-        const workerData = data.find((worker) => worker.id === id); // Buscar el trabajador por ID
+        const workerData = data.find((worker) => worker.id === id); 
 
         if (!workerData) {
           throw new Error("Worker not found");
         }
 
         setWorker(workerData); 
-        debugger;
-        setLoading(false); // Desactivar el estado de carga
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching worker profile:", error);
         setLoading(false);
@@ -84,6 +82,12 @@ const WorkerProfile = () => {
     setShowCommentForm(!showCommentForm);
   };
 
+  const getInitials = (name, lastname) => {
+    const nameInitial = name ? name.charAt(0).toUpperCase() : '';
+    const lastnameInitial = lastname ? lastname.charAt(0).toUpperCase() : '';
+    return nameInitial + lastnameInitial;
+  };
+
   if (loading) {
     return <p>Cargando...</p>;
   }
@@ -100,19 +104,16 @@ const WorkerProfile = () => {
           <Row className="justify-content-center">
             <Col md={8}>
               <Card className="p-4 shadow-lg text-center d-flex justify-content-center align-items-center card-custom">
-                <Image 
-                  src={worker.imageUrl || 'https://via.placeholder.com/100'} // Placeholder o imagen del trabajador
-                  roundedCircle
-                  className="card-image"
-                />
+                <div className="initials-circle">
+                  {getInitials(worker.user?.name, worker.user?.lastname)}
+                </div>
                 <h3>{worker.user?.name || "Nombre no disponible"}</h3>
                 <h5>{worker.jobTitles?.join(", ") || "Profesión no disponible"}</h5>
                 <p className="worker-description">"{worker.description || "Sin descripción"}"</p>
 
-                {/* Carrusel de imágenes de trabajo */}
                 {worker.imageUrl ? (
                   <div className="work-images-carousel">
-                    <Image src={worker.imageUrl} rounded className="work-image" />
+                    <img src={worker.imageUrl} alt="Work" className="work-image" />
                   </div>
                 ) : (
                   <p>No hay imágenes de trabajo disponibles</p>
@@ -127,7 +128,7 @@ const WorkerProfile = () => {
                 </Button>
 
                 {showComments && (
-                  <div className={`mt-4 comments-section`}>
+                  <div className="mt-4 comments-section">
                     <h4>Comentarios:</h4>
                     {comments.length > 0 ? (
                       comments.map((comment, index) => (
@@ -152,7 +153,7 @@ const WorkerProfile = () => {
                 </Button>
 
                 {showCommentForm && (
-                  <div className={`add-comment-form mt-4 ${showCommentForm ? 'show' : 'hide'}`}>
+                  <div className="add-comment-form mt-4 show">
                     <h5>Añadir un nuevo comentario</h5>
                     <input
                       type="text"

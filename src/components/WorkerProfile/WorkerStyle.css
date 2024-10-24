@@ -1,106 +1,111 @@
 @keyframes showComments {
-    0% {
-      max-height: 0;
-    }
-    100% {
-      max-height: 250px;
-    }
-  }
-  
-  .comments-section {
-    max-height: 0;
-    overflow: hidden;
-    animation: showComments 0.5s ease-out;
-  }
-
-  body {
-    background: linear-gradient(180deg, #5C4AE0, #645DB5, #87ACF7);
-    min-height: 100vh;
-  }
-  
-  .container-fluid-custom {
-    padding: 10vw;
-  }
-  
-  .card-custom {
-    background-color: #8677C2;
-    border-radius: 20px;
-    color: #fff;
-    border: 2px solid #3E40A2;
-  }
-  
-  .card-image {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 20px;
-  }
-  
-  .worker-description {
-    font-style: italic;
-    margin: 20px 0;
-  }
-  
-  .work-images-carousel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .work-image {
-    width: 200px;
-    height: 150px;
-    margin: 0 20px;
-  }
-  
-  .comments-toggle-button {
-    background-color: #4A67C3;
-    border-radius: 20px;
-    padding: 10px 40px;
-  }
-  
-  .comments-section {
-    max-height: 200px;
-    overflow-y: auto;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    padding: 10px;
-    color: #000;
-    transition: max-height 0.5s ease-in-out;
-  }
-  
-  .comment {
-    text-align: left;
-    margin-bottom: 2rem;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .form-control{
-    border-width: 1px;
-   
-    border-color: #000;
-  }
-
-  .add-comment-form {
-    max-height: 0;
-    overflow: hidden;
-    animation: showComments 1s ease-out forwards; /* Ajustar duración a 1 segundo para hacerlo más lento */
-    background-color: #f9f9f9;
-    padding: 15px;
-    width: 90%;
-    border-radius: 10px;
-    margin-top: 20px;
-    transition: max-height 1s ease-in-out; /* Ajustar duración de la transición a 1 segundo */
-  }
-  
-  .add-comment-form.show {
-    max-height: 300px; /* Puedes ajustar este valor según el tamaño del contenido */
-  }
-  
-  .add-comment-form.hide {
+  0% {
     max-height: 0;
   }
-  
-  .comments-section {
-    margin-bottom: 20px; /* Espacio adicional entre los comentarios y el formulario */
+  100% {
+    max-height: 250px;
   }
+}
+
+.comments-section {
+  max-height: 0;
+  overflow: hidden;
+  animation: showComments 0.5s ease-out;
+}
+
+body {
+  background: linear-gradient(180deg, #5C4AE0, #645DB5, #87ACF7);
+  min-height: 100vh;
+}
+
+.container-fluid-custom {
+  padding: 10vw;
+}
+
+.card-custom {
+  background-color: #8677C2;
+  border-radius: 20px;
+  color: #fff;
+  border: 2px solid #3E40A2;
+}
+
+.worker-description {
+  font-style: italic;
+  margin: 20px 0;
+}
+
+.work-images-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.work-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.comments-toggle-button {
+  background-color: #4A67C3;
+  border-radius: 20px;
+  padding: 10px 40px;
+}
+
+.initials-circle {
+  background-color: #4A67C3;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 2rem;
+}
+
+.comments-section {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 10px;
+  color: #000;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.comment {
+  text-align: left;
+  margin-bottom: 2rem;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.add-comment-form {
+  max-height: 0;
+  overflow: hidden;
+  animation: showComments 1s ease-out forwards;
+  background-color: #f9f9f9;
+  padding: 15px;
+  width: 90%;
+  border-radius: 10px;
+  margin-top: 20px;
+  transition: max-height 1s ease-in-out;
+}
+
+.add-comment-form.show {
+  max-height: 300px;
+}
+
+.add-comment-form.hide {
+  max-height: 0;
+}
+
+.comments-section {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  border-width: 1px;
+  border-color: #000;
+}
