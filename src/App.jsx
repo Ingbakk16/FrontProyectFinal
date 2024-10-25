@@ -19,6 +19,8 @@ import AdminWorkersPage from "./components/admin components/AdminWorkersPage/Adm
 import WorkerForm from "./components/admin components/editWorkerPage/WorkerForm";
 import CategoryForm from "./components/admin components/AdminCategoryForm/CategoryForm ";
 import AdminCategoriesPage from "./components/admin components/EDitCategoryAdmin/EditCategory";
+import { ThemeContextProvider } from "./components/services/ThemeContext/Theme.context";
+import SettingsPage from "./components/Ajustes/SettingsPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -87,6 +89,10 @@ const App = () => {
       element: <CategoryForm />,
     },
     {
+      path: "/Settings",
+      element: <SettingsPage />,
+    },
+    {
     path: "/",
     element: <Protected />,  
     children: [{
@@ -98,9 +104,11 @@ const App = () => {
 
 
   return (
+    <ThemeContextProvider>
     <AuthenticationContextProvider>
       <RouterProvider router={router} />
     </AuthenticationContextProvider>
+    </ThemeContextProvider>
   );
 };
 

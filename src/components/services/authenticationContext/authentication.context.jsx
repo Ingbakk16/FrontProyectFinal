@@ -3,14 +3,14 @@ import { createContext, useState, useEffect } from "react";
 export const AuthenticationContext = createContext();
 
 const storedUser = JSON.parse(localStorage.getItem("user"));
-// const storedToken = localStorage.getItem("token");
 
 export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState(storedUser);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [isWorker, setIsWorker] = useState(false); 
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  // Verificar si el usuario es un trabajador
+  // Verificar si el usuario es un trabajador o administrador
   useEffect(() => {
     const fetchUserRole = async () => {
       if (!token) return;
@@ -19,13 +19,17 @@ export const AuthenticationContextProvider = ({ children }) => {
         const response = await fetch('http://localhost:8081/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         });
 
         const data = await response.json();
         if (data.role?.name === "ROLE_WORKER") {
-          setIsWorker(true); 
+          setIsWorker(true);
+        }
+
+        if (data.role?.name === "ROLE_ADMIN") {
+          setIsAdmin(true); 
         }
       } catch (error) {
         console.error('Error fetching user role:', error);
@@ -33,8 +37,7 @@ export const AuthenticationContextProvider = ({ children }) => {
     };
 
     fetchUserRole();
-  }, [token]); 
-  
+  }, [token]);
 
   const handleLogin = (username, tokenVal) => {
     const newUser = { username };
@@ -49,10 +52,11 @@ export const AuthenticationContextProvider = ({ children }) => {
     setUser(null);
     setToken(null);
     setIsWorker(false); 
+    setIsAdmin(false); // Restablecer isAdmin en el logout
   };
 
   return (
-    <AuthenticationContext.Provider value={{ user, token, handleLogin, handleLogout, isWorker }}>
+    <AuthenticationContext.Provider value={{ user, token, handleLogin, handleLogout, isWorker, isAdmin }}>
       {children}
     </AuthenticationContext.Provider>
   );

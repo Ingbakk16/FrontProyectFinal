@@ -1,8 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { Button, Card, Form, FormGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa el ThemeContext
 
 const Register = () => {
+  const { theme } = useContext(ThemeContext); // Usa el ThemeContext para obtener el tema
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -98,10 +100,7 @@ const Register = () => {
         setLastname("");
         setEmail("");
         setPassword("");
-
-        
         navigate("/login");
-
       } else {
         throw new Error("Error en el registro");
       }
@@ -111,13 +110,19 @@ const Register = () => {
     }
   };
 
+
+  const backgroundStyle = {
+    background: theme === "dark"
+      ? "#1F1F1F"  
+      : "linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94)", 
+    height: "100%", 
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+
   return (
-    <div
-      className="d-flex justify-content-center align-items-center vh-100"
-      style={{
-        background: "linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94 )",
-      }}
-    >
+    <div style={backgroundStyle}>
       <Card className="p-4 shadow" style={{ width: "25rem", borderRadius: "5vh" }}>
         <Card.Body>
           <h2 className="text-center mb-4">Registro</h2>
@@ -133,6 +138,7 @@ const Register = () => {
                 onChange={changeUsernameHandler}
                 type="text"
                 placeholder="Nombre de usuario"
+                style={{ backgroundColor: theme === "dark" ? "#2B2B2B" : "#ffffff", color: theme === "dark" ? "#ffffff" : "#000000" }}
               />
               {errors.username && (
                 <p className="pt-2 text-danger">El nombre de usuario es obligatorio</p>
@@ -146,6 +152,7 @@ const Register = () => {
                 onChange={changeNameHandler}
                 type="text"
                 placeholder="Nombre"
+                style={{ backgroundColor: theme === "dark" ? "#2B2B2B" : "#ffffff", color: theme === "dark" ? "#ffffff" : "#000000" }}
               />
               {errors.name && (
                 <p className="pt-2 text-danger">El nombre es obligatorio</p>
@@ -159,6 +166,7 @@ const Register = () => {
                 onChange={changeLastnameHandler}
                 type="text"
                 placeholder="Apellido"
+                style={{ backgroundColor: theme === "dark" ? "#2B2B2B" : "#ffffff", color: theme === "dark" ? "#ffffff" : "#000000" }}
               />
               {errors.lastname && (
                 <p className="pt-2 text-danger">El apellido es obligatorio</p>
@@ -172,6 +180,7 @@ const Register = () => {
                 onChange={changeEmailHandler}
                 type="email"
                 placeholder="E-mail"
+                style={{ backgroundColor: theme === "dark" ? "#2B2B2B" : "#ffffff", color: theme === "dark" ? "#ffffff" : "#000000" }}
               />
               {errors.email && (
                 <p className="pt-2 text-danger">El email es obligatorio</p>
@@ -185,6 +194,7 @@ const Register = () => {
                 onChange={changePasswordHandler}
                 type="password"
                 placeholder="Contraseña"
+                style={{ backgroundColor: theme === "dark" ? "#2B2B2B" : "#ffffff", color: theme === "dark" ? "#ffffff" : "#000000" }}
               />
               {errors.password && (
                 <p className="pt-2 text-danger">La contraseña es obligatoria</p>

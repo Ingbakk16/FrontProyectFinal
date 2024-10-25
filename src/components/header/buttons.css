@@ -1,4 +1,4 @@
-
+/* Modo Claro */
 .header-navbar {
   background-color: #685BEB;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -17,10 +17,9 @@
 .menu-container {
   position: relative;
   display: inline-block;
-
 }
 
-
+/* Estilo para los botones en modo claro */
 .menu-button {
   background-color: #C8C3FC;  
   color: #000000;  
@@ -37,30 +36,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
+/* Animación hover en modo claro (se aclara) */
 .menu-button:hover {
   background-color: #B0A0F0;  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ajuste para hover */
 }
 
 .menu-button svg {
   margin-right: 4px;
 }
 
-
+/* Dropdown de categorías */
 .menu-dropdown {
   cursor: pointer;
   position: absolute;
+  border-bottom-left-radius: 3vw;  
+  border-bottom-right-radius: 3vw;  
+  border-top-left-radius: 0;  
+  border-top-right-radius: 0;  
   top: 100%;  
   left: 0;
   background-color: #C6B8FF;
   border-radius: 0 0 8px 8px; 
   padding: 5px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
-  width: 100%;  
+  width: 100%;
 }
 
 .menu-dropdown ul {
@@ -79,6 +84,91 @@
   color: #333;
 }
 
-.color{
-  color: #000000;
+/* Modo Oscuro */
+.header-dark {
+  background-color: #1F1F1F;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombras más profundas */
+}
+
+.navbar-dark {
+  background-color: #1F1F1F;
+  color: #FFFFFF;
+}
+
+.menu-button-dark {
+  background-color: #333333;  
+  color: #FFFFFF;
+  border-color: #444444;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover en modo oscuro (se oscurece más) */
+.menu-button-dark:hover {
+  background-color: #444444;  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.menu-dropdown-dark {
+  background-color: #222222;
+  color: #FFFFFF;
+  border-radius: 0 0 8px 8px; 
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.menu-dropdown-dark li a {
+  color: #FFFFFF;
+}
+
+/* Ajustes adicionales */
+.logout-dark {
+  color: #FFFFFF;
+}
+
+.search-dark {
+  background-color: #333333;
+  color: #FFFFFF;
+  border-color: #444444;
+}
+
+/* Ajustes para el color de texto en temas */
+.color {
+  color: #000000; /* Modo claro */
+}
+
+.color-dark {
+  color: #FFFFFF; /* Modo oscuro */
+}
+
+/* Ajustes para las animaciones de hover */
+.menu-button:hover,
+.menu-button-dark:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Ajustes para la barra de búsqueda */
+.search-form {
+  background-color: #F9F9F9;
+  border-radius: 8px;
+}
+
+.search-dark {
+  background-color: #333333;
+}
+
+/* Transiciones y animaciones */
+.menu-dropdown,
+.menu-dropdown-dark {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Ajuste para la altura de los menús */
+.menu-button,
+.menu-button-dark {
+  border-bottom-left-radius: 3vw;  
+  border-bottom-right-radius: 3vw;  
+  border-top-left-radius: 0;  
+  border-top-right-radius: 0;  
+  height: 50px;
+  padding: 10px 20px;
 }
