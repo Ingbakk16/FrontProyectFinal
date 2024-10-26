@@ -1,111 +1,50 @@
-@keyframes showComments {
-  0% {
-    max-height: 0;
-  }
-  100% {
-    max-height: 250px;
-  }
-}
-
-.comments-section {
-  max-height: 0;
-  overflow: hidden;
-  animation: showComments 0.5s ease-out;
-}
-
-body {
-  background: linear-gradient(180deg, #5C4AE0, #645DB5, #87ACF7);
-  min-height: 100vh;
-}
-
-.container-fluid-custom {
-  padding: 10vw;
+/* Modo Claro */
+.background-light {
+  background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
 }
 
 .card-custom {
   background-color: #8677C2;
   border-radius: 20px;
+  margin: 10%;
+}
+
+.initials-circle {
+  background-color: #645DB5;
   color: #fff;
-  border: 2px solid #3E40A2;
+}
+
+/* Modo Oscuro */
+.background-dark {
+  background-color: #1F1F1F;
+}
+
+.card-dark {
+  background-color: #333333;
+  margin: 10%;
+}
+
+.initials-circle-dark {
+  background-color: #444444;
+  color: #ffffff;
+}
+
+.form-control-dark {
+  background-color: #333333;
+  color: #ffffff;
+  border-color: #444444;
+}
+
+.text-light {
+  color: #ffffff;
+}
+
+.button-dark {
+  background-color: #444444;
+  color: #ffffff;
+  border: 1px solid #555555;
 }
 
 .worker-description {
   font-style: italic;
-  margin: 20px 0;
-}
-
-.work-images-carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.work-image {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-}
-
-.comments-toggle-button {
-  background-color: #4A67C3;
-  border-radius: 20px;
-  padding: 10px 40px;
-}
-
-.initials-circle {
-  background-color: #4A67C3;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 2rem;
-}
-
-.comments-section {
-  max-height: 200px;
-  overflow-y: auto;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  padding: 10px;
-  color: #000;
-  transition: max-height 0.5s ease-in-out;
-}
-
-.comment {
-  text-align: left;
-  margin-bottom: 2rem;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.add-comment-form {
-  max-height: 0;
-  overflow: hidden;
-  animation: showComments 1s ease-out forwards;
-  background-color: #f9f9f9;
-  padding: 15px;
-  width: 90%;
-  border-radius: 10px;
-  margin-top: 20px;
-  transition: max-height 1s ease-in-out;
-}
-
-.add-comment-form.show {
-  max-height: 300px;
-}
-
-.add-comment-form.hide {
-  max-height: 0;
-}
-
-.comments-section {
-  margin-bottom: 20px;
-}
-
-.form-control {
-  border-width: 1px;
-  border-color: #000;
 }

@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import { useNavigate } from "react-router-dom";
-import { AuthenticationContext } from '../services/authenticationContext/authentication.context'; 
-import './Profile.css';  
+import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
+import { ThemeContext } from '../services/ThemeContext/Theme.context'; // Importa el ThemeContext
+import './Profile.css';
 
 const Profile = () => {
-  const { token } = useContext(AuthenticationContext); 
+  const { token } = useContext(AuthenticationContext);
+  const { theme } = useContext(ThemeContext); // Usa el ThemeContext
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -23,7 +25,7 @@ const Profile = () => {
     const fetchUserProfile = async () => {
       if (!token) {
         console.error("No token available.");
-        return; 
+        return;
       }
 
       try {
@@ -84,12 +86,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container-Background">
+    <div className={`profile-container-Background ${theme === 'dark' ? 'profile-dark' : 'profile-light'}`}>
       <Header />
       <Container fluid className="profile-container">
-  <Row className="justify-content-center">
-    <Col md={6}>
-      <Card className="p-4 shadow-lg" style={{ backgroundColor: "#8677C2", borderRadius: "20px" }}>
+        <Row className="justify-content-center">
+          <Col md={6}>
+            <Card className={`p-4 shadow-lg profile-card ${theme === 'dark' ? 'profile-card-dark' : ''}`}>
               <Row>
                 <Col md={6}>
                   <div className="back-button">
@@ -116,7 +118,7 @@ const Profile = () => {
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
-                        className="text-dark"
+                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
@@ -128,7 +130,7 @@ const Profile = () => {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        className="text-dark"
+                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
@@ -140,7 +142,7 @@ const Profile = () => {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className="text-dark"
+                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
@@ -152,7 +154,7 @@ const Profile = () => {
                         name="lastname"
                         value={formData.lastname}
                         onChange={handleChange}
-                        className="text-dark"
+                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}
                       />
                     </Form.Group>
                     {isEditing ? (

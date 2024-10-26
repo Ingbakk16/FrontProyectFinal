@@ -4,14 +4,15 @@ import Header from "../header/header";
 import Footer from "../footer/footer";
 import { useParams } from "react-router-dom";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
+import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa ThemeContext
 
 const WorkerProfile = () => {
   const { id } = useParams();
   const { token } = useContext(AuthenticationContext);
+  const { theme } = useContext(ThemeContext); // Usa ThemeContext
 
   const [worker, setWorker] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Asegúrate de que el estado de carga funcione correctamente
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({ comment: "", rating: 0 });
   const [showComments, setShowComments] = useState(false);
@@ -23,6 +24,7 @@ const WorkerProfile = () => {
     const fetchWorkerProfile = async () => {
       if (!token) {
         console.error("No token available.");
+        setLoading(false);
         return;
       }
 
@@ -43,122 +45,21 @@ const WorkerProfile = () => {
         const workerData = data.find((worker) => worker.id === id);
 
         if (!workerData) {
-          throw new Error("Worker not found");
+          console.error("Worker not found");
+          setLoading(false);
+          return;
         }
 
         setWorker(workerData);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching worker profile:", error);
-        setLoading(false);
+      } finally {
+        setLoading(false); // Asegúrate de que loading se actualice en ambos casos
       }
     };
 
     fetchWorkerProfile();
   }, [id, token]);
-
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (!token) {
-        console.error("No token available.");
-        return;
-      }
-
-      try {
-        const response = await fetch(
-          `http://localhost:8081/api/workers/profile`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Error fetching user profile");
-        }
-
-        const userData = await response.json();
-        setUserId(userData.id); // Almacenar el user.id
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
-      }
-    };
-
-    fetchUserProfile();
-  }, [token]);
-
-  useEffect(() => {
-    const fetchWorkerComments = async () => {
-      if (!token) return;
-
-      try {
-        const response = await fetch(
-          `http://localhost:8081/api/workers/${id}/comments`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Error fetching worker comments");
-        }
-
-        const data = await response.json();
-        setComments(data);
-      } catch (error) {
-        console.error("Error fetching worker comments:", error);
-      }
-    };
-
-    fetchWorkerComments();
-  }, [id, token]);
-
-  // Añadir un nuevo comentario
-  const handleAddComment = async () => {
-    if (hasCommented || isSubmitting || !userId) return; // Verificación extra para evitar múltiples envíos y asegurarnos de tener el user.id
-
-    if (newComment.comment && newComment.rating > 0) {
-      setIsSubmitting(true);
-
-      try {
-        const response = await fetch(
-          `http://localhost:8081/api/workers/${id}/rate`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              comment: newComment.comment,
-              rating: newComment.rating,
-              userId: userId,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Error adding comment");
-        }
-
-        const addedComment = await response.json();
-        setComments([...comments, addedComment]);
-        setNewComment({ comment: "", rating: 0 });
-        setHasCommented(true);
-      } catch (error) {
-        console.error("Error adding comment:", error);
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-  };
 
   const handleCommentChange = (e) => {
     const { name, value } = e.target;
@@ -189,24 +90,25 @@ const WorkerProfile = () => {
 
   return (
     <>
-      <div className="background">
+      <div className={`background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
         <Header />
-        <Container fluid className="container-fluid-custom">
+        <Container fluid className=" p-4 container-fluid-custom">
           <Row className="justify-content-center">
             <Col md={8}>
-              <Card className="p-4 shadow-lg text-center d-flex justify-content-center align-items-center card-custom">
-                <div className="initials-circle">
-                  {getInitials(worker.user?.name, worker.user?.lastname)}
+            <Card className={`p-4 shadow-lg text-center d-flex justify-content-center align-items-center card-custom ${theme === 'dark' ? 'card-dark' : ''}`}>
+                <div className={`profile-initials-circle ${theme === 'dark' ? 'initials-circle-dark' : ''}`}>
+                  {getInitials(worker.user.name, worker.user.lastname)}
                 </div>
-                <h3>{worker.user?.name || "Nombre no disponible"}</h3>
-                <h5>
-                  {worker.jobTitles?.join(", ") || "Profesión no disponible"}
-                </h5>
-                <p>{worker.user?.email || "Email no disponible"}</p>{" "}
-                {/* Muestra el email del trabajador */}
-                <p className="worker-description">
+                <h3 className={theme === 'dark' ? 'text-light' : 'text-dark'}>{worker.user.name} {worker.user.lastname}</h3>
+                <h5 className={theme === 'dark' ? 'text-light' : 'text-dark'}>{worker.jobTitles.join(", ")}</h5>
+
+                <p className={theme === 'dark' ? 'text-light' : 'text-dark'}>
+                  {worker.user?.email || "Email no disponible"}
+                </p>
+                <p className={`worker-description ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>
                   "{worker.description || "Sin descripción"}"
                 </p>
+                
                 {worker.imageUrl ? (
                   <div className="work-images-carousel">
                     <img
@@ -218,13 +120,15 @@ const WorkerProfile = () => {
                 ) : (
                   <p>No hay imágenes de trabajo disponibles</p>
                 )}
+
                 <Button
                   variant="primary"
-                  className="mt-4 comments-toggle-button"
+                  className={`mt-4 comments-toggle-button ${theme === 'dark' ? 'button-dark' : ''}`}
                   onClick={toggleComments}
                 >
                   {showComments ? "OCULTAR COMENTARIOS" : "MOSTRAR COMENTARIOS"}
                 </Button>
+
                 {showComments && (
                   <div className="mt-4 comments-section">
                     <h4>Comentarios:</h4>
@@ -241,15 +145,15 @@ const WorkerProfile = () => {
                     )}
                   </div>
                 )}
+
                 <Button
                   variant="primary"
-                  className="mt-4 comments-toggle-button"
+                  className={`mt-4 comments-toggle-button ${theme === 'dark' ? 'button-dark' : ''}`}
                   onClick={toggleCommentForm}
                 >
-                  {showCommentForm
-                    ? "OCULTAR AGREGAR COMENTARIO"
-                    : "AGREGAR COMENTARIO"}
+                  {showCommentForm ? "OCULTAR AGREGAR COMENTARIO" : "AGREGAR COMENTARIO"}
                 </Button>
+
                 {showCommentForm && (
                   <div className="add-comment-form mt-4 show">
                     <h5>Añadir un nuevo comentario</h5>
@@ -258,13 +162,13 @@ const WorkerProfile = () => {
                       placeholder="Tu comentario"
                       value={newComment.comment}
                       onChange={handleCommentChange}
-                      className="form-control mb-2"
+                      className={`form-control mb-2 ${theme === 'dark' ? 'form-control-dark' : ''}`}
                     />
                     <select
                       name="rating"
                       value={newComment.rating}
                       onChange={handleCommentChange}
-                      className="form-control mb-2"
+                      className={`form-control mb-2 ${theme === 'dark' ? 'form-control-dark' : ''}`}
                     >
                       <option value="0">Selecciona una calificación</option>
                       <option value="1">★</option>
@@ -277,6 +181,7 @@ const WorkerProfile = () => {
                       variant="success"
                       onClick={handleAddComment}
                       disabled={hasCommented || isSubmitting}
+                      className={theme === 'dark' ? 'button-dark' : ''}
                     >
                       {hasCommented
                         ? "Ya has comentado"

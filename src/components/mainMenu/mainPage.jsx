@@ -4,32 +4,31 @@ import WorkerCard from "../workerCard/workerCard";
 import Header from "../header/header";
 import Footer from "../footer/footer";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
+import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa el ThemeContext
 import { useNavigate } from "react-router-dom"; 
 import './mainPage.css';
 
 const MainPage = () => {
   const [workers, setWorkers] = useState([]);
   const { token } = useContext(AuthenticationContext);
+  const { theme } = useContext(ThemeContext); // Usa el ThemeContext
   const [favorites, setFavorites] = useState([]); 
   const navigate = useNavigate(); 
 
-  // Cargar favoritos desde el localStorage al montar el componente
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
   }, []);
 
-  
   const toggleFavorite = (workerId) => {
     const updatedFavorites = favorites.includes(workerId)
-      ? favorites.filter((id) => id !== workerId) // Remover de favoritos si ya está marcado
-      : [...favorites, workerId]; // Agregar a favoritos si no está marcado
+      ? favorites.filter((id) => id !== workerId)
+      : [...favorites, workerId];
 
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); 
   };
 
- 
   const handleWorkerClick = (workerId) => {
     navigate(`/workerProfile/${workerId}`); 
   };
@@ -40,7 +39,6 @@ const MainPage = () => {
         console.error("No token available.");
         return;
       }
-
       try {
         const response = await fetch("http://localhost:8081/api/workers/all", {
           method: "GET",
@@ -49,7 +47,6 @@ const MainPage = () => {
             "Content-Type": "application/json",
           },
         });
-
         if (!response.ok) {
           throw new Error("Error fetching workers");
         }
@@ -65,7 +62,7 @@ const MainPage = () => {
   }, [token]);
 
   return (
-    <div className="page-container">
+    <div className={`page-container ${theme === 'dark' ? 'main-dark' : 'main-light'}`}>
       <Header />
       <div className="content">
         <Container>
@@ -75,7 +72,7 @@ const MainPage = () => {
               <Col key={index} md={6} className="mb-4">
                 <WorkerCard
                   id={worker.id} 
-                  name={worker.user?.name }
+                  name={worker.user?.name}
                   lastname={worker.user?.lastname || "Apellido no disponible"}
                   description={worker.description || "Sin descripción"}
                   profession={worker.jobTitles?.join(", ") || "Profesión no disponible"}

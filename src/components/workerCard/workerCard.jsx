@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card, Row, Col, Badge, Button } from "react-bootstrap";
+import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa el ThemeContext
 import './WorkerCard.css';
 
 const WorkerCard = ({ id, name, lastname, description, profession, rating, isFavorite, toggleFavorite, onClick }) => {
+  const { theme } = useContext(ThemeContext); // Usa el ThemeContext
 
   // Función para obtener las iniciales del nombre y apellido
   const getInitials = (name, lastname) => {
@@ -11,11 +13,11 @@ const WorkerCard = ({ id, name, lastname, description, profession, rating, isFav
   };
 
   return (
-    <Card className="worker-card" onClick={onClick}>
+    <Card className={`worker-card ${theme === 'dark' ? 'worker-card-dark' : 'worker-card-light'}`} onClick={onClick}>
       <Card.Body>
         <Row className="align-items-center">
           <Col xs={3} className="text-center">
-            <div className="worker-avatar-initials">
+            <div className={`worker-avatar-initials ${theme === 'dark' ? 'avatar-dark' : 'avatar-light'}`}>
               {getInitials(name, lastname)}
             </div>
           </Col>
@@ -29,8 +31,8 @@ const WorkerCard = ({ id, name, lastname, description, profession, rating, isFav
         </Row>
         <Row className="align-items-center justify-content-between">
           <Col className="worker-rating text-center">
-            {[...Array(Math.round(rating))].map((_, idx) => (
-              <Badge key={idx} pill bg="primary" className="worker-badge me-1">
+            {[...Array(Math.floor(rating))].map((_, idx) => (
+              <Badge key={idx} pill bg="primary" className={`worker-badge ${theme === 'dark' ? 'badge-dark' : ''}`}>
                 ★
               </Badge>
             ))}

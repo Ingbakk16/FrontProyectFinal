@@ -1,44 +1,63 @@
+/* Modo Claro - Fondo con Degradado */
+.profile-light {
+  background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
+  transition: background 0.3s ease;
+  min-height: 100vh;
+}
 
-.profile-container-Background {
-    background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
-  }
+/* Modo Oscuro */
+.profile-dark {
+  background: linear-gradient(45deg, #1F1F1F, #333333, #444444, #2B2B2B);
+  transition: background 0.3s ease;
+  min-height: 100vh;
+}
 
-  .profile-container {
-    padding-top: 4rem; 
-    padding-bottom: 2rem; 
-    margin: 0 auto; 
-    max-width: 800px;
-  }
-  
-  
-  .profile-content {
-    background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
-    min-height: calc(100vw - 56px - 40px);
-  }
-  
-  .profile-card {
-    background-color: #8677C2;
-    border-radius: 20px;
-    padding: 4rem;
+/* Contenedor principal del perfil */
+.profile-container {
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+  margin: 0 auto;
+  max-width: 800px;
+}
 
-  }
-  
-  .back-button {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .profile-initials-circle {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: #645DB5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 36px;
-    color: #fff;
-    margin: 0 auto 2rem;
-  }
-  
+/* Card del perfil en modo claro */
+.profile-card {
+  background-color: #8677C2;
+  border-radius: 20px;
+  padding: 4rem;
+}
+
+/* Card del perfil en modo oscuro */
+.profile-card-dark {
+  background-color: #333333;
+}
+
+/* Botón de retroceso */
+.back-button {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Estilo del círculo de iniciales */
+.profile-initials-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #645DB5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  color: #fff;
+  margin: 0 auto 2rem;
+}
+
+/* Texto oscuro y claro */
+.text-dark {
+  color: #000;
+}
+
+.text-light {
+  color: #FFF;
+}
