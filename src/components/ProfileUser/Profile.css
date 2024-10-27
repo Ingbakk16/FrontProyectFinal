@@ -1,14 +1,21 @@
 /* Modo Claro - Fondo con Degradado */
 .profile-light {
   background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
-  transition: background 0.3s ease;
   min-height: 100vh;
+}
+
+.background-light-profile{
+  background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
+}
+
+
+.background-dark-profile{
+  background: #1F1F1F;
 }
 
 /* Modo Oscuro */
 .profile-dark {
   background: linear-gradient(45deg, #1F1F1F, #333333, #444444, #2B2B2B);
-  transition: background 0.3s ease;
   min-height: 100vh;
 }
 
@@ -17,14 +24,17 @@
   padding-top: 4rem;
   padding-bottom: 2rem;
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 500px;
 }
 
 /* Card del perfil en modo claro */
 .profile-card {
   background-color: #8677C2;
   border-radius: 20px;
-  padding: 4rem;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 /* Card del perfil en modo oscuro */

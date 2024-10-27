@@ -1,40 +1,76 @@
+/* Fondo de la página en tema claro y oscuro */
+.background-light {
+  background: #bc5ef2;
+}
 
+.background-dark {
+  background: #1F1F1F;
+}
+
+/* Contenedor principal del formulario de ayuda */
 .help-container {
-    padding: 5vh;
-    min-height: 100vh;
-    background-color:linear-gradient(to bottom, #e1bce7, #bc5ef2);
-  }
-  
-  
-  .full-height-row {
-    min-height: 100vh;
-  }
-  
-  
-  .help-form {
-    background-color: #c57dff;
-    border-radius: 1rem;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-  }
-  
-  /* Estilo de los títulos del formulario */
-  .help-form h3 {
-    text-align: center;
-  }
-  
-  .help-form p {
-    text-align: center;
-  }
-  
-  /* Estilo del botón de enviar */
-  .form-submit-btn {
-    text-align: center;
-    margin-top: 1.5rem;
-  }
-  
-  /* Estilo de las alertas */
-  .alert {
-    margin-top: 1rem;
-  }
-  
+  padding-top: 80px; /* Espacio para el Header */
+  padding: 5vh;
+  min-height: 100vh;
+  background: linear-gradient(to top, #e1bce7, #bc5ef2);
+}
+
+.help-container-dark {
+  background: linear-gradient(to bottom, #1F1F1F, #333333);
+}
+
+/* Relleno completo de la altura */
+.full-height-row {
+  min-height: calc(100vh - 200px); /* Ajuste para que el header y el footer no interfieran con la altura total */
+}
+
+/* Ajuste del formulario de ayuda */
+.help-form {
+  background-color: #c57dff;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  color: #000;
+}
+
+.help-form-dark {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Estilos de campos de formulario en tema oscuro */
+.form-control-dark {
+  background-color: #555;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+.form-control-dark::placeholder {
+  color: #ccc;
+}
+
+/* Botón de enviar en el formulario */
+.form-submit-btn {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.button-dark {
+  background-color: #444;
+  border: none;
+}
+
+.button-dark:hover {
+  background-color: #222;
+}
+
+/* Estilos de las alertas */
+.alert {
+  margin-top: 1rem;
+  color: #333;
+}
+
+.alert-dark {
+  background-color: #444;
+  color: #fff;
+} 

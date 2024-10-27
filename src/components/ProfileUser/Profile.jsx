@@ -86,14 +86,14 @@ const Profile = () => {
   };
 
   return (
-    <div className={`profile-container-Background ${theme === 'dark' ? 'profile-dark' : 'profile-light'}`}>
+    <div className={`Background ${theme === 'dark' ? 'background-dark-profile' : 'background-light-profile'}`}>
       <Header />
-      <Container fluid className="profile-container">
+      <Container fluid className={`Background ${theme === 'dark' ? 'background-dark-profile' : 'background-light-profile'}`}>
         <Row className="justify-content-center">
-          <Col md={6}>
+          <Col md={8}>
             <Card className={`p-4 shadow-lg profile-card ${theme === 'dark' ? 'profile-card-dark' : ''}`}>
               <Row>
-                <Col md={6}>
+                <Col md={8}>
                   <div className="back-button">
                     <Button variant="link" className="text-light" onClick={backHandler}>
                       <i className="bi bi-arrow-left text-dark">

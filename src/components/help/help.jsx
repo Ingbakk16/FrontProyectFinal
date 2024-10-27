@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import Header from "../header/header";
 import Footer from "../footer/footer";
-import './help.css';  
+import { ThemeContext } from "../services/ThemeContext/Theme.context";
+import './help.css';
 
 const HelpSeccion = () => {
+  const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     email: "",
     problem: "",
@@ -48,22 +50,21 @@ const HelpSeccion = () => {
     } else {
       setErrors([]);
       setSuccess(true);
-      
     }
   };
 
   return (
-    <>
+    <div className={`background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
       <Header />
-      <Container fluid className="help-container d-flex justify-content-center align-items-center">
+      <Container fluid className={`help-container ${theme === 'dark' ? 'help-container-dark' : ''} d-flex flex-column justify-content-center align-items-center`}>
         <Row className="justify-content-center align-items-center w-100 full-height-row">
           <Col lg={5} md={4} sm={5}>
-            <div className="help-form">
-              <h3>¿Problems?</h3>
-              <p>Fill out this form and we will contact you as soon as possible.</p>
+            <div className={`help-form ${theme === 'dark' ? 'help-form-dark' : ''}`}>
+              <h3>¿Problemas?</h3>
+              <p>Completa este formulario y nos pondremos en contacto contigo lo antes posible.</p>
 
-              {errors.length > 0 && <Alert variant="danger">{errors.join(", ")}</Alert>}
-              {success && <Alert variant="success">¡Form Send!</Alert>}
+              {errors.length > 0 && <Alert className={`${theme === 'dark' ? 'alert-dark' : ''}`} variant="danger">{errors.join(", ")}</Alert>}
+              {success && <Alert className={`${theme === 'dark' ? 'alert-dark' : ''}`} variant="success">¡Formulario Enviado!</Alert>}
 
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formEmail">
@@ -71,32 +72,35 @@ const HelpSeccion = () => {
                   <Form.Control
                     type="email"
                     name="email"
-                    placeholder="submit your E-mail"
+                    placeholder="Introduce tu E-mail"
                     value={formData.email}
                     onChange={handleChange}
+                    className={`${theme === 'dark' ? 'form-control-dark' : ''}`}
                   />
                 </Form.Group>
 
                 <Form.Group controlId="formProblem" className="mt-3">
-                  <Form.Label>Problem/bug/Issue</Form.Label>
+                  <Form.Label>Problema/Error</Form.Label>
                   <Form.Control
                     as="textarea"
                     name="problem"
                     rows={3}
-                    placeholder="detail your problem"
+                    placeholder="Describe tu problema"
                     value={formData.problem}
                     onChange={handleChange}
+                    className={`${theme === 'dark' ? 'form-control-dark' : ''}`}
                   />
                 </Form.Group>
 
                 <Form.Group controlId="formName" className="mt-3">
-                  <Form.Label>Name</Form.Label>
+                  <Form.Label>Nombre</Form.Label>
                   <Form.Control
                     type="text"
                     name="name"
-                    placeholder="submit your name"
+                    placeholder="Introduce tu nombre"
                     value={formData.name}
                     onChange={handleChange}
+                    className={`${theme === 'dark' ? 'form-control-dark' : ''}`}
                   />
                 </Form.Group>
 
@@ -105,15 +109,16 @@ const HelpSeccion = () => {
                   <Form.Control
                     type="text"
                     name="dni"
-                    placeholder="submit your DNI"
+                    placeholder="Introduce tu DNI"
                     value={formData.dni}
                     onChange={handleChange}
+                    className={`${theme === 'dark' ? 'form-control-dark' : ''}`}
                   />
                 </Form.Group>
 
                 <div className="form-submit-btn">
-                  <Button variant="primary" type="submit">
-                    Send
+                  <Button variant="primary" type="submit" className={`${theme === 'dark' ? 'button-dark' : ''}`}>
+                    Enviar
                   </Button>
                 </div>
               </Form>
@@ -122,7 +127,7 @@ const HelpSeccion = () => {
         </Row>
       </Container>
       <Footer />
-    </>
+    </div>
   );
 };
 
