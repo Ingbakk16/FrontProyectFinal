@@ -4,17 +4,18 @@ import './CategoriesStyle.css';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
+import { ThemeContext } from '../services/ThemeContext/Theme.context';
 
 const CategoriesPage = () => {
     const [categories, setCategories] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const { token } = useContext(AuthenticationContext);
+    const { theme } = useContext(ThemeContext);
     const categoriesPerPage = 4;  
     const totalPages = Math.ceil(categories.length / categoriesPerPage);
 
     const navigate = useNavigate();
 
-    // Fetch de categorías desde el backend
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -29,14 +30,14 @@ const CategoriesPage = () => {
                     throw new Error('Error al obtener las categorías');
                 }
                 const data = await response.json();
-                setCategories(data.map(category => category.title)); // Actualiza con los títulos de las categorías
+                setCategories(data.map(category => category.title)); 
             } catch (error) {
                 console.error('Error fetching categories:', error);
             }
         };
 
         fetchCategories();
-    }, []); // Ejecutar una vez al cargar el componente
+    }, [token]);
 
     const handleCategoryClick = (category) => {
         navigate(`/categories/${category.toLowerCase()}`);
@@ -54,20 +55,19 @@ const CategoriesPage = () => {
         }
     };
 
-    // Categorías a mostrar en la página actual
     const indexOfLastCategory = currentPage * categoriesPerPage;
     const indexOfFirstCategory = indexOfLastCategory - categoriesPerPage;
     const currentCategories = categories.slice(indexOfFirstCategory, indexOfLastCategory);
 
     return (
-        <div className="categories-page-background">
+        <div className={`categories-page-background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
             <Header />
-            <div className="categories-container">
-                <div className="categories-box">
+            <div className={`categories-container ${theme === 'dark' ? 'categories-container-dark' : ''}`}>
+            <div className={`categories-box ${theme === 'dark' ? 'categories-box-dark' : ''}`}>
                     {currentCategories.map((category, index) => (
                         <button
                             key={index}
-                            className="category-button"
+                            className={`category-button ${theme === 'dark' ? 'category-button-dark' : ''}`}
                             onClick={() => handleCategoryClick(category)}
                         >
                             {category}
@@ -75,7 +75,7 @@ const CategoriesPage = () => {
                     ))}
                     <div className="pagination">
                         <button 
-                            className="pagination-arrow" 
+                            className={`pagination-arrow ${theme === 'dark' ? 'pagination-arrow-dark' : ''}`}
                             onClick={handlePreviousPage} 
                             disabled={currentPage === 1}
                         >
@@ -83,7 +83,7 @@ const CategoriesPage = () => {
                         </button>
                         <span className="pagination-number">{currentPage}</span>
                         <button 
-                            className="pagination-arrow" 
+                            className={`pagination-arrow ${theme === 'dark' ? 'pagination-arrow-dark' : ''}`}
                             onClick={handleNextPage} 
                             disabled={currentPage === totalPages}
                         >

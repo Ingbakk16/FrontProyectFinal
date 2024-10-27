@@ -11,6 +11,8 @@
 
 .initials-circle {
   background-color: #645DB5;
+  border-radius: 100%;
+  padding: 5%;
   color: #fff;
 }
 
@@ -26,6 +28,8 @@
 
 .initials-circle-dark {
   background-color: #444444;
+    border-radius: 100%;
+  padding: 5%;
   color: #ffffff;
 }
 
@@ -48,3 +52,4 @@
 .worker-description {
   font-style: italic;
 }
+

@@ -1,12 +1,13 @@
 import React, { useRef, useState, useContext } from "react";
 import { Button, Card, Form, FormGroup } from "react-bootstrap";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
-import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa el ThemeContext
+import { ThemeContext } from "../services/ThemeContext/Theme.context";
 import { useNavigate } from "react-router-dom";
+import "./Login.css"; // Asegúrate de tener este archivo para aplicar los estilos
 
 const Login = () => {
   const { handleLogin } = useContext(AuthenticationContext);
-  const { theme } = useContext(ThemeContext); // Usa el ThemeContext
+  const { theme } = useContext(ThemeContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({
@@ -69,13 +70,9 @@ const Login = () => {
     }
   };
 
-  // Cambiar el color de fondo según el tema
-  const backgroundColor = theme === "dark" ? "#1F1F1F" : "linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94)"; // Cambiar el color según el tema
-
   return (
     <div
-      className={`principal ${theme === "dark" ? "theme-dark" : "theme-default"} d-flex justify-content-center align-items-center vh-100 `}
-      style={{ backgroundColor }} // Aplicar el fondo dinámico
+      className={`principal d-flex justify-content-center align-items-center vh-100 ${theme === "dark" ? "theme-dark" : "theme-default"}`}
     >
       <Card className="p-4 shadow" style={{ width: '100%', maxWidth: '400px' }}> 
         <Card.Body>

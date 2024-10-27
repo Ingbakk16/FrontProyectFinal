@@ -4,21 +4,25 @@ import WorkerCard from "../workerCard/workerCard";
 import Header from "../header/header";
 import Footer from "../footer/footer";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
+import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa ThemeContext
 import { useNavigate } from "react-router-dom";
+import "./SavedWorker.css";
 
 const FavoritesPage = () => {
   const [workers, setWorkers] = useState([]);
   const { token } = useContext(AuthenticationContext);
+  const { theme } = useContext(ThemeContext); // Usa ThemeContext
   const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
 
-  // Cargar los favoritos desde el localStorage
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
   }, []);
 
-  const favoriteWorkers = workers.filter(worker => favorites.includes(worker.id));
+  const favoriteWorkers = workers.filter((worker) =>
+    favorites.includes(worker.id)
+  );
 
   useEffect(() => {
     const fetchWorkers = async () => {
@@ -41,7 +45,7 @@ const FavoritesPage = () => {
         }
 
         const data = await response.json();
-        setWorkers(data); 
+        setWorkers(data);
       } catch (error) {
         console.error("Error al obtener los trabajadores:", error);
       }
@@ -64,7 +68,7 @@ const FavoritesPage = () => {
   };
 
   return (
-    <div className="page-container">
+    <div className={`favorites-page-background ${theme === 'dark' ? 'favorites-page-background-dark' : ''}`}>
       <Header />
       <div className="content">
         <Container>
@@ -78,7 +82,9 @@ const FavoritesPage = () => {
                     name={worker.user?.name}
                     lastname={worker.user?.lastname || "Apellido no disponible"}
                     description={worker.description || "Sin descripción"}
-                    profession={worker.jobTitles?.join(", ") || "Profesión no disponible"}
+                    profession={
+                      worker.jobTitles?.join(", ") || "Profesión no disponible"
+                    }
                     rating={worker.rating || 0}
                     isFavorite={favorites.includes(worker.id)}
                     toggleFavorite={() => toggleFavorite(worker.id)}

@@ -104,13 +104,13 @@ const Profile = () => {
                     </Button>
                   </div>
 
-                  <div className="profile-initials-circle">
+                  <div className={`${theme === 'dark' ? 'profile-initials-circle-dark' : 'profile-initials-circle'}`}>
                     {getInitials()}
                   </div>
 
                   <Form>
                     <Form.Group className="mb-3">
-                      <Form.Label className="text-light">Username:</Form.Label>
+                      <Form.Label className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Username:</Form.Label>
                       <Form.Control
                         plaintext={!isEditing}
                         readOnly={!isEditing}
@@ -122,7 +122,7 @@ const Profile = () => {
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label className="text-light">Name:</Form.Label>
+                      <Form.Label className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Name:</Form.Label>
                       <Form.Control
                         plaintext={!isEditing}
                         readOnly={!isEditing}
@@ -134,7 +134,7 @@ const Profile = () => {
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label className="text-light">Email:</Form.Label>
+                      <Form.Label className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Email:</Form.Label>
                       <Form.Control
                         plaintext={!isEditing}
                         readOnly={!isEditing}
@@ -146,7 +146,7 @@ const Profile = () => {
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label className="text-light">Last Name:</Form.Label>
+                      <Form.Label className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}>Last Name:</Form.Label>
                       <Form.Control
                         plaintext={!isEditing}
                         readOnly={!isEditing}

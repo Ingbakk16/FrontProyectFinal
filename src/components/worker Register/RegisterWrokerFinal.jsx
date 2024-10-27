@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Form, Button, Container, Row, Col, Alert, ProgressBar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"; 
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context"; 
+import { ThemeContext } from "../services/ThemeContext/Theme.context";
 import './RegisterWorkerFinal.css';
 
 const RegisterWorkerFinal = () => {
@@ -20,6 +21,7 @@ const RegisterWorkerFinal = () => {
   const navigate = useNavigate();
   
   const { token, handleLogout } = useContext(AuthenticationContext); 
+  const { theme } = useContext(ThemeContext); 
   
   useEffect(() => {
     const fetchCategories = async () => {
@@ -176,12 +178,12 @@ const RegisterWorkerFinal = () => {
   };
 
   return (
-    <Container fluid className="register-container">
+    <Container key={theme} fluid className={`register-container ${theme === 'dark' ? 'register-container-dark' : ''}`}>
       <Row>
-        <Col xs={12} md={8} lg={10} className="register-col">
-          <Form onSubmit={step === 3 ? handleSubmit : handleNext} className="register-form">
-            <h3 className="register-title">Registro de Trabajador</h3>
-            <p className="register-subtitle">¡Regístrate para formar parte de nuestra comunidad!</p>
+        <Col xs={12} md={8} lg={10} className={`register-col ${theme === 'dark' ? 'register-col-dark' : ''}`}>
+          <Form onSubmit={step === 3 ? handleSubmit : handleNext} className={`register-form ${theme === 'dark' ? 'register-form-dark' : ''}`}>
+            <h3 className={`register-title ${theme === 'dark' ? 'text-light' : ''}`}>Registro de Trabajador</h3>
+            <p className={`register-subtitle ${theme === 'dark' ? 'text-light' : ''}`}>¡Regístrate para formar parte de nuestra comunidad!</p>
 
             {errors.length > 0 && <Alert variant="danger">{errors.join(", ")}</Alert>}
             {success && <Alert variant="success">¡Registro exitoso!</Alert>}

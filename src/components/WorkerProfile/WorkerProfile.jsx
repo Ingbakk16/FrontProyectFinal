@@ -4,15 +4,16 @@ import Header from "../header/header";
 import Footer from "../footer/footer";
 import { useParams } from "react-router-dom";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
-import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa ThemeContext
+import { ThemeContext } from "../services/ThemeContext/Theme.context";
+import "../WorkerProfile/WorkerStyle.css";
 
 const WorkerProfile = () => {
   const { id } = useParams();
   const { token } = useContext(AuthenticationContext);
-  const { theme } = useContext(ThemeContext); // Usa ThemeContext
+  const { theme } = useContext(ThemeContext);
 
   const [worker, setWorker] = useState(null);
-  const [loading, setLoading] = useState(true); // Asegúrate de que el estado de carga funcione correctamente
+  const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({ comment: "", rating: 0 });
   const [showComments, setShowComments] = useState(false);
@@ -20,8 +21,15 @@ const WorkerProfile = () => {
   const [hasCommented, setHasCommented] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    setRefreshKey((prevKey) => prevKey + 1); // Cambia la clave cuando cambies el tema
+  }, [theme]);
+
   useEffect(() => {
     const fetchWorkerProfile = async () => {
+      setLoading(true); // Inicia el estado de carga
       if (!token) {
         console.error("No token available.");
         setLoading(false);
@@ -54,12 +62,12 @@ const WorkerProfile = () => {
       } catch (error) {
         console.error("Error fetching worker profile:", error);
       } finally {
-        setLoading(false); // Asegúrate de que loading se actualice en ambos casos
+        setLoading(false);
       }
     };
 
     fetchWorkerProfile();
-  }, [id, token]);
+  }, [id, token, theme]); // Agrega `theme` como dependencia
 
   const handleCommentChange = (e) => {
     const { name, value } = e.target;
@@ -75,9 +83,8 @@ const WorkerProfile = () => {
   };
 
   const getInitials = (name, lastname) => {
-    const nameInitial = name ? name.charAt(0).toUpperCase() : "";
-    const lastnameInitial = lastname ? lastname.charAt(0).toUpperCase() : "";
-    return nameInitial + lastnameInitial;
+    if (!name || !lastname) return "";
+    return `${name[0].toUpperCase()}${lastname[0].toUpperCase()}`;
   };
 
   if (loading) {
@@ -90,25 +97,48 @@ const WorkerProfile = () => {
 
   return (
     <>
-      <div className={`background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
+      <div
+        key={theme}
+        fluid className={`background ${
+          theme === "dark" ? "background-dark" : "background-light"
+        }`}
+      >
         <Header />
-        <Container fluid className=" p-4 container-fluid-custom">
+        <Container className="container-fluid-custom">
           <Row className="justify-content-center">
             <Col md={8}>
-            <Card className={`p-4 shadow-lg text-center d-flex justify-content-center align-items-center card-custom ${theme === 'dark' ? 'card-dark' : ''}`}>
-                <div className={`profile-initials-circle ${theme === 'dark' ? 'initials-circle-dark' : ''}`}>
+              <Card
+                className={`p-4 shadow-lg text-center d-flex justify-content-center align-items-center card-custom ${
+                  theme === "dark" ? "card-dark" : ""
+                }`}
+              >
+                <div
+                  className={`initials-circle ${
+                    theme === "dark"
+                      ? "initials-circle-dark"
+                      : "initials-circle-light"
+                  }`}
+                >
                   {getInitials(worker.user.name, worker.user.lastname)}
                 </div>
-                <h3 className={theme === 'dark' ? 'text-light' : 'text-dark'}>{worker.user.name} {worker.user.lastname}</h3>
-                <h5 className={theme === 'dark' ? 'text-light' : 'text-dark'}>{worker.jobTitles.join(", ")}</h5>
+                <h3 className={theme === "dark" ? "text-light" : "text-dark"}>
+                  {worker.user.name} {worker.user.lastname}
+                </h3>
+                <h5 className={theme === "dark" ? "text-light" : "text-dark"}>
+                  {worker.jobTitles.join(", ")}
+                </h5>
 
-                <p className={theme === 'dark' ? 'text-light' : 'text-dark'}>
+                <p className={theme === "dark" ? "text-light" : "text-dark"}>
                   {worker.user?.email || "Email no disponible"}
                 </p>
-                <p className={`worker-description ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>
+                <p
+                  className={`worker-description ${
+                    theme === "dark" ? "text-light" : "text-dark"
+                  }`}
+                >
                   "{worker.description || "Sin descripción"}"
                 </p>
-                
+
                 {worker.imageUrl ? (
                   <div className="work-images-carousel">
                     <img
@@ -123,7 +153,9 @@ const WorkerProfile = () => {
 
                 <Button
                   variant="primary"
-                  className={`mt-4 comments-toggle-button ${theme === 'dark' ? 'button-dark' : ''}`}
+                  className={`mt-4 comments-toggle-button ${
+                    theme === "dark" ? "button-dark" : ""
+                  }`}
                   onClick={toggleComments}
                 >
                   {showComments ? "OCULTAR COMENTARIOS" : "MOSTRAR COMENTARIOS"}
@@ -148,10 +180,14 @@ const WorkerProfile = () => {
 
                 <Button
                   variant="primary"
-                  className={`mt-4 comments-toggle-button ${theme === 'dark' ? 'button-dark' : ''}`}
+                  className={`mt-4 comments-toggle-button ${
+                    theme === "dark" ? "button-dark" : ""
+                  }`}
                   onClick={toggleCommentForm}
                 >
-                  {showCommentForm ? "OCULTAR AGREGAR COMENTARIO" : "AGREGAR COMENTARIO"}
+                  {showCommentForm
+                    ? "OCULTAR AGREGAR COMENTARIO"
+                    : "AGREGAR COMENTARIO"}
                 </Button>
 
                 {showCommentForm && (
@@ -162,13 +198,17 @@ const WorkerProfile = () => {
                       placeholder="Tu comentario"
                       value={newComment.comment}
                       onChange={handleCommentChange}
-                      className={`form-control mb-2 ${theme === 'dark' ? 'form-control-dark' : ''}`}
+                      className={`form-control mb-2 ${
+                        theme === "dark" ? "form-control-dark" : ""
+                      }`}
                     />
                     <select
                       name="rating"
                       value={newComment.rating}
                       onChange={handleCommentChange}
-                      className={`form-control mb-2 ${theme === 'dark' ? 'form-control-dark' : ''}`}
+                      className={`form-control mb-2 ${
+                        theme === "dark" ? "form-control-dark" : ""
+                      }`}
                     >
                       <option value="0">Selecciona una calificación</option>
                       <option value="1">★</option>
@@ -181,7 +221,7 @@ const WorkerProfile = () => {
                       variant="success"
                       onClick={handleAddComment}
                       disabled={hasCommented || isSubmitting}
-                      className={theme === 'dark' ? 'button-dark' : ''}
+                      className={theme === "dark" ? "button-dark" : ""}
                     >
                       {hasCommented
                         ? "Ya has comentado"

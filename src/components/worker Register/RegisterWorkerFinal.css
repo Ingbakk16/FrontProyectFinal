@@ -1,51 +1,71 @@
 /* Contenedor principal */
 .register-container {
-    min-height: 100vh;
-    background: linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  /* Estilos de la columna del formulario */
-  .register-col {
-    background-color: #f8f9fa;
-    border-radius: 1rem;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-  }
-  
-  /* Estilos del formulario */
-  .register-form {
-    padding: 1.5rem;
-  }
-  
-  /* Título y subtítulo del formulario */
-  .register-title {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .register-subtitle {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  
-  /* Barra de progreso */
-  .progress-bar-custom {
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Botones de navegación */
-  .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-  }
-  
-  /* Hover para los botones */
-  button:hover {
-    background-color: #4A67C3;
-    color: white;
-  }
-  
+  min-height: 100vh;
+  background: linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-container-dark {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #1F1F1F, #2B2B2B, #3A3A3A, #484848);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos de la columna del formulario */
+.register-col {
+  background-color: #f8f9fa;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.register-col-dark {
+  background-color: #1F1F1F;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+/* Estilos del formulario */
+.register-form {
+  padding: 1.5rem;
+}
+
+.register-form-dark {
+  padding: 1.5rem;
+  color: #ffffff;
+  background-color: #1F1F1F;
+}
+
+/* Título y subtítulo del formulario */
+.register-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.register-subtitle {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Barra de progreso */
+.progress-bar-custom {
+  margin-bottom: 1.5rem;
+}
+
+/* Botones de navegación */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+/* Hover para los botones */
+button:hover {
+  background-color: #4A67C3;
+  color: white;
+}
