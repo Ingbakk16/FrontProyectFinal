@@ -8,41 +8,6 @@ html {
   font-family: "Noto Sans JP", sans-serif;
 }
 
-:root {
-  --background-color: #ffffff;
-  --text-color: #000000;
-  --primary-color: #685BEB; /* Color principal (ej. botones, encabezados) */
-  --secondary-color: #f8f9fa; /* Color secundario */
-}
-
-/* Default (light) styles */
-.settings-page {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-/* Dark Mode styles */
-.settings-page.dark-mode {
-  background-color: #333333;
-  color: #ffffff;
-}
-
-
-/* Variables para el tema oscuro */
-[data-theme="dark"] {
-  --background-color: #25206A;
-  --text-color: #ffffff;
-  --primary-color: #4A67C3;
-  --secondary-color: #1e1e1e;
-}
-
-/* Aplica las variables a los elementos */
-body {
-  margin: 0;
-  background-color: var(--background-color);
-  color: var(--text-color);
-}
-
 button, input, select {
   color: var(--text-color);
   background-color: var(--primary-color);
