@@ -18,3 +18,10 @@
   background-color: #645DB5; /* Cambia el color al hacer hover */
   transform: translateY(-2px); /* Efecto de "elevación" al pasar el mouse */
 }
+
+.admin-categories-page-background {
+  background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

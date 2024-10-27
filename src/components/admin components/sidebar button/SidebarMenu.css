@@ -1,31 +1,50 @@
+/* Contenedor del sidebar */
 .sidebar-container {
-    padding: 20px 0; /* Padding solo arriba y abajo */
-  }
-  
-  .sidebar-button {
-    width: 100%;
-    height: 50px;
-    margin-bottom: 15px;
-    padding: 15px;
-    background-color: #3a2dcd;
-    color: #fff;
-    border-radius: 1rem;
-    border: none;
-    font-size: 16px;
-    text-align: left;
-    transition: background-color 0.3s, transform 0.3s;
-  }
-  
-  .sidebar-button:hover {
-    background-color: #645DB5; /* Cambia el color al hacer hover */
-    transform: translateY(-2px); /* Efecto de "elevación" al pasar el mouse */
-  }
-  
-/* Sidebar Container */
+  padding: 20px 0;
+}
+
+.sidebar-container-dark {
+  background-color: #1F1F1F;
+  color: #ffffff;
+  padding: 20px 0;
+}
+
+/* Botón del sidebar */
+.sidebar-button {
+  width: 100%;
+  height: 50px;
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #3a2dcd;
+  color: #ffffff;
+  border-radius: 1rem;
+  border: none;
+  font-size: 16px;
+  text-align: left;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.sidebar-button-dark {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.sidebar-button:hover {
+  background-color: #645DB5;
+  transform: translateY(-2px);
+}
+
+.sidebar-button-dark:hover {
+  background-color: #444444;
+}
+
+/* Padding de botones del sidebar */
 .sidebar-button-padding {
-    padding-top: 10px; /* Ajusta según el espacio que desees */
-    padding-bottom: 10px; /* Ajusta según el espacio que desees */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+  margin-top: 5%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 5%;
+}

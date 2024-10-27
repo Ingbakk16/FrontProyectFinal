@@ -4,7 +4,7 @@
 }
 
 .background-dark {
-  background: #1F1F1F;
+  background: #1a1919;
 }
 
 /* Contenedor principal del formulario de ayuda */
@@ -12,11 +12,11 @@
   padding-top: 80px; /* Espacio para el Header */
   padding: 5vh;
   min-height: 100vh;
-  background: linear-gradient(to top, #e1bce7, #bc5ef2);
+  background: linear-gradient(to top,#bc5ef2, #e1bce7, );
 }
 
 .help-container-dark {
-  background: linear-gradient(to bottom, #1F1F1F, #333333);
+  background: linear-gradient(to bottom,#333333, #1F1F1F, );
 }
 
 /* Relleno completo de la altura */

@@ -4,6 +4,10 @@
   min-height: 100vh;
 }
 
+.background-dark-profile{
+  background-color: #333333;
+}
+
 /* Modo Claro */
 .main-light {
   background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
