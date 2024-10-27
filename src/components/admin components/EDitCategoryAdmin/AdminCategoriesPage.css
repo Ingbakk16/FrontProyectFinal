@@ -1,9 +1,24 @@
 /* Fondo completo de la página de administración de categorías */
-.admin-categories-page-background {
+.admin-page-light {
   background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
-  min-height: 100vh;
+  color: #000000;
+}
+
+.help-container,
+.help-container-dark {
   display: flex;
-  flex-direction: column;
+  background: linear-gradient(to bottom,#333333, #1F1F1F, );
+  align-items: stretch; /* Para alinear correctamente los Cols */
+  min-height: 90vh;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap; /* Esto asegura que los elementos no salten de línea */
+}
+
+.admin-page-dark {
+  background: linear-gradient(to top, #333333, #1F1F1F, #0F0F0F, #000000);
+  color: #ffffff;
 }
 
 /* Botón para añadir categoría */
@@ -16,6 +31,11 @@
   font-size: 16px;
   font-weight: bold;
   transition: background-color 0.3s, transform 0.3s;
+}
+
+.add-category-button.button-dark {
+  background-color: #444444;
+  color: #ffffff;
 }
 
 .add-category-button:hover {
@@ -38,6 +58,11 @@
   margin-bottom: 1rem;
 }
 
+.category-card-dark {
+  background-color: #333333;
+  color: #ffffff;
+}
+
 /* Input de categoría */
 .category-input {
   flex: 1;
@@ -52,4 +77,9 @@
 .category-input:focus {
   outline: none;
   box-shadow: none;
+}
+
+.category-input-dark {
+  color: #ffffff;
+  border-bottom: 1px solid #ffffff;
 }
