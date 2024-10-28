@@ -14,7 +14,8 @@ const MainPage = () => {
   const { theme } = useContext(ThemeContext); // Usa el ThemeContext
   const [favorites, setFavorites] = useState([]); 
   const navigate = useNavigate(); 
-
+  const [searchTerm, setSearchTerm] = useState(''); // For holding the search input
+  
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
@@ -28,6 +29,8 @@ const MainPage = () => {
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); 
   };
+
+  
 
   const handleWorkerClick = (workerId) => {
     navigate(`/workerProfile/${workerId}`); 
@@ -61,34 +64,40 @@ const MainPage = () => {
     fetchWorkers();
   }, [token]);
 
+  const filteredWorkers = workers.filter(worker =>
+    worker.user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    worker.user.lastname.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={`page-container ${theme === 'dark' ? 'main-dark' : 'main-light'}`}>
-      <Header />
-      <div className="content">
-        <Container>
-          <h1 className="text-center my-4">Workers List</h1>
-          <Row>
-            {workers.map((worker, index) => (
-              <Col key={index} md={6} className="mb-4">
-                <WorkerCard
-                  id={worker.id} 
-                  name={worker.user?.name}
-                  lastname={worker.user?.lastname || "Apellido no disponible"}
-                  description={worker.description || "Sin descripción"}
-                  profession={worker.jobTitles?.join(", ") || "Profesión no disponible"}
-                  rating={worker.rating || 0}
-                  isFavorite={favorites.includes(worker.id)} 
-                  toggleFavorite={() => toggleFavorite(worker.id)} 
-                  onClick={() => handleWorkerClick(worker.id)} 
-                />
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </div>
-      <Footer />
+    {/* Pass setSearchTerm to Header */}
+    <Header setSearchTerm={setSearchTerm} />
+    <div className="content">
+      <Container>
+        <h1 className="text-center my-4">Workers List</h1>
+        <Row>
+          {filteredWorkers.map((worker, index) => (
+            <Col key={index} md={6} className="mb-4">
+              <WorkerCard
+                id={worker.id} 
+                name={worker.user?.name}
+                lastname={worker.user?.lastname || "Apellido no disponible"}
+                description={worker.description || "Sin descripción"}
+                profession={worker.jobTitles?.join(", ") || "Profesión no disponible"}
+                rating={worker.rating || 0}
+                isFavorite={favorites.includes(worker.id)}
+                toggleFavorite={() => toggleFavorite(worker.id)}
+                onClick={() => handleWorkerClick(worker.id)}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Container>
     </div>
-  );
+    <Footer />
+  </div>
+);
 };
 
 export default MainPage;
