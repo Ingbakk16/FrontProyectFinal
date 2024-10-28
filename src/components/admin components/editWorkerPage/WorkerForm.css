@@ -1,0 +1,48 @@
+.page-background {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Tema oscuro */
+  .background-dark {
+    background: linear-gradient(to top, #1F1F1F, #333333);
+    color: #ffffff;
+  }
+  
+  /* Estilos del formulario para el tema claro */
+  .edit-worker-form {
+    background: linear-gradient(180deg, #645DB5, #87ACF7);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Tema oscuro para el formulario */
+  .edit-worker-form-dark {
+    background: linear-gradient(180deg, #333333, #1F1F1F);
+    color: #ffffff;
+  }
+  
+  .form-control-dark {
+    background-color: #444444;
+    color: #ffffff;
+    border: 1px solid #888;
+  }
+  
+  .btn-save {
+    background-color: #645DB5;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+  }
+  
+  .btn-cancel {
+    background-color: #f44336;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+  }
+  

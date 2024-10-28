@@ -5,10 +5,6 @@
   flex-direction: column;
 }
 
-/* Tema claro */
-.background-light {
-  background: linear-gradient(180deg, #645DB5, #87ACF7) !important;
-}
 
 /* Tema oscuro */
 .background-dark {

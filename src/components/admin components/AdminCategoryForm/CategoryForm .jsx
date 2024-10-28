@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import SidebarButton from '../sidebar button/sidebarMenu'; 
 import { useNavigate } from 'react-router-dom'; 
+import { ThemeContext } from '../../services/ThemeContext/Theme.context';
+import './CategoryForm.css'; // Archivo CSS para los estilos
 
 const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -11,7 +13,8 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
     description: initialCategory.description,
   });
 
-  const navigate = useNavigate(); 
+  const { theme } = useContext(ThemeContext); // Usa el contexto de tema
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,15 +23,15 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData); 
+    onSubmit(formData);
   };
 
   const handleCancel = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   return (
-    <>
+    <div className={`page-background ${theme === "dark" ? "background-dark" : "background-light"}`}>
       <Header />
       <Container fluid className="d-flex" style={{ minHeight: '90vh' }}>
         <Col md={2} className="bg-dark text-light sidebar-button-padding">
@@ -36,7 +39,7 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
         </Col>
         <Col md={10} className="p-4">
           <h2 className="text-center mb-4">Formulario de Categoría</h2>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} className={`edit-category-form ${theme === "dark" ? "edit-category-form-dark" : ""}`}>
             <Row>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="categoryName">
@@ -47,6 +50,7 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
                     placeholder="Ingresa el nombre de la categoría"
                     value={formData.name}
                     onChange={handleChange}
+                    className={theme === "dark" ? "form-control-dark" : ""}
                     required
                   />
                 </Form.Group>
@@ -61,16 +65,17 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
                     value={formData.description}
                     onChange={handleChange}
                     rows={3}
+                    className={theme === "dark" ? "form-control-dark" : ""}
                     required
                   />
                 </Form.Group>
               </Col>
             </Row>
             <div className="text-center">
-              <Button variant="primary" type="submit" className="me-2">
+              <Button type="submit" className="btn-save me-2">
                 Guardar
               </Button>
-              <Button variant="secondary" className="btn-cancel" type="button" onClick={handleCancel}>
+              <Button type="button" className="btn-cancel" onClick={handleCancel}>
                 Cancelar
               </Button>
             </div>
@@ -78,7 +83,7 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
         </Col>
       </Container>
       <Footer />
-    </>
+    </div>
   );
 };
 

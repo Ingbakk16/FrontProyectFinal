@@ -7,7 +7,7 @@
 .help-container-dark {
   display: flex;
   background: linear-gradient(to bottom,#333333, #1F1F1F, );
-  align-items: stretch; /* Para alinear correctamente los Cols */
+  align-items: stretch; 
   min-height: 90vh;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .flex-nowrap {
-  flex-wrap: nowrap; /* Esto asegura que los elementos no salten de línea */
+  flex-wrap: nowrap; 
 }
 
 .admin-page-dark {
