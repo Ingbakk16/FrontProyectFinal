@@ -37,7 +37,7 @@ const SysAdmin = () => {
   };
 
   return (
-    <div className={`background ${theme === 'dark' ? 'APage-background-dark' : 'APage-background-light'}`}>
+    <div className={`.background ${theme === 'dark' ? 'APage-background-dark' : 'APage-background-light'}`}>
       <Header />
       <Container
         fluid

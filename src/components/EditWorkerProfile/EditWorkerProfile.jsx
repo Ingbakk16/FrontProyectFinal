@@ -116,7 +116,7 @@ const EditWorkerProfile = () => {
 
   return (
     <>
-      <div className={`background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
+      <div className={`.background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
         <Header />
         <Container fluid className="container-fluid-custom">
           <Row className="justify-content-center">
@@ -125,8 +125,8 @@ const EditWorkerProfile = () => {
                 <div className={`profile-initials-circle ${theme === 'dark' ? 'initials-circle-dark' : ''}`}>
                   {getInitials(worker.user.name, worker.user.lastname)}
                 </div>
-                <h3 className={theme === 'dark' ? 'text-light' : 'text-dark'}>{worker.user.name} {worker.user.lastname}</h3>
-                <h5 className={theme === 'dark' ? 'text-light' : 'text-dark'}>{worker.jobTitles.join(", ")}</h5>
+                <h3 className={theme === 'dark' ? 'text-dark' : 'text-light'}>{worker.user.name} {worker.user.lastname}</h3>
+                <h5 className={theme === 'dark' ? 'text-dark' : 'text-light'}>{worker.jobTitles.join(", ")}</h5>
 
                 <p><strong>Descripción:</strong> {isEditing ? (
                   <Form.Control

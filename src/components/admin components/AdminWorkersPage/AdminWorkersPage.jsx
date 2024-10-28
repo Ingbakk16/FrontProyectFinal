@@ -11,7 +11,6 @@ import "./AdminWOrkersPage.css";
 const AdminWorkersPage = () => {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
-
   const handleEditWorker = (workerName) => {
     console.log(`Editar Trabajador: ${workerName}`);
     navigate(`/adminWorkersEdit`);
@@ -26,11 +25,11 @@ const AdminWorkersPage = () => {
   };
 
   return (
-    <div className={`background ${theme === 'dark' ? 'APage-background-dark' : 'APage-background-light'}`}>
+    <div className={`.background ${theme === 'dark' ? 'APage-background-dark' : 'APage-background-light'}`}>
       <Header />
       <Container
         fluid
-        className={`admin-categories-page-background ${theme === 'dark' ? 'admin-page-dark' : ''} d-flex flex-column justify-content-center align-items-center`}
+        className={`admin-categories-page-background ${theme === 'dark' ? 'admin-page-dark' : 'APage-background-light'} d-flex flex-column justify-content-center align-items-center`}
         style={{ minHeight: "90vh" }}
       >
         <Row className="justify-content-center align-items-center w-100 full-height-row">

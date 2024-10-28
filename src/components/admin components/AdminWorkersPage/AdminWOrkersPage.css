@@ -14,7 +14,7 @@
 }
 
 .APage-background-light{
-    background:  #6BF8EF;
+    background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
 }
 
 .APage-background-dark{

@@ -67,7 +67,66 @@ const WorkerProfile = () => {
     };
 
     fetchWorkerProfile();
-  }, [id, token, theme]); // Agrega `theme` como dependencia
+  }, [id, token, theme]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8081/api/workers/${id}/comments`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Error fetching comments");
+        }
+
+        const data = await response.json();
+        setComments(data);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, [id, token]); // Se ejecuta cada vez que cambian `id` o `token`
+
+  const handleAddComment = async () => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(
+        `http://localhost:8081/api/workers/${id}/rate`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newComment),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error adding comment");
+      }
+
+      // Recargar comentarios después de añadir el nuevo comentario
+      const addedComment = await response.json();
+      setComments([...comments, addedComment]);
+      setNewComment({ comment: "", rating: 0 });
+      setHasCommented(true); // Evita que el usuario vuelva a comentar
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleCommentChange = (e) => {
     const { name, value } = e.target;
@@ -99,7 +158,8 @@ const WorkerProfile = () => {
     <>
       <div
         key={theme}
-        fluid className={`background ${
+        fluid
+        className={`.background ${
           theme === "dark" ? "background-dark" : "background-light"
         }`}
       >
@@ -121,24 +181,18 @@ const WorkerProfile = () => {
                 >
                   {getInitials(worker.user.name, worker.user.lastname)}
                 </div>
-                <h3 className={theme === "dark" ? "text-light" : "text-dark"}>
+                <h3 className="text-light">
                   {worker.user.name} {worker.user.lastname}
                 </h3>
-                <h5 className={theme === "dark" ? "text-light" : "text-dark"}>
-                  {worker.jobTitles.join(", ")}
-                </h5>
-
-                <p className={theme === "dark" ? "text-light" : "text-dark"}>
+                <h5 className="text-light">{worker.jobTitles.join(", ")}</h5>
+  
+                <p className="text-light">
                   {worker.user?.email || "Email no disponible"}
                 </p>
-                <p
-                  className={`worker-description ${
-                    theme === "dark" ? "text-light" : "text-dark"
-                  }`}
-                >
+                <p className="text-light">
                   "{worker.description || "Sin descripción"}"
                 </p>
-
+  
                 {worker.imageUrl ? (
                   <div className="work-images-carousel">
                     <img
@@ -150,7 +204,7 @@ const WorkerProfile = () => {
                 ) : (
                   <p>No hay imágenes de trabajo disponibles</p>
                 )}
-
+  
                 <Button
                   variant="primary"
                   className={`mt-4 comments-toggle-button ${
@@ -160,24 +214,41 @@ const WorkerProfile = () => {
                 >
                   {showComments ? "OCULTAR COMENTARIOS" : "MOSTRAR COMENTARIOS"}
                 </Button>
-
+  
                 {showComments && (
-                  <div className="mt-4 comments-section">
-                    <h4>Comentarios:</h4>
+                  <div
+                    className={`mt-4 comments-container ${
+                      theme === "dark"
+                        ? "comments-container-dark"
+                        : "comments-container-light"
+                    }`}
+                  >
+                    <h4 className="text-dark">Comentarios:</h4>
                     {comments.length > 0 ? (
                       comments.map((comment, index) => (
-                        <div key={index} className="comment">
-                          <strong>{comment.name}</strong>
-                          <p>{comment.comment}</p>
-                          <p>Calificación: {"★".repeat(comment.rating)}</p>
-                        </div>
+                        <Card
+                          key={index}
+                          className={`comment-card ${
+                            theme === "dark"
+                              ? "comment-card-dark"
+                              : "comment-card-light"
+                          } mb-3`}
+                        >
+                          <Card.Body>
+                            <strong>{comment.ratedByUserId}</strong>
+                            <p>{comment.comment}</p>
+                            <p>Calificación: {"★".repeat(comment.rating)}</p>
+                          </Card.Body>
+                        </Card>
                       ))
                     ) : (
-                      <p>No hay comentarios disponibles</p>
+                      <p className="text-dark">
+                        No hay comentarios disponibles
+                      </p>
                     )}
                   </div>
                 )}
-
+  
                 <Button
                   variant="primary"
                   className={`mt-4 comments-toggle-button ${
@@ -189,7 +260,7 @@ const WorkerProfile = () => {
                     ? "OCULTAR AGREGAR COMENTARIO"
                     : "AGREGAR COMENTARIO"}
                 </Button>
-
+  
                 {showCommentForm && (
                   <div className="add-comment-form mt-4 show">
                     <h5>Añadir un nuevo comentario</h5>

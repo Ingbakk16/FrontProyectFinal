@@ -1,46 +1,80 @@
-/* Modo Claro */
+/* Fondo para el modo claro */
 .background-light {
   background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
 }
 
-.card-custom {
-  background-color: #8677C2;
-  border-radius: 20px;
-  margin: 10%;
-}
-
-.initials-circle {
-  background-color: #645DB5;
-  border-radius: 100%;
-  padding: 5%;
-  color: #fff;
-}
-
-/* Modo Oscuro */
+/* Fondo para el modo oscuro */
 .background-dark {
   background-color: #1F1F1F;
 }
 
-.card-dark {
-  background-color: #333333;
+/* Card personalizado */
+.card-custom {
+  border-radius: 20px;
+  background: #5850b1;
   margin: 10%;
 }
 
+/* Fondo de Card en modo oscuro */
+.card-dark {
+  background-color: #333333;
+}
+
+/* Círculo de iniciales para ambos modos */
+.initials-circle,
 .initials-circle-dark {
-  background-color: #444444;
-    border-radius: 100%;
+  border-radius: 100%;
   padding: 5%;
   color: #ffffff;
 }
 
+.initials-circle {
+  background-color: #645DB5;
+}
+
+.initials-circle-dark {
+  background-color: #444444;
+}
+
+/* Contenedor de comentarios con desplazamiento */
+.comments-container {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.comments-container-light {
+  background-color: #333;
+}
+
+.comments-container-dark {
+  background-color: #333;
+  color: #ffffff;
+}
+
+/* Estilo de cada tarjeta de comentario */
+.comment-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment-card-light {
+
+  color: #333;
+}
+
+.comment-card-dark {
+  background-color: #444;
+  color: #ffffff;
+  border: none;
+}
+
+/* Estilos adicionales para controles en modo oscuro */
 .form-control-dark {
   background-color: #333333;
   color: #ffffff;
   border-color: #444444;
-}
-
-.text-light {
-  color: #ffffff;
 }
 
 .button-dark {
@@ -53,3 +87,20 @@
   font-style: italic;
 }
 
+.text-light {
+  color: #ffffff;
+}
+
+/* Estilo para contenedor de imágenes de trabajo */
+.work-images-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.work-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 0 10px;
+}

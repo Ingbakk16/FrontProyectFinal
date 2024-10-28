@@ -14,7 +14,7 @@ const AdminCategoriesPage = () => {
   const handleAddCategory = () => {
     navigate('/AdminCategoryForm/new');
   };
-  debugger;
+
 
   const handleEditCategory = (categoryId) => {
     navigate(`/AdminCategoryForm/${categoryId}`);
@@ -25,7 +25,7 @@ const AdminCategoriesPage = () => {
   };
 
   return (
-    <div className={`background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
+    <div className={`.background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
       <Header />
       <Container fluid className={`admin-categories-page-background ${theme === 'dark' ? 'admin-page-dark' : 'help-container'} d-flex flex-column justify-content-center align-items-center`}>
         <Row className="justify-content-center align-items-center w-100 full-height-row">

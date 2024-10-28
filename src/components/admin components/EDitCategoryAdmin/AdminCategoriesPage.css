@@ -1,10 +1,9 @@
 /* Fondo completo de la página de administración de categorías */
-.admin-page-light {
+
+.background{
   background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
-  color: #000000;
 }
 
-.help-container,
 .help-container-dark {
   display: flex;
   background: linear-gradient(to bottom,#333333, #1F1F1F, );
@@ -13,7 +12,7 @@
 }
 
 .background-light{
-  background: #6BF8EF;
+  background: linear-gradient(to bottom, #6BF8EF, #87ACF7, #645DB5);
 }
 
 .flex-nowrap {
