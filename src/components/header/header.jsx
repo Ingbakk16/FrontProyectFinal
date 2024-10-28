@@ -5,7 +5,7 @@ import { ThemeContext } from '../services/ThemeContext/Theme.context'; // Import
 import { useNavigate } from "react-router-dom";
 import './buttons.css';
 
-const Header = () => {
+const Header = ({ setSearchTerm }) => {
   const { handleLogout, isWorker, isAdmin } = useContext(AuthenticationContext); // Incluye isAdmin
   const { theme } = useContext(ThemeContext); // Incluye el theme del ThemeContext
   const navigate = useNavigate();
@@ -68,8 +68,9 @@ const Header = () => {
           <Form className="d-flex search-form mx-auto my-2">
             <FormControl 
               type="text" 
-              placeholder="search" 
-              className={` ${theme === 'dark' ? 'search-dark' : ''}`} 
+              placeholder="Search by name or lastname" 
+              className={theme === 'dark' ? 'search-dark' : ''}
+              onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
               aria-label="Buscar" 
             />
           </Form>
