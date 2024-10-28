@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
 import UserCard from "../AdminUserCard/UserCard";
 import { useNavigate } from "react-router-dom";
 import SidebarButton from "../sidebar button/sidebarMenu";
+import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import "./AdminWOrkersPage.css";
 
 const AdminWorkersPage = () => {
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   const handleEditWorker = (workerName) => {
     console.log(`Editar Trabajador: ${workerName}`);
@@ -16,20 +18,22 @@ const AdminWorkersPage = () => {
   };
 
   const handleDeleteWorker = (workerName) => {
-    // Lógica para eliminar el trabajador
     console.log(`Eliminar Trabajador: ${workerName}`);
   };
 
   const handleViewWorkerProfile = (workerName) => {
-    // Lógica para ver el perfil del trabajador
     console.log(`Ver Perfil del Trabajador: ${workerName}`);
   };
 
   return (
-    <>
-      <div className="admin-categories-page-background">
-        <Header />
-        <Container fluid className="d-flex" style={{ minHeight: "90vh" }}>
+    <div className={`background ${theme === 'dark' ? 'APage-background-dark' : 'APage-background-light'}`}>
+      <Header />
+      <Container
+        fluid
+        className={`admin-categories-page-background ${theme === 'dark' ? 'admin-page-dark' : ''} d-flex flex-column justify-content-center align-items-center`}
+        style={{ minHeight: "90vh" }}
+      >
+        <Row className="justify-content-center align-items-center w-100 full-height-row">
           <Col md={2} className="bg-dark text-light sidebar-button-padding">
             <SidebarButton />
           </Col>
@@ -51,10 +55,10 @@ const AdminWorkersPage = () => {
               </Col>
             </Row>
           </Col>
-        </Container>
-        <Footer />
-      </div>
-    </>
+        </Row>
+      </Container>
+      <Footer />
+    </div>
   );
 };
 

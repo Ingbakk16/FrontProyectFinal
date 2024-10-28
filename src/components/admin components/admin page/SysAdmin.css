@@ -1,27 +1,20 @@
 
 
-/* Sidebar Menu Buttons */
-.sidebar-button {
-  width: 100%;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #3a2dcd;
-  color: #fff;
-  border-radius: 1rem;
-  border: none;
-  text-align: left;
-  font-size: 16px;
-  transition: background-color 0.3s, transform 0.3s;
+/* Fondo para tema oscuro */
+.admin-categories-page-background.admin-page-dark {
+  background: linear-gradient(to top, #333333, #1F1F1F, #000000);
+  color: #ffffff;
 }
 
-.sidebar-button:hover {
-  background-color: #645DB5; /* Cambia el color al hacer hover */
-  transform: translateY(-2px); /* Efecto de "elevación" al pasar el mouse */
-}
-
-.admin-categories-page-background {
+/* Fondo claro y oscuro para el contenedor principal */
+.APage-background-light {
   background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+}
+
+.APage-background-dark {
+  background: linear-gradient(to top, #333333, #1F1F1F, #000000);
+}
+
+.admin-page-light{
+  background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
 }

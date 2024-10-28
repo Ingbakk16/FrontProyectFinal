@@ -2,11 +2,18 @@ import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
-import './SidebarMenu.css'; 
+import './SidebarMenu.css';
 
 const SidebarMenu = () => {
   const navigate = useNavigate();
-  const { theme } = useContext(ThemeContext); // Usa ThemeContext para verificar el tema actual
+  const themeContext = useContext(ThemeContext);
+
+  if (!themeContext) {
+    console.error("ThemeContext no está disponible. Asegúrate de que ThemeContextProvider envuelva este componente.");
+    return null; // O un mensaje alternativo para los usuarios
+  }
+
+  const { theme } = themeContext;
 
   const handleEditUser = () => navigate('/Admin');
   const handleDeleteReview = () => navigate('/deleteReview');

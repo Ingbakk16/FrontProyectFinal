@@ -1,6 +1,22 @@
+/* Fondo para tema claro */
 .admin-categories-page-background {
     background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-  }
+}
+
+/* Fondo para tema oscuro */
+.admin-page-dark {
+    background: linear-gradient(to top, #333333, #1F1F1F, #000000);
+    color: #ffffff;
+    min-Height: "90vh"
+}
+
+.APage-background-light{
+    background:  #6BF8EF;
+}
+
+.APage-background-dark{
+    background: linear-gradient(to top, #333333, #1F1F1F, #000000);
+}

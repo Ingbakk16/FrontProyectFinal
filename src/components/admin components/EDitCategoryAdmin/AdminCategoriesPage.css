@@ -12,6 +12,10 @@
   min-height: 90vh;
 }
 
+.background-light{
+  background: #6BF8EF;
+}
+
 .flex-nowrap {
   flex-wrap: nowrap; /* Esto asegura que los elementos no salten de línea */
 }
