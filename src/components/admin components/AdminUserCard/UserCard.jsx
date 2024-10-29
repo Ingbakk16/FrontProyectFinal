@@ -1,18 +1,18 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
-const UserCard = ({ username, role, email, onEdit, onDelete, onViewProfile, showViewProfile, isWorker }) => {
+const UserCard = ({ username, name, lastname, role, email, onEdit, onDelete, onViewProfile, showViewProfile, isWorker }) => {
   const handleEdit = () => {
-    // Llamar a la función onEdit según si es un trabajador o un usuario
     onEdit(isWorker);
   };
 
   return (
     <Card className="p-3 bg-primary text-light d-flex align-items-center justify-content-between">
       <div>
-        <h5>{username}</h5>
-        <p>{role}</p>
-        <p>{email}</p>
+        <h5>{`${name} ${lastname}`}</h5> {/* Mostrar nombre completo */}
+        <p>Username: {username}</p>        {/* Mostrar el username */}
+        <p>Role: {role || "Worker"}</p>    {/* Mostrar el rol del usuario */}
+        <p>Email: {email}</p>              {/* Mostrar el correo */}
       </div>
       <div className="d-flex">
         <Button variant="outline-light" className="mx-2" onClick={handleEdit}>
