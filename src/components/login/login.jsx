@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { Button, Card, Form, FormGroup } from "react-bootstrap";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
 import { ThemeContext } from "../services/ThemeContext/Theme.context";
@@ -8,39 +8,65 @@ import "./Login.css"; // Asegúrate de tener este archivo para aplicar los estil
 const Login = () => {
   const { handleLogin } = useContext(AuthenticationContext);
   const { theme } = useContext(ThemeContext);
+  const [loginError, setLoginError] = useState(""); 
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({
-    username: false,
-    password: false,
+    username: "",
+    password: "",
   });
-  const [loginError, setLoginError] = useState(""); 
-  const navigate = useNavigate();
-  const usernameRef = useRef(null);
-  const passwordRef = useRef(null);
+
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const USERNAME_MIN_LENGTH = 3;
+  const USERNAME_MAX_LENGTH = 15;
+  const PASSWORD_MIN_LENGTH = 8;
+  
+
+  const validateUsername = (value) => {
+    if (!value) return "El nombre de usuario es obligatorio";
+    if (value.length < USERNAME_MIN_LENGTH) return `Debe tener entre ${USERNAME_MIN_LENGTH} y ${USERNAME_MAX_LENGTH} caracteres`;
+    if (value.length > USERNAME_MAX_LENGTH) return `Debe tener entre ${USERNAME_MIN_LENGTH} y ${USERNAME_MAX_LENGTH} caracteres`;
+    
+    return "";
+  };
+
+  const validatePassword = (value) => {
+    if (!value) return "La contraseña es obligatoria";
+    if (value.length < PASSWORD_MIN_LENGTH) return `Debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres`;
+    
+    return "";
+  };
+
+ 
+
 
   const changeUsernameHandler = (event) => {
-    setUsername(event.target.value);
+    const value = event.target.value;
+    setUsername(value);
+    setErrors((prevErrors) => ({ ...prevErrors, username: validateUsername(value) }));
   };
 
   const changePasswordHandler = (event) => {
-    setPassword(event.target.value);
+    const value = event.target.value;
+    setPassword(value);
+    setErrors((prevErrors) => ({ ...prevErrors, password: validatePassword(value) }));
   };
+
+  useEffect(() => {
+    const allValid =
+      !validateUsername(username) &&
+      !validatePassword(password);
+    setIsFormValid(allValid);
+  }, [username, password]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (usernameRef.current.value.length <= 0) {
-      usernameRef.current.focus();
-      setErrors({ username: true, password: false });
-      return;
-    }
+    if (!isFormValid) return;
 
-    if (password.length <= 0) {
-      passwordRef.current.focus();
-      setErrors({ username: false, password: true });
-      return;
-    }
+    
     
     try {
       const response = await fetch("http://localhost:8081/api/auth/login", {
@@ -60,7 +86,7 @@ const Login = () => {
         const { token } = data;
         localStorage.setItem("token", token);
         handleLogin(username, token);
-        navigate("/profile");
+        navigate("/mainPage");
       } else {
         setLoginError("Usuario o contraseña incorrectos.");
       }
@@ -83,28 +109,34 @@ const Login = () => {
             <FormGroup className="mb-3">
               <Form.Control
                 className={errors.username ? "border border-danger" : ""}
-                ref={usernameRef}
                 value={username}
                 onChange={changeUsernameHandler}
                 type="text"
                 placeholder="Nombre de usuario"
+                style={{
+                  backgroundColor: theme === "dark" ? "#2B2B2B" : "#ffffff",
+                  color: theme === "dark" ? "#ffffff" : "#000000",
+                }}
                 
               />
-              {errors.username && <p className="pt-2 text-danger">El nombre de usuario es obligatorio</p>}
+              {errors.username && <p className="pt-2 text-danger">{errors.username}</p>}
             </FormGroup>
             <FormGroup className="mb-3">
               <Form.Control
                 className={errors.password ? "border border-danger" : ""}
-                ref={passwordRef}
                 value={password}
                 onChange={changePasswordHandler}
                 type="password"
                 placeholder="Contraseña"
+                style={{
+                  backgroundColor: theme === "dark" ? "#2B2B2B" : "#ffffff",
+                  color: theme === "dark" ? "#ffffff" : "#000000",
+                }}
                
               />
-              {errors.password && <p className="pt-2 text-danger">La contraseña es obligatoria</p>}
+               {errors.password && <p className="pt-2 text-danger">{errors.password}</p>}
             </FormGroup>
-            <Button variant="primary" type="submit" className="w-100">
+            <Button variant="primary" type="submit" className="w-100" disabled={!isFormValid}>
               Iniciar sesión
             </Button>
             <p className="text-center mt-3">
