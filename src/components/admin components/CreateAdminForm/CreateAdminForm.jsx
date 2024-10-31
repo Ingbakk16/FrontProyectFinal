@@ -1,19 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
 import Sidebar from "../sidebar button/sidebarMenu";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import "./EditUserForm.css";
+import "./CreateAdminForm.css";
 
-const EditUserForm = () => {
-  const { id } = useParams(); // Captura el ID del usuario desde los parámetros
-  const { theme } = useContext(ThemeContext);
-  const { token } = useContext(AuthenticationContext);
-  const navigate = useNavigate();
-
+const CreateAdminForm = () => {
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -22,66 +17,38 @@ const EditUserForm = () => {
     password: "",
   });
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8081/api/admin/edit/${id}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok)
-          throw new Error("Error al obtener los datos del usuario");
-
-        const data = await response.json();
-        setFormData({
-          username: data.username,
-          name: data.name,
-          lastname: data.lastname,
-          email: data.email,
-          password: "", // La contraseña se debe establecer solo si es necesario actualizarla
-        });
-      } catch (error) {
-        console.error("Error al cargar los datos del usuario:", error);
-      }
-    };
-
-    fetchUserData();
-  }, [id, token]);
+  const { theme } = useContext(ThemeContext);
+  const { token } = useContext(AuthenticationContext);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `http://localhost:8081/api/admin/edit/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch("http://localhost:8081/api/admin/create-admin", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
-        console.log("Usuario actualizado con éxito");
-        navigate("/Admin"); // Redirige de vuelta a la página de administración
+        console.log("Administrador creado con éxito");
+        navigate("/admin"); // Redirige a la página de administración
       } else {
-        throw new Error("Error al actualizar el usuario");
+        console.error("Error al crear administrador");
       }
     } catch (error) {
-      console.error("Error al enviar el formulario:", error);
+      console.error("Error en la solicitud:", error);
     }
   };
 
@@ -90,23 +57,18 @@ const EditUserForm = () => {
   };
 
   return (
-    <div
-      className={`page-background ${
-        theme === "dark" ? "background-dark" : "background-light"
-      }`}
-    >
+    <div className={`page-background ${theme === "dark" ? "background-dark" : "background-light"}`}>
       <Header />
       <Container fluid className="d-flex">
+        {/* Sidebar */}
         <Col md={2} className="bg-dark text-light sidebar-button-padding">
           <Sidebar />
         </Col>
+        
+        {/* Main Content */}
         <Col md={10} className="p-4">
-          <Form
-            onSubmit={handleSubmit}
-            className={`edit-user-form ${
-              theme === "dark" ? "edit-user-form-dark" : ""
-            }`}
-          >
+          <Form onSubmit={handleSubmit} className={`create-admin-form ${theme === "dark" ? "form-dark" : ""}`}>
+            <h3>Crear Administrador</h3>
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
@@ -116,6 +78,7 @@ const EditUserForm = () => {
                     name="username"
                     value={formData.username}
                     onChange={handleChange}
+                    required
                     className={theme === "dark" ? "form-control-dark" : ""}
                   />
                 </Form.Group>
@@ -128,11 +91,13 @@ const EditUserForm = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
+                    required
                     className={theme === "dark" ? "form-control-dark" : ""}
                   />
                 </Form.Group>
               </Col>
             </Row>
+
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
@@ -142,6 +107,7 @@ const EditUserForm = () => {
                     name="lastname"
                     value={formData.lastname}
                     onChange={handleChange}
+                    required
                     className={theme === "dark" ? "form-control-dark" : ""}
                   />
                 </Form.Group>
@@ -154,11 +120,13 @@ const EditUserForm = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
+                    required
                     className={theme === "dark" ? "form-control-dark" : ""}
                   />
                 </Form.Group>
               </Col>
             </Row>
+
             <Row>
               <Col md={12}>
                 <Form.Group className="mb-3">
@@ -168,22 +136,16 @@ const EditUserForm = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
+                    required
                     className={theme === "dark" ? "form-control-dark" : ""}
                   />
                 </Form.Group>
               </Col>
             </Row>
+
             <div className="form-actions">
-              <Button type="submit" className="btn-save">
-                Guardar
-              </Button>
-              <Button
-                type="button"
-                className="btn-cancel"
-                onClick={handleCancel}
-              >
-                Cancelar
-              </Button>
+              <Button type="submit" className="btn-save">Guardar</Button>
+              <Button type="button" className="btn-cancel" onClick={handleCancel}>Cancelar</Button>
             </div>
           </Form>
         </Col>
@@ -193,4 +155,4 @@ const EditUserForm = () => {
   );
 };
 
-export default EditUserForm;
+export default CreateAdminForm;

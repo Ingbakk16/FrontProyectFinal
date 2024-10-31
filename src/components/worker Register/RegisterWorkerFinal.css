@@ -7,6 +7,18 @@
   align-items: center;
 }
 
+.review-step-container {
+  max-width: 500px;  /* Ancho fijo */
+  max-height: 400px; /* Altura fija */
+  margin: 0 auto;    /* Centrar horizontalmente */
+  padding: 20px;
+  overflow-y: auto;  /* Añadir desplazamiento si el contenido excede el tamaño */
+  background-color: #f8f9fa; /* Fondo claro para contraste */
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
 .register-container-dark {
   min-height: 100vh;
   background: linear-gradient(to bottom, #1F1F1F, #2B2B2B, #3A3A3A, #484848);

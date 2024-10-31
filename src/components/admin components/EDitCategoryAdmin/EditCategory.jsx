@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
@@ -7,14 +7,18 @@ import CategoryCard from '../EditCategoryCard/CategoryCard ';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
 import './AdminCategoriesPage.css';
+import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
 
 const AdminCategoriesPage = () => {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
+  const { token } = useContext(AuthenticationContext); // Obtener el token de autenticación
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const handleAddCategory = () => {
     navigate('/AdminCategoryForm/new');
   };
-
 
   const handleEditCategory = (categoryId) => {
     navigate(`/AdminCategoryForm/${categoryId}`);
@@ -24,8 +28,33 @@ const AdminCategoriesPage = () => {
     console.log(`Eliminar categoría: ${categoryId}`);
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:8081/api/jobs/all", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Usar el token de AuthenticationContext
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Error al obtener las categorías");
+        }
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error al cargar las categorías:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, [token]);
+
   return (
-    <div className={`.background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
+    <div className={`background ${theme === 'dark' ? 'background-dark' : 'background-light'}`}>
       <Header />
       <Container fluid className={`admin-categories-page-background ${theme === 'dark' ? 'admin-page-dark' : 'help-container'} d-flex flex-column justify-content-center align-items-center`}>
         <Row className="justify-content-center align-items-center w-100 full-height-row">
@@ -42,24 +71,24 @@ const AdminCategoriesPage = () => {
                 Añadir Categoría
               </Button>
             </div>
-            <Row>
-              <Col md={12} className="mb-3">
-                <CategoryCard
-                  categoryName="Ingeniero"
-                  onEdit={() => handleEditCategory("1")}
-                  onDelete={() => handleDeleteCategory("1")}
-                  darkMode={theme === 'dark'}
-                />
-              </Col>
-              <Col md={12} className="mb-3">
-                <CategoryCard
-                  categoryName="Doctor"
-                  onEdit={() => handleEditCategory("2")}
-                  onDelete={() => handleDeleteCategory("2")}
-                  darkMode={theme === 'dark'}
-                />
-              </Col>
-            </Row>
+            
+            {loading ? (
+              <p>Cargando categorías...</p>
+            ) : (
+              <Row>
+                {categories.map((category) => (
+                  <Col md={12} className="mb-3" key={category.id}>
+                    <CategoryCard
+                      categoryName={category.title}
+                      categoryDescription={category.description}
+                      onEdit={() => handleEditCategory(category.id)}
+                      onDelete={() => handleDeleteCategory(category.id)}
+                      darkMode={theme === 'dark'}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            )}
           </Col>
         </Row>
       </Container>

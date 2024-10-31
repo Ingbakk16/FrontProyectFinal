@@ -12,7 +12,7 @@ const RegisterWorkerFinal = () => {
     jobId: "", 
     direccion: "",
     description: "",
-    workImages: [], 
+    imageUrl: "", // Cambiamos de workImages a un campo de URL único para la imagen
     rating: 0, 
   });
   const [categories, setCategories] = useState([]);
@@ -49,12 +49,6 @@ const RegisterWorkerFinal = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleMultipleImagesChange = (e) => {
-    const files = Array.from(e.target.files);
-    const imageUrls = files.map(file => URL.createObjectURL(file)); 
-    setFormData({ ...formData, workImages: imageUrls });
-  };
-
   const validateStep = () => {
     const newErrors = [];
     if (step === 1) {
@@ -62,7 +56,7 @@ const RegisterWorkerFinal = () => {
       if (!formData.jobId) newErrors.push("Debe seleccionar un trabajo.");
       if (formData.direccion.trim() === "") newErrors.push("La dirección es obligatoria.");
     } else if (step === 2) {
-      if (formData.workImages.length === 0) newErrors.push("Debe subir al menos una imagen de su trabajo.");
+      if (!formData.imageUrl.trim()) newErrors.push("Debe ingresar la URL de una imagen de su trabajo.");
       if (formData.description.trim() === "") newErrors.push("La descripción es obligatoria.");
     }
     return newErrors;
@@ -96,8 +90,9 @@ const RegisterWorkerFinal = () => {
       direccion: formData.direccion, 
       rating: 0, 
       jobId: formData.jobId,
-      imageUrl: formData.workImages[0],
+      imageUrl: formData.imageUrl, // Usamos la URL en lugar de una imagen cargada
     };
+
     try {
       const response = await fetch('http://localhost:8081/api/workers/worker', {
         method: 'PUT',
@@ -116,7 +111,6 @@ const RegisterWorkerFinal = () => {
         handleLogout(); 
 
         navigate("/login"); 
-
       } else {
         const errorData = await response.json();
         setErrors([errorData.message]);
@@ -150,17 +144,14 @@ const RegisterWorkerFinal = () => {
       case 2:
         return (
           <>
-            <Form.Group controlId="workImages">
-              <Form.Label>Imágenes de Trabajo</Form.Label>
-              <Form.Control type="file" accept="image/*" multiple onChange={handleMultipleImagesChange} />
-            </Form.Group>
+            <InputField label="URL de Imagen de Trabajo" name="imageUrl" type="text" value={formData.imageUrl} onChange={handleChange} />
             <InputField label="Descripción" name="description" as="textarea" rows={3} value={formData.description} onChange={handleChange} />
           </>
         );
       case 3:
         return (
-          <div className="text-center">
-            <h4>Revisa tu información</h4>
+          <div className="review-step-container"> {/* Clase CSS para estilos */}
+            <h4 className="text-center">Revisa tu información</h4>
             {Object.entries(formData).map(([key, value], idx) => (
               key !== 'rating' && ( 
               <p key={idx}>

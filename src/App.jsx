@@ -21,6 +21,7 @@ import CategoryForm from "./components/admin components/AdminCategoryForm/Catego
 import AdminCategoriesPage from "./components/admin components/EDitCategoryAdmin/EditCategory";
 import { ThemeContextProvider } from "./components/services/ThemeContext/Theme.context";
 import SettingsPage from "./components/Ajustes/SettingsPage";
+import CreateAdminForm from "./components/admin components/CreateAdminForm/CreateAdminForm";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -69,7 +70,7 @@ const App = () => {
       element: <SysAdmin />,
     },
     {
-      path: "/editUserAdmin",
+      path: "/editUserAdmin/:id",
       element: <EditUserForm />,
     },
     {
@@ -87,6 +88,10 @@ const App = () => {
     {
       path: "/AdminCategoryForm/:categoryId",
       element: <CategoryForm />,
+    },
+    {
+      path: "/AdminCreateForm",
+      element: <CreateAdminForm />,
     },
     {
       path: "/Settings",
