@@ -1,35 +1,52 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import SidebarButton from '../sidebar button/sidebarMenu';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
-import './WorkerForm.css';
+import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
+import './MakeWorkerForm.css';
 
-const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
-  const [worker, setWorker] = useState({
-    description: initialWorker.description || '',
-    dni: initialWorker.dni || '',
-    direccion: initialWorker.direccion || '',
-    jobId: initialWorker.jobId || '',
-    imageUrl: initialWorker.imageUrl || '',
+const MakeWorkerForm = ({ initialWorker = { description: '', dni: '', direccion: '', jobId: '', imageUrl: '' } }) => {
+  const [formData, setFormData] = useState({
+    description: initialWorker.description,
+    dni: initialWorker.dni,
+    direccion: initialWorker.direccion,
+    jobId: initialWorker.jobId,
+    imageUrl: initialWorker.imageUrl,
   });
 
   const { theme } = useContext(ThemeContext);
+  const { token } = useContext(AuthenticationContext);
+  const { id } = useParams(); // Captura el userId desde la URL
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setWorker({
-      ...worker,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(worker);
+    try {
+      const response = await fetch(`http://localhost:8081/api/admin/worker/${id}`, {
+        method: 'PUT', 
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        navigate('/AdminEditWorkers'); 
+      } else {
+        throw new Error('Error al crear o actualizar el trabajador');
+      }
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -44,100 +61,88 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
           <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
-          <h2 className="text-center mb-4">
-            {initialWorker.description ? 'Editar Trabajador' : 'Crear Trabajador'}
-          </h2>
-          <Form onSubmit={handleSubmit} className={`edit-worker-form ${theme === "dark" ? "edit-worker-form-dark" : ""}`}>
+          <h2 className="text-center mb-4">Formulario de Trabajador</h2>
+          <Form onSubmit={handleSubmit} className={`edit-category-form ${theme === "dark" ? "edit-category-form-dark" : ""}`}>
             <Row>
-              <Col md={6}>
+              <Col md={6} className="mb-3">
                 <Form.Group controlId="workerDescription">
                   <Form.Label>Descripción</Form.Label>
                   <Form.Control
                     as="textarea"
-                    rows={3}
-                    placeholder="Breve descripción"
                     name="description"
-                    value={worker.description}
+                    placeholder="Descripción de la experiencia"
+                    value={formData.description}
                     onChange={handleChange}
+                    rows={3}
                     className={theme === "dark" ? "form-control-dark" : ""}
                     required
                   />
                 </Form.Group>
               </Col>
-              <Col md={6}>
-                <Form.Group controlId="workerDni">
+              <Col md={6} className="mb-3">
+                <Form.Group controlId="workerDNI">
                   <Form.Label>DNI</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="DNI"
                     name="dni"
-                    value={worker.dni}
+                    placeholder="Ingresa el DNI"
+                    value={formData.dni}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
                     required
                   />
                 </Form.Group>
               </Col>
-            </Row>
-
-            <Row className="mt-3">
-              <Col md={6}>
+              <Col md={6} className="mb-3">
                 <Form.Group controlId="workerDireccion">
                   <Form.Label>Dirección</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Dirección"
                     name="direccion"
-                    value={worker.direccion}
+                    placeholder="Ingresa la dirección"
+                    value={formData.direccion}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
                     required
                   />
                 </Form.Group>
               </Col>
-              <Col md={6}>
+              <Col md={6} className="mb-3">
                 <Form.Group controlId="workerJobId">
-                  <Form.Label>Job ID</Form.Label>
+                  <Form.Label>ID del Trabajo</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="ID del trabajo"
                     name="jobId"
-                    value={worker.jobId}
+                    placeholder="Ingresa el ID del trabajo"
+                    value={formData.jobId}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
                     required
                   />
                 </Form.Group>
               </Col>
-            </Row>
-
-            <Row className="mt-3">
-              <Col md={6}>
+              <Col md={6} className="mb-3">
                 <Form.Group controlId="workerImageUrl">
                   <Form.Label>URL de la Imagen</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="URL de la imagen"
                     name="imageUrl"
-                    value={worker.imageUrl}
+                    placeholder="Ingresa la URL de la imagen"
+                    value={formData.imageUrl}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
-                    required
                   />
                 </Form.Group>
               </Col>
             </Row>
-
-            <Row className="mt-4 text-center">
-              <Col>
-                <Button type="submit" className="btn-save">
-                  Guardar
-                </Button>
-                <Button type="button" className="ms-3 btn-cancel" onClick={handleCancel}>
-                  Cancelar
-                </Button>
-              </Col>
-            </Row>
+            <div className="text-center">
+              <Button type="submit" className="btn-save me-2">
+                Guardar
+              </Button>
+              <Button type="button" className="btn-cancel" onClick={handleCancel}>
+                Cancelar
+              </Button>
+            </div>
           </Form>
         </Col>
       </Container>
@@ -146,4 +151,4 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
   );
 };
 
-export default WorkerForm;
+export default MakeWorkerForm;

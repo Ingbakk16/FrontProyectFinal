@@ -45,27 +45,51 @@ const SysAdmin = () => {
     navigate(`/editUserAdmin/${userId}`);
   };
 
-  const handleDelete = (username) => {
-    console.log(`Eliminar: ${username}`);
-  };
+  const handleDelete = async (userId) => {
+    if (!window.confirm("¿Estás seguro de que deseas eliminar este usuario?"))
+      return;
+    
+    try {
+      const response = await fetch(
+        `http://localhost:8081/api/admin/${userId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      
+      if (response.ok) {
+        console.log(`Usuario con ID ${userId} eliminado con éxito`);
+        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
 
-  const handleViewAdminProfile = (username) => {
-    console.log(`Ver Perfil del Administrador: ${username}`);
+      } else {
+        throw new Error("Error al eliminar el usuario");
+      }
+    } catch (error) {
+      console.error("Error al intentar eliminar el usuario:", error);
+    }
   };
-
+  
+  const handleMakeWorker = (userId) => {
+    navigate(`/MakeWorkerForm/${userId}`);
+  };
+  
   const handleAddAdmin = () => {
     navigate("/AdminCreateForm");
   };
-
+  
   const handleAddUser = () => {
     navigate("/addUser");
   };
-
+  
   return (
     <div
-      className={`background ${
-        theme === "dark" ? "APage-background-dark" : "APage-background-light"
-      }`}
+    className={`background ${
+      theme === "dark" ? "APage-background-dark" : "APage-background-light"
+    }`}
     >
       <Header />
       <Container
@@ -121,11 +145,9 @@ const SysAdmin = () => {
                         email={user.email}
                         role={user.role?.name || "Usuario"}
                         onEdit={() => handleEdit(user.id)}
-                        onDelete={() => handleDelete(user.username)}
-                        onViewProfile={() =>
-                          handleViewAdminProfile(user.username)
-                        }
-                        showViewProfile={true}
+                        onDelete={() => handleDelete(user.id)}
+                        onMakeWorker={() => handleMakeWorker(user.id)} // Pasa la función de "Make Worker"
+                        showMakeWorker={true} // Habilita el botón "Make Worker"
                         isWorker={false}
                       />
                     </Col>

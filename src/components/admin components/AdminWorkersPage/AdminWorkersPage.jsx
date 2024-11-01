@@ -56,6 +56,10 @@ const AdminWorkersPage = () => {
     console.log("Añadir nuevo trabajador");
   };
 
+  const handleViewReviews = (workerId) => {
+    navigate(`/deleteReview/${workerId}`);
+  };
+
   return (
     <div className={`background ${theme === 'dark' ? 'APage-background-dark' : 'APage-background-light'}`}>
       <Header />
@@ -83,7 +87,7 @@ const AdminWorkersPage = () => {
             {loading ? (
               <p>Cargando trabajadores...</p>
             ) : (
-              <div className="worker-list-container"> {/* Contenedor con desplazamiento */}
+              <div className="worker-list-container">
                 <Row>
                   {workers.map((worker) => (
                     <Col md={12} className="mb-3" key={worker.id}>
@@ -95,7 +99,9 @@ const AdminWorkersPage = () => {
                         onEdit={() => handleEditWorker(worker.user.username)}
                         onDelete={() => handleDeleteWorker(worker.user.username)}
                         onViewProfile={() => handleViewWorkerProfile(worker.user.username)}
+                        onViewReviews={() => handleViewReviews(worker.id)} // Pasa la función handleViewReviews
                         showViewProfile={false}
+                        showDeleteReviews={true} // Activa el botón "Delete Reviews" en UserCard
                         isWorker={true}
                       />
                     </Col>

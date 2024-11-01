@@ -2,18 +2,21 @@ import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
-import SidebarButton from '../sidebar button/sidebarMenu'; 
-import { useNavigate } from 'react-router-dom'; 
+import SidebarButton from '../sidebar button/sidebarMenu';
+import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
-import './CategoryForm.css'; // Archivo CSS para los estilos
+import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
+import './CategoryForm.css';
 
-const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmit }) => {
+const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRequired: '' } }) => {
   const [formData, setFormData] = useState({
-    name: initialCategory.name,
+    title: initialCategory.title,
     description: initialCategory.description,
+    skillsRequired: initialCategory.skillsRequired,
   });
-
-  const { theme } = useContext(ThemeContext); // Usa el contexto de tema
+  
+  const { theme } = useContext(ThemeContext);
+  const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,9 +24,26 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    try {
+      const response = await fetch('http://localhost:8081/api/admin/jobs', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      if (response.ok) {
+        navigate('/AdminEditCategory'); 
+      } else {
+        throw new Error('Error al crear la categoría');
+      }
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -42,13 +62,13 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
           <Form onSubmit={handleSubmit} className={`edit-category-form ${theme === "dark" ? "edit-category-form-dark" : ""}`}>
             <Row>
               <Col md={6} className="mb-3">
-                <Form.Group controlId="categoryName">
-                  <Form.Label>Nombre de la Categoría</Form.Label>
+                <Form.Group controlId="categoryTitle">
+                  <Form.Label>Título de la Categoría</Form.Label>
                   <Form.Control
                     type="text"
-                    name="name"
-                    placeholder="Ingresa el nombre de la categoría"
-                    value={formData.name}
+                    name="title"
+                    placeholder="Ingresa el título de la categoría"
+                    value={formData.title}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
                     required
@@ -67,6 +87,19 @@ const CategoryForm = ({ initialCategory = { name: '', description: '' }, onSubmi
                     rows={3}
                     className={theme === "dark" ? "form-control-dark" : ""}
                     required
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6} className="mb-3">
+                <Form.Group controlId="categorySkillsRequired">
+                  <Form.Label>Habilidades Requeridas</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="skillsRequired"
+                    placeholder="Especifica las habilidades requeridas"
+                    value={formData.skillsRequired}
+                    onChange={handleChange}
+                    className={theme === "dark" ? "form-control-dark" : ""}
                   />
                 </Form.Group>
               </Col>

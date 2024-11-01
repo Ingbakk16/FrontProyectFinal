@@ -159,20 +159,6 @@ const EditUserForm = () => {
                 </Form.Group>
               </Col>
             </Row>
-            <Row>
-              <Col md={12}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Contraseña</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
             <div className="form-actions">
               <Button type="submit" className="btn-save">
                 Guardar

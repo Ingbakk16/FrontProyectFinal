@@ -12,7 +12,7 @@ import { AuthenticationContext } from '../../services/authenticationContext/auth
 const AdminCategoriesPage = () => {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
-  const { token } = useContext(AuthenticationContext); // Obtener el token de autenticación
+  const { token } = useContext(AuthenticationContext);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,8 +24,29 @@ const AdminCategoriesPage = () => {
     navigate(`/AdminCategoryForm/${categoryId}`);
   };
 
-  const handleDeleteCategory = (categoryId) => {
-    console.log(`Eliminar categoría: ${categoryId}`);
+  const handleDeleteCategory = async (categoryId) => {
+    if (!window.confirm("¿Estás seguro de que deseas eliminar esta categoría?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:8081/api/admin/jobs/${categoryId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        console.log(`Categoría con ID ${categoryId} eliminada con éxito`);
+        setCategories((prevCategories) =>
+          prevCategories.filter((category) => category.id !== categoryId)
+        );
+      } else {
+        throw new Error("Error al eliminar la categoría");
+      }
+    } catch (error) {
+      console.error("Error al intentar eliminar la categoría:", error);
+    }
   };
 
   useEffect(() => {
@@ -34,7 +55,7 @@ const AdminCategoriesPage = () => {
         const response = await fetch("http://localhost:8081/api/jobs/all", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // Usar el token de AuthenticationContext
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });

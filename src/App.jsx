@@ -22,6 +22,9 @@ import AdminCategoriesPage from "./components/admin components/EDitCategoryAdmin
 import { ThemeContextProvider } from "./components/services/ThemeContext/Theme.context";
 import SettingsPage from "./components/Ajustes/SettingsPage";
 import CreateAdminForm from "./components/admin components/CreateAdminForm/CreateAdminForm";
+import MakeWorkerForm from "./components/admin components/MakeWorkerForm/MakeWorkerForm.jsx";
+import DeleteReview from "./components/admin components/AdminWorkerReviews/DeleteReview.jsx";
+
 
 const App = () => {
   const router = createBrowserRouter([
@@ -96,6 +99,18 @@ const App = () => {
     {
       path: "/Settings",
       element: <SettingsPage />,
+    },
+    {
+      path: "/makeWorkerForm/:id",
+      element: <MakeWorkerForm />,
+    },
+    {
+      path: "/DeleteReview",
+      element: <DeleteReview />,
+    },
+    {
+      path: "/DeleteReview/:workerId",
+      element: <DeleteReview />,
     },
     {
     path: "/",
