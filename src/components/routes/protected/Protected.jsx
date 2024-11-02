@@ -1,17 +1,46 @@
 import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 
-const Protected = () => {
-    const { token } = useContext(AuthenticationContext);
+const Protected = ({ allowedRoles }) => {
+    const { token, role, loading } = useContext(AuthenticationContext);
 
-    if (!token)
-        return <Navigate to = "/login"/>;
+    if (loading) {
+        return <div>Loading...</div>;
+      }
 
-    return <Outlet/>;
+    
+    
 
+
+    // Redirect to login if not authenticated
+    if (!token) {
+        return <Navigate to="/login" replace />;
+    }
+
+
+    
+
+    if (!allowedRoles.includes(role)) {
+        return <Navigate to="/unauthorized" replace />;
+      }
+
+
+    console.log("Token:", token);
+    console.log("Role:", role); 
+    console.log("Allowed roles:", allowedRoles);
+    console.log("Current role:", role);
+    console.log("Role included in allowedRoles:", allowedRoles.includes(role)) 
+    console.log("Allowed roles:", allowedRoles);
+    console.log("Current role:", role);
+    console.log("Role included in allowedRoles:", allowedRoles.includes(role));   
+
+    
+
+    // Render child routes if authenticated and authorized
+    return <Outlet />;
 };
 
-export default Protected;
-
+export default Protected; 

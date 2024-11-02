@@ -24,90 +24,46 @@ import SettingsPage from "./components/Ajustes/SettingsPage";
 
 const App = () => {
   const router = createBrowserRouter([
-    {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path: "/help",
-      element: <HelpSeccion />,
-    },
-    {
-      path: "/register",
-      element: <Register />,
-    },
-    {
-      path: "/mainPage",
-      element: <MainPage />,
-    },
-    {
-      path: "/registerWorker",
-      element: <RegisterWorkerFinal />,
-    },
-    {
-      path: "/workerProfile/:id", 
-      element: <WorkerProfile />,
-    },
-    {
-      path: "/categories",
-      element: <CategoriesPage />,
-    },
-    {
-      path: "/favWorkers",
-      element: <FavoritesPage />,
-    },
-    {
-      path: "/editWorker",
-      element: <EditWorkerProfile />,
-    },
-    {
-      path: "*",
-      element: <NotFound />,
-    },
-    {
-      path: "/Admin",
-      element: <SysAdmin />,
-    },
-    {
-      path: "/editUserAdmin",
-      element: <EditUserForm />,
-    },
-    {
-      path: "/adminWorkersPage",
-      element: <AdminWorkersPage />,
-    },
-    {
-      path: "/adminWorkersEdit",
-      element: <WorkerForm />,
-    },
-    {
-      path: "/AdminEditCategory",
-      element: <AdminCategoriesPage />,
-    },
-    {
-      path: "/AdminCategoryForm/:categoryId",
-      element: <CategoryForm />,
-    },
-    {
-      path: "/Settings",
-      element: <SettingsPage />,
-    },
-    {
-    path: "/",
-    element: <Protected />,  
-    children: [{
-        path: "/profile",
-        element: <Profile />,
-      },
-    ],
-}]);
+    { path: "/login", element: <Login /> },
+    { path: "/register", element: <Register /> },
+    { path: "*", element: <NotFound /> },
 
+    
+    {
+      path: "/",
+      element: <Protected allowedRoles={['ROLE_USER', 'ROLE_WORKER', 'ROLE_ADMIN']} />,
+      children: [
+        { path: "profile", element: <Profile /> },
+        { path: "help", element: <HelpSeccion /> },
+        { path: "mainPage", element: <MainPage /> },
+        { path: "settings", element: <SettingsPage /> },
+        { path: "workerProfile/:id", element: <WorkerProfile /> },
+        { path: "categories", element: <CategoriesPage /> },
+        { path: "favWorkers", element: <FavoritesPage /> },
+        { path: "editWorker", element: <EditWorkerProfile /> },
+        { path: "registerWorker", element: <RegisterWorkerFinal /> }, 
+
+        {
+          path: "admin",
+          element: <Protected allowedRoles={['ROLE_ADMIN']} />,
+          children: [
+            { path: "", element: <SysAdmin /> },
+            { path: "AdminCategoryForm/:categoryId", element: <CategoryForm /> },
+            { path: "editUserAdmin", element: <EditUserForm /> },
+            { path: "adminWorkersPage", element: <AdminWorkersPage /> },
+            { path: "adminWorkersEdit", element: <WorkerForm /> },
+            { path: "AdminEditCategory", element: <AdminCategoriesPage /> },
+          ],
+        },
+      ],
+    },
+  ]); 
 
   return (
     <ThemeContextProvider>
-    <AuthenticationContextProvider>
-      <RouterProvider router={router} />
-    </AuthenticationContextProvider>
+      <AuthenticationContextProvider>
+        <RouterProvider router={router} />
+      </AuthenticationContextProvider>
     </ThemeContextProvider>
   );
 };

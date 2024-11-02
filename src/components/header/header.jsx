@@ -1,12 +1,15 @@
+// Header.js
 import React, { useContext, useState, useEffect } from 'react';
 import { Navbar, Form, FormControl, Button, Container, Collapse } from 'react-bootstrap';
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
 import { ThemeContext } from '../services/ThemeContext/Theme.context'; // Importa el ThemeContext
 import { useNavigate } from "react-router-dom";
 import './buttons.css';
+import logo from "../../assets/logo.png";
+
 
 const Header = ({ setSearchTerm }) => {
-  const { handleLogout, isWorker, isAdmin } = useContext(AuthenticationContext); // Incluye isAdmin
+  const { handleLogout, isWorker, isAdmin, setToken } = useContext(AuthenticationContext);  // Incluye isAdmin
   const { theme } = useContext(ThemeContext); // Incluye el theme del ThemeContext
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
@@ -14,6 +17,8 @@ const Header = ({ setSearchTerm }) => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const { token } = useContext(AuthenticationContext);
+  const { role } = useContext(AuthenticationContext);
+  
   
   const toggleCategories = () => setShowCategories(!showCategories);
   const toggleProfile = () => setShowProfile(!showProfile);
@@ -25,6 +30,13 @@ const Header = ({ setSearchTerm }) => {
   const BecomeWorkerHandler = () => navigate("/registerWorker");
   const SavedWorkerHandler = () => navigate("/favWorkers");
   const AdminHandler = () => navigate("/Admin");
+
+  const navigationHandler = (path) => navigate(path);
+
+  
+
+  
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -49,19 +61,25 @@ const Header = ({ setSearchTerm }) => {
   }, [token]);
 
 
+  
+  
+  
+
+
   return (
     <div className={`header-container ${theme === 'dark' ? 'header-dark' : 'header-light'}`}>
       {/* Header Navbar */}
       <Navbar expand="lg" className={`p-3 header-navbar ${theme === 'dark' ? 'navbar-dark' : 'navbar-light'}`}>
         <Container fluid className="justify-content-between">
-          <Button 
-            variant="outline-primary" 
-            className={`rounded-circle border-0 p-2 shadow-none logout-button ${theme === 'dark' ? 'logout-dark' : ''}`} 
-            onClick={handleLogout}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M4 18h2v2h12V4H6v2H4V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm2-7h7v2H6v3l-5-4l5-4z"/>
-            </svg>
+          {/* Logo */}
+          <Button variant="link" onClick={() => navigate('/mainPage')}>
+          <img 
+            src={logo} 
+            alt="Logo" 
+            className="logo" 
+            onClick={() => navigate("/mainPage")} 
+            style={{ cursor: 'pointer', height: '40px' }} // Adjust height as needed
+          />
           </Button>
 
           {/* Search Form */}
@@ -74,6 +92,21 @@ const Header = ({ setSearchTerm }) => {
               aria-label="Buscar" 
             />
           </Form>
+
+           {/* Logout Button */}
+           <Button
+             variant="outline-primary" 
+             className={`rounded-circle border-0 p-2 shadow-none logout-button ${theme === 'dark' ? 'logout-dark' : ''}`} 
+             onClick={() => {
+               handleLogout(); // Call handleLogout from context
+               navigate('/login'); // Redirect to login after logout
+             }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M4 18h2v2h12V4H6v2H4V3a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zm2-7h7v2H6v3l-5-4l5-4z"/>
+            </svg>
+          </Button>
+
         </Container>
       </Navbar>
 
@@ -82,11 +115,25 @@ const Header = ({ setSearchTerm }) => {
         <Container className="d-flex justify-content-center">
           {/* Categories Button */}
           <div className="menu-container">
-            <Button className={`menu-button ${theme === 'dark' ? 'menu-button-dark' : ''}`} onClick={toggleCategories}>
+          <Button 
+              className={`menu-button ${theme === 'dark' ? 'menu-button-dark' : ''}`} 
+              onClick={() => navigationHandler("/categories")}
+              onMouseEnter={() => setShowCategories(true)}
+              onMouseLeave={() => setShowCategories(false)}
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M3 4h4v4H3zm0 6h4v4H3zm0 6h4v4H3zm6-12h12v4H9zm0 6h12v4H9zm0 6h12v4H9z"/>
               </svg>
-              <span>Category</span>
+              <span>Categories</span>
+              <svg 
+                className={`arrow-icon ${showCategories ? 'rotate' : ''}`} 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24"
+              >
+                <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+              </svg>
             </Button>
 
             <Collapse in={showCategories}>
@@ -118,7 +165,7 @@ const Header = ({ setSearchTerm }) => {
           </Button>
 
           {/* Admin Button - Condicional para Admins */}
-          {isAdmin && (
+          {role === "ROLE_ADMIN" &&(
             <Button className={`menu-button ${theme === 'dark' ? 'menu-button-dark' : ''}`} onClick={AdminHandler}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                 <path d="M480-440q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0-80q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0 440q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-400Zm0-315-240 90v189q0 54 15 105t41 96q42-21 88-33t96-12q50 0 96 12t88 33q26-45 41-96t15-105v-189l-240-90Zm0 515q-36 0-70 8t-65 22q29 30 63 52t72 34q38-12 72-34t63-52q-31-14-65-22t-70-8Z"/>
@@ -142,21 +189,24 @@ const Header = ({ setSearchTerm }) => {
               <path d="M12 12a4 4 0 1 1 0-8a4 4 0 0 1 0 8m0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
             </svg>
             <span className="color">Profile</span>
-          </Button>
-          <Collapse in={showProfile}>
-            <div className={`menu-dropdown ${theme === 'dark' ? 'menu-dropdown-dark' : ''}`}>
-              <ul>
-                {isWorker ? (
-                  <li><a onClick={EditWorkerHandler}>Edit Worker Profile</a></li>
-                ) : (
-                  <li><a onClick={BecomeWorkerHandler}>Become a Worker</a></li>
-                )}
-                <li><a onClick={EditHandler}>Edit</a></li>
-                <li><a onClick={SavedWorkerHandler}>Favourite workers</a></li>
-                <li><a onClick={settingsHandler}>Settings</a></li>
-              </ul>
-            </div>
-          </Collapse>
+            <svg className={`arrow-icon ${showProfile ? 'rotate' : ''}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+              </svg>
+            </Button>
+            <Collapse in={showProfile}>
+              <div className={`menu-dropdown ${theme === 'dark' ? 'menu-dropdown-dark' : ''}`}>
+                <ul>
+                  {role === "ROLE_WORKER" ? (
+                    <li><a onClick={EditWorkerHandler}>Edit Worker Profile</a></li>
+                  ) : (
+                    <li><a onClick={BecomeWorkerHandler}>Become a Worker</a></li>
+                  )}
+                  <li><a onClick={EditHandler}>Edit</a></li>
+                  <li><a onClick={SavedWorkerHandler}>Favourite workers</a></li>
+                  <li><a onClick={settingsHandler}>Settings</a></li>
+                </ul>
+              </div>
+            </Collapse>
           </div>
         </Container>
       </div>
