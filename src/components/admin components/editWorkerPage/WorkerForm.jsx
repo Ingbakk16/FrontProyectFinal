@@ -1,50 +1,25 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import SidebarButton from '../sidebar button/sidebarMenu';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
 import './WorkerForm.css';
 import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
 
-const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
+const WorkerForm = () => {
   const [worker, setWorker] = useState({
-    description: initialWorker.description || '',
-    dni: initialWorker.dni || '',
-    direccion: initialWorker.direccion || '',
-    jobId: initialWorker.jobId || '',
-    imageUrl: initialWorker.imageUrl || '',
+    description: '',
+    phoneNumber: '',
+    direccion: '',
+    imageUrl: '',
   });
 
-  const [categories, setCategories] = useState([]); // Estado para almacenar las categorías
+  const { id } = useParams(); // Obtener el ID del usuario desde los parámetros
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
-
-  // Fetch para obtener categorías al cargar el componente
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch("http://localhost:8081/api/jobs/all", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Error al obtener las categorías");
-        }
-        const data = await response.json();
-        setCategories(data); // Actualiza el estado de categorías con los datos recibidos
-      } catch (error) {
-        console.error("Error al cargar las categorías:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,9 +29,28 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(worker);
+
+    try {
+      const response = await fetch(`http://localhost:8081/api/admin/edit_profile/${id}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(worker),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al actualizar el perfil del trabajador');
+      }
+
+
+      navigate('/adminWorkersPage'); // Redirigir después de guardar
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error);
+    }
   };
 
   const handleCancel = () => {
@@ -71,9 +65,7 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
           <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
-          <h2 className="text-center mb-4">
-            {initialWorker.description ? 'Editar Trabajador' : 'Crear Trabajador'}
-          </h2>
+          <h2 className="text-center mb-4">Crear Trabajador</h2>
           <Form onSubmit={handleSubmit} className={`edit-worker-form ${theme === "dark" ? "edit-worker-form-dark" : ""}`}>
             <Row>
               <Col md={6}>
@@ -92,13 +84,13 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
                 </Form.Group>
               </Col>
               <Col md={6}>
-                <Form.Group controlId="workerDni">
-                  <Form.Label>DNI</Form.Label>
+                <Form.Group controlId="workerPhoneNumber">
+                  <Form.Label>Número de Teléfono</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="DNI"
-                    name="dni"
-                    value={worker.dni}
+                    placeholder="Número de Teléfono"
+                    name="phoneNumber"
+                    value={worker.phoneNumber}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
                     required
@@ -123,29 +115,6 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
                 </Form.Group>
               </Col>
               <Col md={6}>
-                <Form.Group controlId="workerJobId">
-                  <Form.Label>Categoría de Trabajo</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="jobId"
-                    value={worker.jobId}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
-                    required
-                  >
-                    <option value="">Seleccione una categoría</option>
-                    {categories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.title}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Row className="mt-3">
-              <Col md={6}>
                 <Form.Group controlId="workerImageUrl">
                   <Form.Label>URL de la Imagen</Form.Label>
                   <Form.Control
@@ -155,7 +124,6 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
                     value={worker.imageUrl}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
-                    required
                   />
                 </Form.Group>
               </Col>

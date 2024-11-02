@@ -19,7 +19,7 @@ const AdminWorkersPage = () => {
   useEffect(() => {
     const fetchWorkers = async () => {
       try {
-        const response = await fetch("http://localhost:8081/api/workers/all", {
+        const response = await fetch("http://localhost:8081/api/users/all_workers", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,17 +39,14 @@ const AdminWorkersPage = () => {
     };
 
     fetchWorkers();
-  }, []);
+  }, [token]);
 
-  const handleEditWorker = (workerName) => {
-    navigate(`/adminWorkersEdit`);
+  const handleEditWorker = (workerId) => {
+    navigate(`/adminWorkersEdit/${workerId}`);
   };
 
   const handleDeleteWorker = async (workerId) => {
-    if (
-      !window.confirm("¿Estás seguro de que deseas eliminar este trabajador?")
-    )
-      return;
+    if (!window.confirm("¿Estás seguro de que deseas eliminar este trabajador?")) return;
 
     try {
       const response = await fetch(
@@ -67,22 +64,11 @@ const AdminWorkersPage = () => {
         throw new Error("Error al eliminar el trabajador");
       }
 
-      // Eliminar el trabajador de la lista en el frontend
-      setWorkers((prevWorkers) =>
-        prevWorkers.filter((worker) => worker.id !== workerId)
-      );
+      setWorkers((prevWorkers) => prevWorkers.filter((worker) => worker.id !== workerId));
       console.log(`Trabajador ${workerId} eliminado exitosamente`);
     } catch (error) {
       console.error("Error al intentar eliminar el trabajador:", error);
     }
-  };
-
-  const handleViewWorkerProfile = (workerName) => {
-    console.log(`Ver Perfil del Trabajador: ${workerName}`);
-  };
-
-  const handleAddWorker = () => {
-    console.log("Añadir nuevo trabajador");
   };
 
   const handleViewReviews = (workerId) => {
@@ -90,11 +76,7 @@ const AdminWorkersPage = () => {
   };
 
   return (
-    <div
-      className={`background ${
-        theme === "dark" ? "APage-background-dark" : "APage-background-light"
-      }`}
-    >
+    <div className={`background ${theme === "dark" ? "APage-background-dark" : "APage-background-light"}`}>
       <Header />
       <Container
         fluid
@@ -113,14 +95,6 @@ const AdminWorkersPage = () => {
               <h2 className={theme === "dark" ? "text-light" : "text-dark"}>
                 Administrar Trabajador
               </h2>
-              <Button
-                className={`add-worker-button ${
-                  theme === "dark" ? "button-dark" : ""
-                }`}
-                onClick={handleAddWorker}
-              >
-                Añadir Trabajador
-              </Button>
             </div>
 
             {loading ? (
@@ -130,25 +104,18 @@ const AdminWorkersPage = () => {
                 <Row>
                   {workers.map((worker) => (
                     <Col md={12} className="mb-3" key={worker.id}>
-                      {worker.user ? (
-                        <AdminWorkerCard
-                          username={worker.user.username}
-                          name={worker.user.name}
-                          lastname={worker.user.lastname}
-                          email={worker.user.email}
-                          onEdit={() => handleEditWorker(worker.user.username)}
-                          onDelete={() => handleDeleteWorker(worker.id)}
-                          onViewProfile={() =>
-                            handleViewWorkerProfile(worker.user.username)
-                          }
-                          onViewReviews={() => handleViewReviews(worker.id)}
-                          showViewProfile={false}
-                          showDeleteReviews={true}
-                          isWorker={true}
-                        />
-                      ) : (
-                        <p></p>
-                      )}
+                      <AdminWorkerCard
+                        username={worker.username}
+                        name={worker.name}
+                        lastname={worker.lastname}
+                        email={worker.email}
+                        onEdit={() => handleEditWorker(worker.id)}
+                        onDelete={() => handleDeleteWorker(worker.id)}
+                        onViewReviews={() => handleViewReviews(worker.id)}
+                        showViewProfile={false}
+                        showDeleteReviews={true}
+                        isWorker={true}
+                      />
                     </Col>
                   ))}
                 </Row>

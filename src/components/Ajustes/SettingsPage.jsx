@@ -13,11 +13,9 @@ const SettingsPage = () => {
         <Header />
       </div>
       <h2>Ajustes</h2>
-      <div 
-        className={`theme-switch ${theme === 'dark' ? 'dark' : ''}`} 
-        onClick={toggleTheme}
-      >
-        <div className="slider"></div>
+      <div className="contenedor">
+        <input type="checkbox" id="checkbox" onChange={toggleTheme} />
+        <label htmlFor="checkbox" className="label"></label>
       </div>
       <span className="theme-label">
         {theme === "dark" ? "Modo Oscuro" : "Modo Claro"}

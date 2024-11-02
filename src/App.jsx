@@ -24,6 +24,7 @@ import SettingsPage from "./components/Ajustes/SettingsPage";
 import CreateAdminForm from "./components/admin components/CreateAdminForm/CreateAdminForm";
 import MakeWorkerForm from "./components/admin components/MakeWorkerForm/MakeWorkerForm.jsx";
 import DeleteReview from "./components/admin components/AdminWorkerReviews/DeleteReview.jsx";
+import AdminCreateUserForm from "./components/admin components/AdminCreateUser/AdminCreateUser.jsx";
 
 
 const App = () => {
@@ -81,9 +82,9 @@ const App = () => {
       element: <AdminWorkersPage />,
     },
     {
-      path: "/adminWorkersEdit",
+      path: "/adminWorkersEdit/:id",
       element: <WorkerForm />,
-    },
+   },   
     {
       path: "/AdminEditCategory",
       element: <AdminCategoriesPage />,
@@ -112,6 +113,11 @@ const App = () => {
       path: "/DeleteReview/:workerId",
       element: <DeleteReview />,
     },
+    {
+      path: "/adminCreateUserForm",
+      element: <AdminCreateUserForm  />,
+    },
+    
     {
     path: "/",
     element: <Protected />,  

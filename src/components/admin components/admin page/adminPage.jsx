@@ -82,7 +82,7 @@ const SysAdmin = () => {
   };
   
   const handleAddUser = () => {
-    navigate("/addUser");
+    navigate("/adminCreateUserForm");
   };
   
   return (
