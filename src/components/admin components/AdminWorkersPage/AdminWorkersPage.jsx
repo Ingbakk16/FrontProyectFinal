@@ -42,7 +42,6 @@ const AdminWorkersPage = () => {
   }, []);
 
   const handleEditWorker = (workerName) => {
-    console.log(`Editar Trabajador: ${workerName}`);
     navigate(`/adminWorkersEdit`);
   };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 
-const UserCard = ({
+const AdminWorkerCard = ({
   username,
   name,
   lastname,
@@ -43,4 +43,4 @@ const UserCard = ({
   );
 };
 
-export default UserCard;
+export default AdminWorkerCard;

@@ -6,6 +6,7 @@ import SidebarButton from '../sidebar button/sidebarMenu';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
 import './WorkerForm.css';
+import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
 
 const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
   const [worker, setWorker] = useState({
@@ -16,8 +17,34 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
     imageUrl: initialWorker.imageUrl || '',
   });
 
+  const [categories, setCategories] = useState([]); // Estado para almacenar las categorías
   const { theme } = useContext(ThemeContext);
+  const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
+
+  // Fetch para obtener categorías al cargar el componente
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:8081/api/jobs/all", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Error al obtener las categorías");
+        }
+        const data = await response.json();
+        setCategories(data); // Actualiza el estado de categorías con los datos recibidos
+      } catch (error) {
+        console.error("Error al cargar las categorías:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,16 +124,22 @@ const WorkerForm = ({ initialWorker = {}, onSubmit }) => {
               </Col>
               <Col md={6}>
                 <Form.Group controlId="workerJobId">
-                  <Form.Label>Job ID</Form.Label>
+                  <Form.Label>Categoría de Trabajo</Form.Label>
                   <Form.Control
-                    type="text"
-                    placeholder="ID del trabajo"
+                    as="select"
                     name="jobId"
                     value={worker.jobId}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
                     required
-                  />
+                  >
+                    <option value="">Seleccione una categoría</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.title}
+                      </option>
+                    ))}
+                  </Form.Control>
                 </Form.Group>
               </Col>
             </Row>

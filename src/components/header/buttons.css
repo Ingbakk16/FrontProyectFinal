@@ -133,11 +133,11 @@
 
 /* Ajustes para el color de texto en temas */
 .color {
-  color: #000000; /* Modo claro */
+  color: #FFFFFF;
 }
 
 .color-dark {
-  color: #FFFFFF; /* Modo oscuro */
+  color: #FFFFFF;
 }
 
 /* Ajustes para las animaciones de hover */
