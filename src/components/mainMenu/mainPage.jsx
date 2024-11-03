@@ -5,7 +5,7 @@ import Header from "../header/header";
 import Footer from "../footer/footer";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
 import { ThemeContext } from "../services/ThemeContext/Theme.context";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, useLocation } from "react-router-dom";
 import './mainPage.css';
 
 const MainPage = () => {
@@ -14,8 +14,12 @@ const MainPage = () => {
   const { theme } = useContext(ThemeContext);
   const [favorites, setFavorites] = useState([]); 
   const navigate = useNavigate(); 
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
-  
+
+  const params = new URLSearchParams(location.search);
+  const jobId = params.get("category");
+
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
@@ -41,28 +45,32 @@ const MainPage = () => {
         return;
       }
       try {
-        const response = await fetch("http://localhost:8081/api/workers/all", {
+        const url = jobId
+          ? `http://localhost:8081/api/workers/by-job/${jobId}`
+          : "http://localhost:8081/api/workers/all";
+
+        const response = await fetch(url, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`, 
             "Content-Type": "application/json",
           },
         });
+
         if (!response.ok) {
           throw new Error("Error fetching workers");
         }
 
         const data = await response.json();
-        setWorkers(data); 
+        setWorkers(data);
       } catch (error) {
         console.error("Error al obtener los trabajadores:", error);
       }
     };
 
     fetchWorkers();
-  }, [token]);
+  }, [token, jobId]);
 
-  // Verificación para evitar errores de acceso a propiedades en objetos `worker` sin `user`
   const filteredWorkers = workers.filter(worker =>
     worker.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     worker.user?.lastname?.toLowerCase().includes(searchTerm.toLowerCase())

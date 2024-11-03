@@ -86,7 +86,12 @@ const Login = () => {
         const { token } = data;
         localStorage.setItem("token", token);
         handleLogin(username, token);
-        navigate("/mainPage");
+      
+        // Debug logging
+        console.log("Token saved to localStorage:", localStorage.getItem("token"));
+        console.log("Token passed to handleLogin:", token);
+      
+        setTimeout(() => navigate("/mainPage"), 100);
       } else {
         setLoginError("Usuario o contraseña incorrectos.");
       }

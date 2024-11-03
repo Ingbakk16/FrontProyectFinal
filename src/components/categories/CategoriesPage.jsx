@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './CategoriesStyle.css'; 
 import Header from '../header/header';
 import Footer from '../footer/footer';
@@ -16,6 +16,7 @@ const CategoriesPage = () => {
 
     const navigate = useNavigate();
 
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -30,7 +31,8 @@ const CategoriesPage = () => {
                     throw new Error('Error al obtener las categorías');
                 }
                 const data = await response.json();
-                setCategories(data.map(category => category.title)); 
+                console.log("Fetched categories:", data);
+                setCategories(data.map(category => ({ title: category.title, jobId: category.id })));
             } catch (error) {
                 console.error('Error fetching categories:', error);
             }
@@ -39,10 +41,9 @@ const CategoriesPage = () => {
         fetchCategories();
     }, [token]);
 
-    const handleCategoryClick = (category) => {
-        navigate(`/categories/${category.toLowerCase()}`);
+    const handleCategoryClick = (jobId) => {
+        navigate(`/mainPage?category=${jobId}`); // Navigate with jobId in the query
     };
-
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
@@ -65,13 +66,13 @@ const CategoriesPage = () => {
             <div className={`categories-container ${theme === 'dark' ? 'categories-container-dark' : ''}`}>
             <div className={`categories-box ${theme === 'dark' ? 'categories-box-dark' : ''}`}>
                     {currentCategories.map((category, index) => (
-                        <button
-                            key={index}
-                            className={`category-button ${theme === 'dark' ? 'category-button-dark' : ''}`}
-                            onClick={() => handleCategoryClick(category)}
-                        >
-                            {category}
-                        </button>
+                         <button
+                         key={index}
+                         className={`category-button ${theme === 'dark' ? 'category-button-dark' : ''}`}
+                         onClick={() => handleCategoryClick(category.jobId)} // Pass jobId here
+                     >
+                         {category.title} {/* Display the title only */}
+                     </button>
                     ))}
                     <div className="pagination">
                         <button 

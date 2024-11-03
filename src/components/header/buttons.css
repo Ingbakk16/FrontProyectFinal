@@ -38,6 +38,7 @@
   justify-content: center;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
 /* Animación hover en modo claro (se aclara) */
@@ -46,8 +47,9 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ajuste para hover */
 }
 
-.menu-button svg {
-  margin-right: 4px;
+/* Remove arrow for Settings and Help */
+.menu-button.no-arrow svg {
+  display: none;
 }
 
 /* Dropdown de categorías */
@@ -66,6 +68,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
   width: 100%;
+  display: none; /* Hidden by default */
+  transition: all 0.3s ease-in-out;
+}
+
+.menu-container:hover .menu-dropdown {
+  display: block; /* Show dropdown on hover */
 }
 
 .menu-dropdown ul {
@@ -159,7 +167,7 @@
 /* Transiciones y animaciones */
 .menu-dropdown,
 .menu-dropdown-dark {
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 /* Ajuste para la altura de los menús */
@@ -171,4 +179,19 @@
   border-top-right-radius: 0;  
   height: 50px;
   padding: 10px 20px;
+}
+
+.arrow-icon {
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.arrow-icon.rotate {
+  transform: rotate(180deg);
+}
+
+.menu-button:hover .arrow-icon, 
+.rotate {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
 }
