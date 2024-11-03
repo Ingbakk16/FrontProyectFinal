@@ -9,14 +9,13 @@ const SidebarMenu = () => {
   const themeContext = useContext(ThemeContext);
 
   if (!themeContext) {
-    console.error("ThemeContext no está disponible. Asegúrate de que ThemeContextProvider envuelva este componente.");
+    console.error;
     return null; // O un mensaje alternativo para los usuarios
   }
 
   const { theme } = themeContext;
 
   const handleEditUser = () => navigate('/Admin');
-  const handleDeleteReview = () => navigate('/deleteReview');
   const handleEditCategory = () => navigate('/AdminEditCategory');
   const handleEditWorker = () => navigate('/adminWorkersPage');
 
@@ -24,9 +23,6 @@ const SidebarMenu = () => {
     <div className={`sidebar-container ${theme === 'dark' ? 'sidebar-container-dark' : ''}`}>
       <Button className={`sidebar-button ${theme === 'dark' ? 'sidebar-button-dark' : ''}`} onClick={handleEditUser}>
         Editar usuario
-      </Button>
-      <Button className={`sidebar-button ${theme === 'dark' ? 'sidebar-button-dark' : ''}`} onClick={handleDeleteReview}>
-        Borrar reseña
       </Button>
       <Button className={`sidebar-button ${theme === 'dark' ? 'sidebar-button-dark' : ''}`} onClick={handleEditCategory}>
         Editar categoría

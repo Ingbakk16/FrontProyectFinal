@@ -1,15 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
 import Sidebar from "../sidebar button/sidebarMenu";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import "./EditUserForm.css";
+import "../editUserAdmin/EditUserForm.css"; // Usaremos el mismo CSS que EditUserForm
 
-const EditUserForm = () => {
-  const { id } = useParams(); // Captura el ID del usuario desde los parámetros
+const AdminCreateUserForm = () => {
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
@@ -22,39 +21,6 @@ const EditUserForm = () => {
     password: "",
   });
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8081/api/admin/edit/${id}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok)
-          throw new Error("Error al obtener los datos del usuario");
-
-        const data = await response.json();
-        setFormData({
-          username: data.username,
-          name: data.name,
-          lastname: data.lastname,
-          email: data.email,
-          password: "", // La contraseña se debe establecer solo si es necesario actualizarla
-        });
-      } catch (error) {
-        console.error("Error al cargar los datos del usuario:", error);
-      }
-    };
-
-    fetchUserData();
-  }, [id, token]);
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -62,23 +28,20 @@ const EditUserForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `http://localhost:8081/api/admin/edit/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch("http://localhost:8081/api/admin/register", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
-        console.log("Usuario actualizado con éxito");
-        navigate("/Admin"); // Redirige de vuelta a la página de administración
+        console.log("Usuario creado con éxito");
+        navigate("/Admin"); // Redirige a la página de administración
       } else {
-        throw new Error("Error al actualizar el usuario");
+        throw new Error("Error al crear el usuario");
       }
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
@@ -101,6 +64,7 @@ const EditUserForm = () => {
           <Sidebar />
         </Col>
         <Col md={10} className="p-4">
+          <h2>Crear Nuevo Usuario</h2>
           <Form
             onSubmit={handleSubmit}
             className={`edit-user-form ${
@@ -117,6 +81,7 @@ const EditUserForm = () => {
                     value={formData.username}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
+                    required
                   />
                 </Form.Group>
               </Col>
@@ -129,6 +94,7 @@ const EditUserForm = () => {
                     value={formData.name}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
+                    required
                   />
                 </Form.Group>
               </Col>
@@ -143,6 +109,7 @@ const EditUserForm = () => {
                     value={formData.lastname}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
+                    required
                   />
                 </Form.Group>
               </Col>
@@ -155,13 +122,29 @@ const EditUserForm = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Contraseña</Form.Label>
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={theme === "dark" ? "form-control-dark" : ""}
+                    required
                   />
                 </Form.Group>
               </Col>
             </Row>
             <div className="form-actions">
               <Button type="submit" className="btn-save">
-                Guardar
+                Crear Usuario
               </Button>
               <Button
                 type="button"
@@ -179,4 +162,4 @@ const EditUserForm = () => {
   );
 };
 
-export default EditUserForm;
+export default AdminCreateUserForm;

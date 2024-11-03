@@ -20,3 +20,10 @@
 .APage-background-dark{
     background: linear-gradient(to top, #333333, #1F1F1F, #000000);
 }
+
+.worker-list-container {
+    max-height: 500px; 
+    overflow-y: auto; /* Habilitar desplazamiento vertical */
+    padding-right: 10px; /* Espacio para evitar el recorte de la barra */
+  }
+  

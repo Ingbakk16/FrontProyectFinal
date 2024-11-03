@@ -1,14 +1,18 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
 
-const UserCard = ({
+const AdminWorkerCard = ({
   username,
   name,
   lastname,
   email,
   onEdit,
   onDelete,
-  onBecomeWorker, // Nueva función para hacer trabajador
+  onViewProfile,
+  onViewReviews,
+  showViewProfile,
+  showDeleteReviews,
+  isWorker,
 }) => {
   return (
     <Card className="p-3 bg-primary text-light d-flex align-items-center justify-content-between">
@@ -21,9 +25,16 @@ const UserCard = ({
         <Button variant="outline-light" className="mx-2" onClick={onEdit}>
           Editar
         </Button>
-        <Button variant="outline-light" className="mx-2" onClick={onBecomeWorker}>
-          Hacer Trabajador
-        </Button>
+        {showViewProfile && (
+          <Button variant="outline-light" className="mx-2" onClick={onViewProfile}>
+            Ver Perfil
+          </Button>
+        )}
+        {showDeleteReviews && (
+          <Button variant="outline-light" className="mx-2" onClick={onViewReviews}>
+            Delete Reviews
+          </Button>
+        )}
         <Button variant="outline-danger" className="mx-2" onClick={onDelete}>
           Eliminar
         </Button>
@@ -32,4 +43,4 @@ const UserCard = ({
   );
 };
 
-export default UserCard;
+export default AdminWorkerCard;

@@ -21,6 +21,11 @@ import CategoryForm from "./components/admin components/AdminCategoryForm/Catego
 import AdminCategoriesPage from "./components/admin components/EDitCategoryAdmin/EditCategory";
 import { ThemeContextProvider } from "./components/services/ThemeContext/Theme.context";
 import SettingsPage from "./components/Ajustes/SettingsPage";
+import CreateAdminForm from "./components/admin components/CreateAdminForm/CreateAdminForm";
+import MakeWorkerForm from "./components/admin components/MakeWorkerForm/MakeWorkerForm.jsx";
+import DeleteReview from "./components/admin components/AdminWorkerReviews/DeleteReview.jsx";
+import AdminCreateUserForm from "./components/admin components/AdminCreateUser/AdminCreateUser.jsx";
+
 
 const App = () => {
   const router = createBrowserRouter([
@@ -28,7 +33,8 @@ const App = () => {
     { path: "/register", element: <Register /> },
     { path: "*", element: <NotFound /> },
 
-    
+ 
+     
     {
       path: "/",
       element: <Protected allowedRoles={['ROLE_USER', 'ROLE_WORKER', 'ROLE_ADMIN']} />,
@@ -43,16 +49,23 @@ const App = () => {
         { path: "editWorker", element: <EditWorkerProfile /> },
         { path: "registerWorker", element: <RegisterWorkerFinal /> }, 
 
+      
+      
         {
           path: "admin",
           element: <Protected allowedRoles={['ROLE_ADMIN']} />,
           children: [
-            { path: "", element: <SysAdmin /> },
-            { path: "AdminCategoryForm/:categoryId", element: <CategoryForm /> },
-            { path: "editUserAdmin", element: <EditUserForm /> },
-            { path: "adminWorkersPage", element: <AdminWorkersPage /> },
-            { path: "adminWorkersEdit", element: <WorkerForm /> },
-            { path: "AdminEditCategory", element: <AdminCategoriesPage /> },
+            {path: "", element: <SysAdmin /> },
+            {path: "AdminCategoryForm/:categoryId", element: <CategoryForm /> },
+            {path: "editUserAdmin/:id", element: <EditUserForm /> },
+            {path: "adminWorkersPage", element: <AdminWorkersPage /> },
+            {path: "adminWorkersEdit/:id", element: <WorkerForm /> },
+            {path: "AdminCreateForm", element: <CreateAdminForm /> },
+            {path: "makeWorkerForm/:id", element: <MakeWorkerForm /> },
+            {path: "DeleteReview", element: <DeleteReview /> },
+            {path: "/adminCreateUserForm" element: <AdminCreateUserForm  /> },
+            {path: "/DeleteReview/:workerId", element: <DeleteReview /> },
+            {path: "AdminEditCategory", element: <AdminCategoriesPage /> },
           ],
         },
       ],

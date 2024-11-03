@@ -1,5 +1,3 @@
-
-
 /* Fondo para tema oscuro */
 .admin-categories-page-background.admin-page-dark {
   background: linear-gradient(to top, #333333, #1F1F1F, #000000);
@@ -17,4 +15,32 @@
 
 .admin-page-light{
   background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
+}
+
+.add-admin-button {
+  background-color: #645DB5;
+  color: #fff;
+  border: none;
+}
+
+.add-user-button {
+  background-color: #87ACF7;
+  color: #fff;
+  border: none;
+}
+
+.add-admin-button:hover,
+.add-user-button:hover {
+  opacity: 0.9;
+}
+
+.button-dark {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.user-list-container {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
 }

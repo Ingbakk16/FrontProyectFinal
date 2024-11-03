@@ -1,70 +1,122 @@
 /* Contenedor principal */
 .settings-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    transition: background-color 0.3s ease;
-  }
-  
-  .settings-page.dark-mode {
-    background-color: #1F1F1F;
-    color: #ffffff;
-  }
-  
-  .settings-page h2 {
-    color: inherit;
-    margin-bottom: 2rem;
-  }
-  
-  /* Asegura que el Header y Footer ocupen el ancho completo */
-  .header,
-  .footer {
-    width: 100%;
-    position: relative;
-    background-color: inherit;
-  }
-  
-  .footer {
-    margin-top: auto;
-  }
-  
-  /* Estilos del interruptor deslizante */
-  .theme-switch {
-    position: relative;
-    width: 60px;
-    height: 30px;
-    background-color: #ddd;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    padding: 0 5px;
-  }
-  
-  .theme-switch.dark {
-    background-color: #555;
-  }
-  
-  .theme-switch .slider {
-    position: absolute;
-    width: 26px;
-    height: 26px;
-    background-color: #fff;
-    border-radius: 50%;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .theme-switch.dark .slider {
-    transform: translateX(30px);
-    background-color: #1F1F1F;
-  }
-  
-  /* Textos para el estado del tema */
-  .theme-label {
-    margin-top: 1rem;
-    color: inherit;
-    font-size: 1rem;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  transition: background-color 0.3s ease;
+}
+
+.settings-page.dark-mode {
+  background-color: #1F1F1F;
+  color: #ffffff;
+}
+
+.settings-page h2 {
+  color: inherit;
+  margin-bottom: 2rem;
+}
+
+.header,
+.footer {
+  width: 100%;
+  position: relative;
+  background-color: inherit;
+}
+
+.footer {
+  margin-top: auto;
+}
+
+/* Estilos del interruptor deslizante */
+.theme-switch {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background-color: #ddd;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.theme-switch.dark {
+  background-color: #555;
+}
+
+.theme-switch .slider {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.theme-switch.dark .slider {
+  transform: translateX(30px);
+  background-color: #1F1F1F;
+}
+
+.contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+/* Textos para el estado del tema */
+.theme-label {
+  margin-top: 1rem;
+  color: inherit;
+  font-size: 1rem;
+}
+
+.label {
+  height: 60px;
+  width: 120px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  box-shadow: inset 0 0 5px 4px rgba(255, 255, 255, 1),
+    inset 0 0 20px 1px rgba(0, 0, 0, 0.488), 10px 20px 30px rgba(0, 0, 0, 0.096),
+    inset 0 0 0 3px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.4s;
+}
+
+.label:hover {
+  transform: perspective(100px) rotateX(5deg) rotateY(-5deg);
+}
+
+#checkbox:checked ~ .label:hover {
+  transform: perspective(100px) rotateX(-5deg) rotateY(5deg);
+}
+
+#checkbox {
+  display: none;
+}
+
+#checkbox:checked ~ .label::before {
+  left: 70px;
+  background-color: #000000;
+  background-image: linear-gradient(315deg, #000000 0%, #414141 70%);
+  transition: 0.4s;
+}
+
+.label::before {
+  position: absolute;
+  content: "";
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #000000;
+  background-image: linear-gradient(130deg, #757272 10%, #ffffff 11%, #726f6f 62%);
+  left: 10px;
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3), 10px 10px 10px rgba(0, 0, 0, 0.3);
+  transition: 0.4s;
+} 
