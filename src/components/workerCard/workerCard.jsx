@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Card, Row, Col, Badge, Button } from "react-bootstrap";
-import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa el ThemeContext
+import { ThemeContext } from "../services/ThemeContext/Theme.context"; 
 import "./WorkerCard.css";
 
 const WorkerCard = ({
@@ -14,9 +14,9 @@ const WorkerCard = ({
   toggleFavorite,
   onClick,
 }) => {
-  const { theme } = useContext(ThemeContext); // Usa el ThemeContext
+  const { theme } = useContext(ThemeContext); 
 
-  // Función para obtener las iniciales del nombre y apellido
+
   const getInitials = (name, lastname) => {
     if (!name || !lastname) return "";
     return `${name[0]}${lastname[0]}`.toUpperCase();
