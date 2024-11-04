@@ -90,7 +90,7 @@ const RegisterWorkerFinal = () => {
       direccion: formData.direccion, 
       rating: 0, 
       jobId: formData.jobId,
-      imageUrl: formData.imageUrl, // Usamos la URL en lugar de una imagen cargada
+      imageUrl: formData.imageUrl, 
     };
 
     try {

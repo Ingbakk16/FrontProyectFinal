@@ -67,10 +67,16 @@
 /* Estilos de las alertas */
 .alert {
   margin-top: 1rem;
-  color: #333;
+  color: #fffefe;
 }
 
 .alert-dark {
   background-color: #444;
   color: #fff;
 } 
+.contact-text {
+  color: white;
+}
+.contact-tittle {
+  color: black;
+}

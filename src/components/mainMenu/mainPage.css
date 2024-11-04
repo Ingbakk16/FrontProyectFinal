@@ -11,7 +11,7 @@
 /* Modo Claro */
 .main-light {
   background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
-  color: #000; /* Color del texto en modo claro */
+  color: #ffffff; /* Color del texto en modo claro */
 }
 
 .main-light h1 {
