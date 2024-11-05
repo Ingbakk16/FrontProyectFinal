@@ -19,7 +19,7 @@ const AdminWorkersPage = () => {
   useEffect(() => {
     const fetchWorkers = async () => {
       try {
-        const response = await fetch("http://localhost:8081/api/users/all_workers", {
+        const response = await fetch("http://localhost:8081/api/workers/all", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -30,7 +30,15 @@ const AdminWorkersPage = () => {
           throw new Error("Error al obtener los trabajadores");
         }
         const data = await response.json();
-        setWorkers(data);
+
+        // Agrega `workerId` y `userId` usando ambos `id` de nivel superior y `user`
+        const workersWithIds = data.map((worker) => ({
+          ...worker,
+          workerId: worker.id, // `id` de nivel superior como `workerId`
+          userId: worker.user.id, // `id` dentro de `user`
+        }));
+
+        setWorkers(workersWithIds);
       } catch (error) {
         console.error("Error al cargar los trabajadores:", error);
       } finally {
@@ -41,12 +49,15 @@ const AdminWorkersPage = () => {
     fetchWorkers();
   }, [token]);
 
-  const handleEditWorker = (workerId) => {
-    navigate(`/adminWorkersEdit/${workerId}`);
+  const handleEditWorker = (userId) => {
+    navigate(`/admin/adminWorkersEdit/${userId}`);
   };
 
   const handleDeleteWorker = async (workerId) => {
-    if (!window.confirm("¿Estás seguro de que deseas eliminar este trabajador?")) return;
+    if (
+      !window.confirm("¿Estás seguro de que deseas eliminar este trabajador?")
+    )
+      return;
 
     try {
       const response = await fetch(
@@ -64,7 +75,9 @@ const AdminWorkersPage = () => {
         throw new Error("Error al eliminar el trabajador");
       }
 
-      setWorkers((prevWorkers) => prevWorkers.filter((worker) => worker.id !== workerId));
+      setWorkers((prevWorkers) =>
+        prevWorkers.filter((worker) => worker.id !== workerId)
+      );
       console.log(`Trabajador ${workerId} eliminado exitosamente`);
     } catch (error) {
       console.error("Error al intentar eliminar el trabajador:", error);
@@ -72,11 +85,15 @@ const AdminWorkersPage = () => {
   };
 
   const handleViewReviews = (workerId) => {
-    navigate(`/deleteReview/${workerId}`);
+    navigate(`/admin/DeleteReview/${workerId}`);
   };
 
   return (
-    <div className={`background ${theme === "dark" ? "APage-background-dark" : "APage-background-light"}`}>
+    <div
+      className={`background ${
+        theme === "dark" ? "APage-background-dark" : "APage-background-light"
+      }`}
+    >
       <Header />
       <Container
         fluid
@@ -105,13 +122,13 @@ const AdminWorkersPage = () => {
                   {workers.map((worker) => (
                     <Col md={12} className="mb-3" key={worker.id}>
                       <AdminWorkerCard
-                        username={worker.username}
-                        name={worker.name}
-                        lastname={worker.lastname}
-                        email={worker.email}
-                        onEdit={() => handleEditWorker(worker.id)}
-                        onDelete={() => handleDeleteWorker(worker.id)}
-                        onViewReviews={() => handleViewReviews(worker.id)}
+                        username={worker.user.username} 
+                        name={worker.user.name} 
+                        lastname={worker.user.lastname} 
+                        email={worker.user.email} 
+                        onEdit={() => handleEditWorker(worker.userId)}
+                        onDelete={() => handleDeleteWorker(worker.workerId)}
+                        onViewReviews={() => handleViewReviews(worker.workerId)}
                         showViewProfile={false}
                         showDeleteReviews={true}
                         isWorker={true}

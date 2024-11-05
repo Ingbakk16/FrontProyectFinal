@@ -17,7 +17,7 @@ import SysAdmin from "./components/admin components/admin page/adminPage";
 import EditUserForm from "./components/admin components/editUserAdmin/EditUser";
 import AdminWorkersPage from "./components/admin components/AdminWorkersPage/AdminWorkersPage";
 import WorkerForm from "./components/admin components/editWorkerPage/WorkerForm";
-import CategoryForm from "./components/admin components/AdminCategoryForm/CategoryForm ";
+import CategoryForm from "./components/admin components/AdminCategoryForm/CategoryForm.jsx";
 import AdminCategoriesPage from "./components/admin components/EDitCategoryAdmin/EditCategory";
 import { ThemeContextProvider } from "./components/services/ThemeContext/Theme.context";
 import SettingsPage from "./components/Ajustes/SettingsPage";
@@ -61,8 +61,7 @@ const App = () => {
             {path: "adminWorkersPage", element: <AdminWorkersPage /> },
             {path: "adminWorkersEdit/:id", element: <WorkerForm /> },
             {path: "AdminCreateForm", element: <CreateAdminForm /> },
-            {path: "makeWorkerForm/:id", element: <MakeWorkerForm /> },
-            {path: "DeleteReview", element: <DeleteReview /> },
+            { path: "makeWorkerForm/:id", element: <MakeWorkerForm /> },
             {path: "adminCreateUserForm", element: <AdminCreateUserForm  /> },
             {path: "DeleteReview/:workerId", element: <DeleteReview /> },
             {path: "AdminEditCategory", element: <AdminCategoriesPage /> },

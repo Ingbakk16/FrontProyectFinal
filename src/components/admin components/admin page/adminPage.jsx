@@ -41,14 +41,19 @@ const SysAdmin = () => {
     fetchUsers();
   }, [theme]);
 
+  const handleMakeWorker = (userId) => {
+    console.log("Navigating to MakeWorkerForm for user ID:", userId);
+    navigate(`/admin/MakeWorkerForm/${userId}`);
+  };
+  
   const handleEdit = (userId) => {
-    navigate(`/editUserAdmin/${userId}`);
+    navigate(`/admin/editUserAdmin/${userId}`);
   };
 
   const handleDelete = async (userId) => {
     if (!window.confirm("¿Estás seguro de que deseas eliminar este usuario?"))
       return;
-    
+
     try {
       const response = await fetch(
         `http://localhost:8081/api/admin/${userId}`,
@@ -60,11 +65,10 @@ const SysAdmin = () => {
           },
         }
       );
-      
+
       if (response.ok) {
         console.log(`Usuario con ID ${userId} eliminado con éxito`);
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-
       } else {
         throw new Error("Error al eliminar el usuario");
       }
@@ -72,24 +76,20 @@ const SysAdmin = () => {
       console.error("Error al intentar eliminar el usuario:", error);
     }
   };
-  
-  const handleMakeWorker = (userId) => {
-    navigate(`/MakeWorkerForm/${userId}`);
-  };
-  
+
   const handleAddAdmin = () => {
-    navigate("/AdminCreateForm");
+    navigate("/admin/AdminCreateForm");
   };
-  
+
   const handleAddUser = () => {
-    navigate("/adminCreateUserForm");
+    navigate("/admin/adminCreateUserForm");
   };
-  
+
   return (
     <div
-    className={`background ${
-      theme === "dark" ? "APage-background-dark" : "APage-background-light"
-    }`}
+      className={`background ${
+        theme === "dark" ? "APage-background-dark" : "APage-background-light"
+      }`}
     >
       <Header />
       <Container
@@ -146,9 +146,7 @@ const SysAdmin = () => {
                         role={user.role?.name || "Usuario"}
                         onEdit={() => handleEdit(user.id)}
                         onDelete={() => handleDelete(user.id)}
-                        onMakeWorker={() => handleMakeWorker(user.id)} // Pasa la función de "Make Worker"
-                        showMakeWorker={true} // Habilita el botón "Make Worker"
-                        isWorker={false}
+                        onBecomeWorker={() => handleMakeWorker(user.id)} // Asegúrate de que esté bien conectado
                       />
                     </Col>
                   ))}

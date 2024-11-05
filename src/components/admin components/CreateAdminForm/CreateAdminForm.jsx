@@ -43,7 +43,7 @@ const CreateAdminForm = () => {
 
       if (response.ok) {
         console.log("Administrador creado con éxito");
-        navigate("/admin"); // Redirige a la página de administración
+        navigate(-1); // Redirige a la página de administración
       } else {
         console.error("Error al crear administrador");
       }

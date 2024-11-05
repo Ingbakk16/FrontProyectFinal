@@ -16,7 +16,7 @@ const WorkerForm = () => {
     imageUrl: '',
   });
 
-  const { id } = useParams(); // Obtener el ID del usuario desde los parámetros
+  const { id: userId } = useParams(); // Recibe `userId` como `id`
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
@@ -31,9 +31,9 @@ const WorkerForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch(`http://localhost:8081/api/admin/edit_profile/${id}`, {
+      const response = await fetch(`http://localhost:8081/api/admin/edit_profile/${userId}`, { 
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -41,17 +41,17 @@ const WorkerForm = () => {
         },
         body: JSON.stringify(worker),
       });
-
+  
       if (!response.ok) {
         throw new Error('Error al actualizar el perfil del trabajador');
       }
-
-
-      navigate('/adminWorkersPage'); // Redirigir después de guardar
+  
+      navigate('/admin/adminWorkersPage'); // Redirigir después de guardar
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
     }
   };
+  
 
   const handleCancel = () => {
     navigate(-1);

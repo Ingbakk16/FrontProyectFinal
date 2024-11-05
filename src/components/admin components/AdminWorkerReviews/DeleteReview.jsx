@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
 import SidebarButton from "../sidebar button/sidebarMenu";
@@ -13,11 +13,13 @@ const DeleteReview = () => {
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const [reviews, setReviews] = useState([]);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
+        console.log(workerId)
         const response = await fetch(`http://localhost:8081/api/workers/${workerId}/comments`, {
           method: "GET",
           headers: {
@@ -61,6 +63,10 @@ const DeleteReview = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate(-1); 
+  };
+
   return (
     <div className={`background ${theme === 'dark' ? 'APage-background-dark' : 'APage-background-light'}`}>
       <Header />
@@ -77,6 +83,7 @@ const DeleteReview = () => {
           <Col md={10} className="p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2 className={theme === 'dark' ? 'text-light' : 'text-dark'}>Administrar Reseñas</h2>
+              <Button variant="secondary" onClick={handleBack}>Back</Button>
             </div>
             
             <div className="review-list-container">
