@@ -8,7 +8,7 @@ const UserCard = ({
   email,
   onEdit,
   onDelete,
-  onBecomeWorker, // Nueva función para hacer trabajador
+  onBecomeWorker, 
 }) => {
   return (
     <Card className="p-3 bg-primary text-light d-flex align-items-center justify-content-between">

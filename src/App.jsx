@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import React, { useEffect } from "react";
+import React from "react";
 import { AuthenticationContextProvider } from "./components/services/authenticationContext/authentication.context";
 import Protected from "./components/routes/protected/Protected";
 import Login from "./components/login/login";
@@ -17,7 +17,7 @@ import SysAdmin from "./components/admin components/admin page/adminPage";
 import EditUserForm from "./components/admin components/editUserAdmin/EditUser";
 import AdminWorkersPage from "./components/admin components/AdminWorkersPage/AdminWorkersPage";
 import WorkerForm from "./components/admin components/editWorkerPage/WorkerForm";
-import CategoryForm from "./components/admin components/AdminCategoryForm/CategoryForm ";
+import CategoryForm from "./components/admin components/AdminCategoryForm/CategoryForm.jsx";
 import AdminCategoriesPage from "./components/admin components/EDitCategoryAdmin/EditCategory";
 import { ThemeContextProvider } from "./components/services/ThemeContext/Theme.context";
 import SettingsPage from "./components/Ajustes/SettingsPage";
@@ -26,15 +26,12 @@ import MakeWorkerForm from "./components/admin components/MakeWorkerForm/MakeWor
 import DeleteReview from "./components/admin components/AdminWorkerReviews/DeleteReview.jsx";
 import AdminCreateUserForm from "./components/admin components/AdminCreateUser/AdminCreateUser.jsx";
 
-
 const App = () => {
   const router = createBrowserRouter([
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
     { path: "*", element: <NotFound /> },
 
- 
-     
     {
       path: "/",
       element: <Protected allowedRoles={['ROLE_USER', 'ROLE_WORKER', 'ROLE_ADMIN']} />,
@@ -47,30 +44,27 @@ const App = () => {
         { path: "categories", element: <CategoriesPage /> },
         { path: "favWorkers", element: <FavoritesPage /> },
         { path: "editWorker", element: <EditWorkerProfile /> },
-        { path: "registerWorker", element: <RegisterWorkerFinal /> }, 
+        { path: "registerWorker", element: <RegisterWorkerFinal /> },
 
-      
-      
         {
           path: "admin",
           element: <Protected allowedRoles={['ROLE_ADMIN']} />,
           children: [
-            {path: "", element: <SysAdmin /> },
-            {path: "AdminCategoryForm/:categoryId", element: <CategoryForm /> },
-            {path: "editUserAdmin/:id", element: <EditUserForm /> },
-            {path: "adminWorkersPage", element: <AdminWorkersPage /> },
-            {path: "adminWorkersEdit/:id", element: <WorkerForm /> },
-            {path: "AdminCreateForm", element: <CreateAdminForm /> },
-            {path: "makeWorkerForm/:id", element: <MakeWorkerForm /> },
-            {path: "DeleteReview", element: <DeleteReview /> },
-            {path: "adminCreateUserForm", element: <AdminCreateUserForm  /> },
-            {path: "DeleteReview/:workerId", element: <DeleteReview /> },
-            {path: "AdminEditCategory", element: <AdminCategoriesPage /> },
+            { path: "", element: <SysAdmin /> },
+            { path: "AdminCategoryForm/:categoryId", element: <CategoryForm /> },
+            { path: "editUserAdmin/:id", element: <EditUserForm /> },
+            { path: "adminWorkersPage", element: <AdminWorkersPage /> },
+            { path: "adminWorkersEdit/:id", element: <WorkerForm /> },
+            { path: "AdminCreateForm", element: <CreateAdminForm /> },
+            { path: "makeWorkerForm/:id", element: <MakeWorkerForm /> },
+            { path: "DeleteReview/:workerId", element: <DeleteReview /> },
+            { path: "adminCreateUserForm", element: <AdminCreateUserForm /> },
+            { path: "AdminEditCategory", element: <AdminCategoriesPage /> },
           ],
         },
       ],
     },
-  ]); 
+  ]);
 
   return (
     <ThemeContextProvider>

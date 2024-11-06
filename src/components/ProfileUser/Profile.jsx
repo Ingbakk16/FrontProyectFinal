@@ -102,7 +102,7 @@ const Profile = () => {
   };
 
   const backHandler = () => {
-    navigate('/');
+    navigate(-1);
   };
 
   const getInitials = () => {

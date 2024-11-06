@@ -17,11 +17,7 @@ const AdminCategoriesPage = () => {
   const [loading, setLoading] = useState(true);
 
   const handleAddCategory = () => {
-    navigate('/AdminCategoryForm/new');
-  };
-
-  const handleEditCategory = (categoryId) => {
-    navigate(`/AdminCategoryForm/${categoryId}`);
+    navigate('/admin/AdminCategoryForm/new');
   };
 
   const handleDeleteCategory = async (categoryId) => {

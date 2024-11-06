@@ -1,15 +1,52 @@
+/* tema claro */
 .success-popup {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #28a745;
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-size: 1rem;
-    text-align: center;
-    z-index: 1000;
-  }
-  
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #28a745;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  text-align: center;
+  z-index: 1000;
+}
+
+.register-background {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-background.default {
+  background: linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94);
+}
+
+.register-card {
+  width: 25rem;
+  padding: 1rem;
+  border-radius: 5vh;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.input-light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.border-danger {
+  border-color: #dc3545 !important;
+}
+
+/* tema oscuro */
+.register-background.dark {
+  background-color: #1F1F1F;
+}
+
+.input-dark {
+  background-color: #2B2B2B;
+  color: #ffffff;
+}

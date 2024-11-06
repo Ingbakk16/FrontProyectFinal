@@ -6,7 +6,7 @@ import Sidebar from "../sidebar button/sidebarMenu";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import "../editUserAdmin/EditUserForm.css"; // Usaremos el mismo CSS que EditUserForm
+import "../editUserAdmin/EditUserForm.css"; 
 
 const AdminCreateUserForm = () => {
   const { theme } = useContext(ThemeContext);
@@ -39,7 +39,7 @@ const AdminCreateUserForm = () => {
 
       if (response.ok) {
         console.log("Usuario creado con éxito");
-        navigate("/Admin"); // Redirige a la página de administración
+        navigate("/Admin"); 
       } else {
         throw new Error("Error al crear el usuario");
       }

@@ -9,30 +9,28 @@ const Protected = ({ allowedRoles }) => {
 
     if (loading) {
         return <div>Loading...</div>;
-      }
+    }
 
-    
-    
-
-
-    // Redirect to login if not authenticated
     if (!token) {
         return <Navigate to="/login" replace />;
     }
 
-
-    
-
     if (!allowedRoles.includes(role)) {
         return <Navigate to="/unauthorized" replace />;
-      }
+    }
 
-
-     
-
-    
+    // Puedes mantener o eliminar estos logs según tu necesidad de depuración
+    console.log("Token:", token);
+    console.log("Role:", role); 
+    console.log("Allowed roles:", allowedRoles);
+    console.log("Current role:", role);
+    console.log("Role included in allowedRoles:", allowedRoles.includes(role));
 
     return <Outlet />;
 };
 
-export default Protected; 
+Protected.propTypes = {
+    allowedRoles: PropTypes.array.isRequired,
+};
+
+export default Protected;
