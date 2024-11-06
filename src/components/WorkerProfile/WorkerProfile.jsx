@@ -6,10 +6,12 @@ import { useParams } from "react-router-dom";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
 import { ThemeContext } from "../services/ThemeContext/Theme.context";
 import "../WorkerProfile/WorkerStyle.css";
+import StarRating from "../starRating/starRating";
+import Carousel from "../Carousel/Carousel";
 
 const WorkerProfile = () => {
   const { id } = useParams();
-  const { token } = useContext(AuthenticationContext);
+  const { token, user } = useContext(AuthenticationContext);
   const { theme } = useContext(ThemeContext);
 
   const [worker, setWorker] = useState(null);
@@ -24,18 +26,18 @@ const WorkerProfile = () => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    setRefreshKey((prevKey) => prevKey + 1); // Cambia la clave cuando cambies el tema
+    setRefreshKey((prevKey) => prevKey + 1); 
   }, [theme]);
 
   useEffect(() => {
     const fetchWorkerProfile = async () => {
-      setLoading(true); // Inicia el estado de carga
+      setLoading(true);
       if (!token) {
         console.error("No token available.");
         setLoading(false);
         return;
       }
-
+  
       try {
         const response = await fetch(`http://localhost:8081/api/workers/all`, {
           method: "GET",
@@ -44,28 +46,50 @@ const WorkerProfile = () => {
             "Content-Type": "application/json",
           },
         });
-
+  
         if (!response.ok) {
-          throw new Error("Error fetching worker profile");
+          throw new Error("Error fetching worker profiles");
         }
-
+  
         const data = await response.json();
         const workerData = data.find((worker) => worker.id === id);
 
+        
+
+
+  
         if (!workerData) {
           console.error("Worker not found");
           setLoading(false);
           return;
         }
-
-        setWorker(workerData);
+  
+        // Parse image URLs
+        const parsedImageUrls = Array.isArray(workerData.imageUrls)
+          ? workerData.imageUrls.map((item) => {
+              try {
+                const parsedItem = JSON.parse(item); // Parse each item
+                return parsedItem.imageUrl; // Extract imageUrl
+              } catch (e) {
+                console.error("Error parsing image URL:", e);
+                return null; // Skip invalid items
+              }
+            }).filter(Boolean) // Remove null values
+          : [];
+  
+        setWorker({
+          ...workerData,
+          imageUrls: parsedImageUrls, // Update imageUrls with parsed URLs
+        });
+  
+        
       } catch (error) {
         console.error("Error fetching worker profile:", error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchWorkerProfile();
   }, [id, token, theme]);
 
@@ -75,11 +99,7 @@ const WorkerProfile = () => {
         const response = await fetch(
           `http://localhost:8081/api/workers/${id}/comments`,
           {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
 
@@ -89,13 +109,19 @@ const WorkerProfile = () => {
 
         const data = await response.json();
         setComments(data);
+
+        // Check if the user has already commented
+        const userHasCommented = data.some(
+          (comment) => comment.userId === user.id
+        ); // assuming `currentUser.id` is the logged-in user ID
+        setHasCommented(userHasCommented);
       } catch (error) {
         console.error("Error fetching comments:", error);
       }
     };
 
     fetchComments();
-  }, [id, token]); // Se ejecuta cada vez que cambian `id` o `token`
+  }, [id, token, user.id]); // Se ejecuta cada vez que cambian `id` o `token`
 
   const handleAddComment = async () => {
     setIsSubmitting(true);
@@ -130,7 +156,10 @@ const WorkerProfile = () => {
 
   const handleCommentChange = (e) => {
     const { name, value } = e.target;
-    setNewComment({ ...newComment, [name]: value });
+    setNewComment((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const toggleComments = () => {
@@ -158,7 +187,6 @@ const WorkerProfile = () => {
     <>
       <div
         key={theme}
-        fluid
         className={`.background ${
           theme === "dark" ? "background-dark" : "background-light"
         }`}
@@ -185,26 +213,28 @@ const WorkerProfile = () => {
                   {worker.user.name} {worker.user.lastname}
                 </h3>
                 <h5 className="text-light">{worker.jobTitles.join(", ")}</h5>
-  
+
                 <p className="text-light">
-                  {worker.user?.email || "Email no disponible"}
+                  {worker.phoneNumber || "Worker doesnt have a contact number"}
                 </p>
                 <p className="text-light">
                   "{worker.description || "Sin descripción"}"
                 </p>
-  
-                {worker.imageUrl ? (
-                  <div className="work-images-carousel">
-                    <img
-                      src={worker.imageUrl}
-                      alt="Work"
-                      className="work-image"
+
+                <div
+                  className={`.background ${
+                    theme === "dark" ? "background-dark" : "background-light"
+                  }`}
+                >
+                  {worker.imageUrls && (
+                    <Carousel
+                      images={worker.imageUrls} 
+                      editable={false} // View-only mode
+                      theme={theme}
                     />
-                  </div>
-                ) : (
-                  <p>No hay imágenes de trabajo disponibles</p>
-                )}
-  
+                  )}
+                </div>
+
                 <Button
                   variant="primary"
                   className={`mt-4 comments-toggle-button ${
@@ -214,7 +244,44 @@ const WorkerProfile = () => {
                 >
                   {showComments ? "OCULTAR COMENTARIOS" : "MOSTRAR COMENTARIOS"}
                 </Button>
-  
+
+                {showCommentForm && (
+                  <div
+                    className={`mt-4 comments-container ${
+                      theme === "dark"
+                        ? "comments-container-dark"
+                        : "comments-container-light"
+                    }`}
+                  >
+                    <h4 className="text-dark">Comentarios:</h4>
+                    {comments.length > 0 ? (
+                      comments.map((comment, index) => (
+                        <Card
+                          key={index}
+                          className={`comment-card ${
+                            theme === "dark"
+                              ? "comment-card-dark"
+                              : "comment-card-light"
+                          } mb-3`}
+                        >
+                          <Card.Body>
+                            <strong>{comment.ratedByUserId}</strong>
+                            <p>{comment.comment}</p>
+                            <p>Calificación: {"★".repeat(comment.rating)}</p>
+                          </Card.Body>
+                        </Card>
+                      ))
+                    ) : (
+                      <p className="text-dark">
+                        No hay comentarios disponibles
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {/* Button to Show/Hide Comments */}
+
+                {/* Comments Section */}
                 {showComments && (
                   <div
                     className={`mt-4 comments-container ${
@@ -248,20 +315,24 @@ const WorkerProfile = () => {
                     )}
                   </div>
                 )}
-  
-                <Button
-                  variant="primary"
-                  className={`mt-4 comments-toggle-button ${
-                    theme === "dark" ? "button-dark" : ""
-                  }`}
-                  onClick={toggleCommentForm}
-                >
-                  {showCommentForm
-                    ? "OCULTAR AGREGAR COMENTARIO"
-                    : "AGREGAR COMENTARIO"}
-                </Button>
-  
-                {showCommentForm && (
+
+                {/* Button to Add a New Comment, Visible Only if User Hasn't Commented */}
+                {!hasCommented && (
+                  <Button
+                    variant="primary"
+                    className={`mt-4 comments-toggle-button ${
+                      theme === "dark" ? "button-dark" : ""
+                    }`}
+                    onClick={toggleCommentForm}
+                  >
+                    {showCommentForm
+                      ? "OCULTAR AGREGAR COMENTARIO"
+                      : "AGREGAR COMENTARIO"}
+                  </Button>
+                )}
+
+                {/* Add Comment Form */}
+                {!hasCommented && showCommentForm && (
                   <div className="add-comment-form mt-4 show">
                     <h5>Añadir un nuevo comentario</h5>
                     <textarea
@@ -273,34 +344,30 @@ const WorkerProfile = () => {
                         theme === "dark" ? "form-control-dark" : ""
                       }`}
                     />
-                    <select
-                      name="rating"
-                      value={newComment.rating}
-                      onChange={handleCommentChange}
-                      className={`form-control mb-2 ${
-                        theme === "dark" ? "form-control-dark" : ""
-                      }`}
-                    >
-                      <option value="0">Selecciona una calificación</option>
-                      <option value="1">★</option>
-                      <option value="2">★★</option>
-                      <option value="3">★★★</option>
-                      <option value="4">★★★★</option>
-                      <option value="5">★★★★★</option>
-                    </select>
+                    <StarRating
+                      rating={newComment.rating}
+                      onChange={(rating) =>
+                        handleCommentChange({
+                          target: { name: "rating", value: rating },
+                        })
+                      }
+                    />
                     <Button
                       variant="success"
                       onClick={handleAddComment}
-                      disabled={hasCommented || isSubmitting}
+                      disabled={isSubmitting}
                       className={theme === "dark" ? "button-dark" : ""}
                     >
-                      {hasCommented
-                        ? "Ya has comentado"
-                        : isSubmitting
-                        ? "Enviando..."
-                        : "Añadir Comentario"}
+                      {isSubmitting ? "Enviando..." : "Añadir Comentario"}
                     </Button>
                   </div>
+                )}
+
+                {/* Message if User Already Commented */}
+                {hasCommented && (
+                  <p className="text-muted mt-2">
+                    Ya has comentado a este trabajador.
+                  </p>
                 )}
               </Card>
             </Col>
