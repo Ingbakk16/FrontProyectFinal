@@ -5,9 +5,6 @@ import './Carousel.css'; // Import custom CSS for styling
 const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  
-
- 
   const maxSlides = Math.min(3, images.length + (editable && images.length < 3 ? 1 : 0));
 
   const handlePreviousImage = () => {
@@ -26,13 +23,7 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
 
   return (
     <div className={`carousel-container ${theme === 'dark' ? 'carousel-dark' : 'carousel-light'}`}>
-      {/* Navigation buttons */}
-      <Button variant="link" onClick={handlePreviousImage} className="carousel-nav-btn">
-        {'<'}
-      </Button>
-
-      <div className="image-wrapper" style={{ position: 'relative' }}>
-        {/* Conditional render for Add Image placeholder or image */}
+      <div className="image-wrapper">
         {isAddImageSlide ? (
           <div className="add-image-placeholder" onClick={onAddImage}>
             <span className="add-icon">+</span>
@@ -41,28 +32,27 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
           <>
             <Image
               src={images[currentImageIndex]}
-              rounded
               className="carousel-image"
             />
-            {/* Delete button only in edit mode */}
             {editable && onDelete && (
               <Button
                 variant="danger"
                 size="sm"
                 className="delete-button"
                 onClick={() => onDelete(images)}
-                style={{ position: 'absolute', top: '10px', right: '10px' }}
               >
                 🗑️
               </Button>
             )}
           </>
         )}
+        <Button variant="link" onClick={handlePreviousImage} className="carousel-nav-btn left">
+          {'<'}
+        </Button>
+        <Button variant="link" onClick={handleNextImage} className="carousel-nav-btn right">
+          {'>'}
+        </Button>
       </div>
-
-      <Button variant="link" onClick={handleNextImage} className="carousel-nav-btn">
-        {'>'}
-      </Button>
     </div>
   );
 };
