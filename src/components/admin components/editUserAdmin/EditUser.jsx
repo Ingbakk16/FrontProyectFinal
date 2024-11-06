@@ -22,38 +22,7 @@ const EditUserForm = () => {
     password: "",
   });
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8081/api/admin/edit/${id}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
 
-        if (!response.ok)
-          throw new Error("Error al obtener los datos del usuario");
-
-        const data = await response.json();
-        setFormData({
-          username: data.username,
-          name: data.name,
-          lastname: data.lastname,
-          email: data.email,
-          password: "", // La contraseña se debe establecer solo si es necesario actualizarla
-        });
-      } catch (error) {
-        console.error("Error al cargar los datos del usuario:", error);
-      }
-    };
-
-    fetchUserData();
-  }, [id, token]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -76,7 +45,7 @@ const EditUserForm = () => {
 
       if (response.ok) {
         console.log("Usuario actualizado con éxito");
-        navigate("/Admin"); // Redirige de vuelta a la página de administración
+        navigate("/Admin"); 
       } else {
         throw new Error("Error al actualizar el usuario");
       }

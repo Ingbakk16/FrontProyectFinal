@@ -28,8 +28,8 @@ const MakeWorkerForm = ({
 
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
-  const { id: userId } = useParams(); // Recibe `userId` como `id`
-  const [categories, setCategories] = useState([]); // Estado para almacenar categorías
+  const { id: userId } = useParams(); 
+  const [categories, setCategories] = useState([]); 
 
   const navigate = useNavigate();
 
@@ -182,7 +182,6 @@ const MakeWorkerForm = ({
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
                         {category.title}{" "}
-                        {/* Muestra el título en lugar del nombre */}
                       </option>
                     ))}
                   </Form.Control>

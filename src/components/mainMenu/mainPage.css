@@ -1,14 +1,10 @@
+/* tema claro */
 .page-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-.background-dark-profile{
-  background-color: #333333;
-}
-
-/* Modo Claro */
 .main-light {
   background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
   color: #ffffff; /* Color del texto en modo claro */
@@ -22,19 +18,23 @@
   flex: 1;
 }
 
-/* Modo Oscuro */
-.main-dark {
-  background-color: #333333; /* Fondo sólido en modo oscuro */
-  color: #ffffff; /* Color del texto en modo oscuro */
-}
-
-.main-dark h1 {
-  color: #e8eaed;
-}
-
 footer {
   background-color: #25206A;
   text-align: center;
   padding: 10px;
   color: #fff;
+}
+
+/* tema oscuro */
+.background-dark-profile {
+  background-color: #333333;
+}
+
+.main-dark {
+  background-color: #333333; 
+  color: #ffffff; 
+}
+
+.main-dark h1 {
+  color: #e8eaed;
 }

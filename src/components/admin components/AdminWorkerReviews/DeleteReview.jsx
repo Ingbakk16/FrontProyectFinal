@@ -9,7 +9,7 @@ import { AuthenticationContext } from "../../services/authenticationContext/auth
 import "./DeleteReview.css";
 
 const DeleteReview = () => {
-  const { workerId } = useParams(); // Obtiene workerId de los parámetros
+  const { workerId } = useParams(); 
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const [reviews, setReviews] = useState([]);

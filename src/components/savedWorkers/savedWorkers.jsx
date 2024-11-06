@@ -4,14 +4,14 @@ import WorkerCard from "../workerCard/workerCard";
 import Header from "../header/header";
 import Footer from "../footer/footer";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
-import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa ThemeContext
+import { ThemeContext } from "../services/ThemeContext/Theme.context"; 
 import { useNavigate } from "react-router-dom";
 import "./SavedWorker.css";
 
 const FavoritesPage = () => {
   const [workers, setWorkers] = useState([]);
   const { token } = useContext(AuthenticationContext);
-  const { theme } = useContext(ThemeContext); // Usa ThemeContext
+  const { theme } = useContext(ThemeContext); 
   const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
 

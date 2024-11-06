@@ -15,7 +15,7 @@ export const AuthenticationContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserRole = async () => {
       if (!token) {
-        setLoading(false); // Set loading to false if no token is present
+        setLoading(false); 
         return;
       }
 
@@ -61,8 +61,8 @@ export const AuthenticationContextProvider = ({ children }) => {
     localStorage.removeItem("token");
     setUser(null);
     setToken(null);
-    setRole(null); // Clear role on logout
-    setLoading(false); // Clear loading on logout
+    setRole(null); 
+    setLoading(false);
   };
 
   return (

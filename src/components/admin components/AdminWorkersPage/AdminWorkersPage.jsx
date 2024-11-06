@@ -34,8 +34,8 @@ const AdminWorkersPage = () => {
         // Agrega `workerId` y `userId` usando ambos `id` de nivel superior y `user`
         const workersWithIds = data.map((worker) => ({
           ...worker,
-          workerId: worker.id, // `id` de nivel superior como `workerId`
-          userId: worker.user.id, // `id` dentro de `user`
+          workerId: worker.id, 
+          userId: worker.user.id, 
         }));
 
         setWorkers(workersWithIds);
@@ -53,15 +53,15 @@ const AdminWorkersPage = () => {
     navigate(`/admin/adminWorkersEdit/${userId}`);
   };
 
-  const handleDeleteWorker = async (workerId) => {
+  const handleDeleteWorker = async (userId) => {
     if (
       !window.confirm("¿Estás seguro de que deseas eliminar este trabajador?")
     )
       return;
-
+  
     try {
       const response = await fetch(
-        `http://localhost:8081/api/admin/${workerId}`,
+        `http://localhost:8081/api/admin/${userId}`,
         {
           method: "DELETE",
           headers: {
@@ -70,19 +70,20 @@ const AdminWorkersPage = () => {
           },
         }
       );
-
+  
       if (!response.ok) {
         throw new Error("Error al eliminar el trabajador");
       }
-
+  
       setWorkers((prevWorkers) =>
-        prevWorkers.filter((worker) => worker.id !== workerId)
-      );
-      console.log(`Trabajador ${workerId} eliminado exitosamente`);
+        prevWorkers.filter((worker) => worker.userId !== userId)
+      ); 
+      console.log(`Trabajador ${userId} eliminado exitosamente`);
     } catch (error) {
       console.error("Error al intentar eliminar el trabajador:", error);
     }
   };
+  
 
   const handleViewReviews = (workerId) => {
     navigate(`/admin/DeleteReview/${workerId}`);
@@ -127,7 +128,7 @@ const AdminWorkersPage = () => {
                         lastname={worker.user.lastname} 
                         email={worker.user.email} 
                         onEdit={() => handleEditWorker(worker.userId)}
-                        onDelete={() => handleDeleteWorker(worker.workerId)}
+                        onDelete={() => handleDeleteWorker(worker.userId)}
                         onViewReviews={() => handleViewReviews(worker.workerId)}
                         showViewProfile={false}
                         showDeleteReviews={true}

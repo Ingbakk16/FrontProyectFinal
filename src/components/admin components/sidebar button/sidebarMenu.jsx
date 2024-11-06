@@ -10,7 +10,7 @@ const SidebarMenu = () => {
 
   if (!themeContext) {
     console.error;
-    return null; // O un mensaje alternativo para los usuarios
+    return null; 
   }
 
   const { theme } = themeContext;

@@ -22,7 +22,7 @@ const SysAdmin = () => {
         const response = await fetch("http://localhost:8081/api/users/all", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // Obtén el token de autorización almacenado
+            Authorization: `Bearer ${token}`, 
             "Content-Type": "application/json",
           },
         });
@@ -146,7 +146,7 @@ const SysAdmin = () => {
                         role={user.role?.name || "Usuario"}
                         onEdit={() => handleEdit(user.id)}
                         onDelete={() => handleDelete(user.id)}
-                        onBecomeWorker={() => handleMakeWorker(user.id)} // Asegúrate de que esté bien conectado
+                        onBecomeWorker={() => handleMakeWorker(user.id)} 
                       />
                     </Col>
                   ))}

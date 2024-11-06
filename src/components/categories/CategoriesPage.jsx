@@ -42,7 +42,7 @@ const CategoriesPage = () => {
     }, [token]);
 
     const handleCategoryClick = (jobId) => {
-        navigate(`/mainPage?category=${jobId}`); // Navigate with jobId in the query
+        navigate(`/mainPage?category=${jobId}`); 
     };
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -69,7 +69,7 @@ const CategoriesPage = () => {
                          <button
                          key={index}
                          className={`category-button ${theme === 'dark' ? 'category-button-dark' : ''}`}
-                         onClick={() => handleCategoryClick(category.jobId)} // Pass jobId here
+                         onClick={() => handleCategoryClick(category.jobId)} 
                      >
                          {category.title} {/* Display the title only */}
                      </button>

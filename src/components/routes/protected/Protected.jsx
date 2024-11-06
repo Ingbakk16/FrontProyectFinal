@@ -11,22 +11,13 @@ const Protected = ({ allowedRoles }) => {
         return <div>Loading...</div>;
       }
 
-    
-    
-
-
-    // Redirect to login if not authenticated
     if (!token) {
         return <Navigate to="/login" replace />;
     }
 
-
-    
-
     if (!allowedRoles.includes(role)) {
         return <Navigate to="/unauthorized" replace />;
       }
-
 
     console.log("Token:", token);
     console.log("Role:", role); 
@@ -37,9 +28,6 @@ const Protected = ({ allowedRoles }) => {
     console.log("Current role:", role);
     console.log("Role included in allowedRoles:", allowedRoles.includes(role));   
 
-    
-
-    // Render child routes if authenticated and authorized
     return <Outlet />;
 };
 

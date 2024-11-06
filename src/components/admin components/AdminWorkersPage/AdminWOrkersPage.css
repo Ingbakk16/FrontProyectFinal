@@ -1,29 +1,29 @@
-/* Fondo para tema claro */
+/* tema claro */
 .admin-categories-page-background {
     background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-/* Fondo para tema oscuro */
-.admin-page-dark {
+  }
+  
+  .APage-background-light {
+    background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
+  }
+  
+  .worker-list-container {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+  }
+  
+  /* tema oscuro */
+  .admin-page-dark {
     background: linear-gradient(to top, #333333, #1F1F1F, #000000);
     color: #ffffff;
-    min-Height: "90vh"
-}
-
-.APage-background-light{
-    background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
-}
-
-.APage-background-dark{
+    min-height: 90vh;
+  }
+  
+  .APage-background-dark {
     background: linear-gradient(to top, #333333, #1F1F1F, #000000);
-}
-
-.worker-list-container {
-    max-height: 500px; 
-    overflow-y: auto; /* Habilitar desplazamiento vertical */
-    padding-right: 10px; /* Espacio para evitar el recorte de la barra */
   }
   

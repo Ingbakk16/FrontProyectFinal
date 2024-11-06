@@ -1,15 +1,10 @@
-/* Contenedor principal */
+/* tema claro */
 .settings-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
   transition: background-color 0.3s ease;
-}
-
-.settings-page.dark-mode {
-  background-color: #1F1F1F;
-  color: #ffffff;
 }
 
 .settings-page h2 {
@@ -28,7 +23,6 @@
   margin-top: auto;
 }
 
-/* Estilos del interruptor deslizante */
 .theme-switch {
   position: relative;
   width: 60px;
@@ -42,10 +36,6 @@
   padding: 0 5px;
 }
 
-.theme-switch.dark {
-  background-color: #555;
-}
-
 .theme-switch .slider {
   position: absolute;
   width: 26px;
@@ -55,11 +45,6 @@
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.theme-switch.dark .slider {
-  transform: translateX(30px);
-  background-color: #1F1F1F;
-}
-
 .contenedor {
   display: flex;
   justify-content: center;
@@ -67,7 +52,6 @@
   margin-top: 2rem;
 }
 
-/* Textos para el estado del tema */
 .theme-label {
   margin-top: 1rem;
   color: inherit;
@@ -93,12 +77,12 @@
   transform: perspective(100px) rotateX(5deg) rotateY(-5deg);
 }
 
-#checkbox:checked ~ .label:hover {
-  transform: perspective(100px) rotateX(-5deg) rotateY(5deg);
-}
-
 #checkbox {
   display: none;
+}
+
+#checkbox:checked ~ .label:hover {
+  transform: perspective(100px) rotateX(-5deg) rotateY(5deg);
 }
 
 #checkbox:checked ~ .label::before {
@@ -119,4 +103,19 @@
   left: 10px;
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3), 10px 10px 10px rgba(0, 0, 0, 0.3);
   transition: 0.4s;
-} 
+}
+
+/* tema oscuro */
+.settings-page.dark-mode {
+  background-color: #1F1F1F;
+  color: #ffffff;
+}
+
+.theme-switch.dark {
+  background-color: #555;
+}
+
+.theme-switch.dark .slider {
+  transform: translateX(30px);
+  background-color: #1F1F1F;
+}

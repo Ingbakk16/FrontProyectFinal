@@ -16,7 +16,7 @@ const WorkerForm = () => {
     imageUrl: '',
   });
 
-  const { id: userId } = useParams(); // Recibe `userId` como `id`
+  const { id: userId } = useParams(); 
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ const WorkerForm = () => {
         throw new Error('Error al actualizar el perfil del trabajador');
       }
   
-      navigate('/admin/adminWorkersPage'); // Redirigir después de guardar
+      navigate('/admin/adminWorkersPage'); 
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
     }

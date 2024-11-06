@@ -11,8 +11,9 @@ const RegisterWorkerFinal = () => {
     dni: "",
     jobId: "", 
     direccion: "",
+    phoneNumber: "",  // Nuevo campo de teléfono
     description: "",
-    imageUrl: "", // Cambiamos de workImages a un campo de URL único para la imagen
+    imageUrl: "", 
     rating: 0, 
   });
   const [categories, setCategories] = useState([]);
@@ -55,6 +56,7 @@ const RegisterWorkerFinal = () => {
       if (!formData.dni.match(/^\d{8}$/)) newErrors.push("El DNI debe tener 8 números.");
       if (!formData.jobId) newErrors.push("Debe seleccionar un trabajo.");
       if (formData.direccion.trim() === "") newErrors.push("La dirección es obligatoria.");
+      if (!formData.phoneNumber.match(/^\d{10}$/)) newErrors.push("El número de teléfono debe tener 10 dígitos."); // Validación del teléfono
     } else if (step === 2) {
       if (!formData.imageUrl.trim()) newErrors.push("Debe ingresar la URL de una imagen de su trabajo.");
       if (formData.description.trim() === "") newErrors.push("La descripción es obligatoria.");
@@ -88,6 +90,7 @@ const RegisterWorkerFinal = () => {
       description: formData.description,
       dni: formData.dni,
       direccion: formData.direccion, 
+      phoneNumber: formData.phoneNumber,  // Añadir phoneNumber al payload
       rating: 0, 
       jobId: formData.jobId,
       imageUrl: formData.imageUrl, 
@@ -139,6 +142,7 @@ const RegisterWorkerFinal = () => {
               </Form.Control>
             </Form.Group>
             <InputField label="Dirección" name="direccion" type="text" value={formData.direccion} onChange={handleChange} />
+            <InputField label="Número de Teléfono" name="phoneNumber" type="text" value={formData.phoneNumber} onChange={handleChange} /> {/* Nuevo campo de número de teléfono */}
           </>
         );
       case 2:
@@ -150,7 +154,7 @@ const RegisterWorkerFinal = () => {
         );
       case 3:
         return (
-          <div className="review-step-container"> {/* Clase CSS para estilos */}
+          <div className="review-step-container"> 
             <h4 className="text-center">Revisa tu información</h4>
             {Object.entries(formData).map(([key, value], idx) => (
               key !== 'rating' && ( 
