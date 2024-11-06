@@ -1,30 +1,19 @@
-/* Fondo de la página en tema claro y oscuro */
+/* tema claro */
 .background-light {
   background: #bc5ef2;
 }
 
-.background-dark {
-  background: #1a1919;
-}
-
-/* Contenedor principal del formulario de ayuda */
 .help-container {
-  padding-top: 80px; /* Espacio para el Header */
+  padding-top: 80px;
   padding: 5vh;
   min-height: 100vh;
-  background: linear-gradient(to top,#bc5ef2, #e1bce7, );
+  background: linear-gradient(to top, #bc5ef2, #e1bce7);
 }
 
-.help-container-dark {
-  background: linear-gradient(to bottom,#333333, #1F1F1F, );
-}
-
-/* Relleno completo de la altura */
 .full-height-row {
-  min-height: calc(100vh - 200px); /* Ajuste para que el header y el footer no interfieran con la altura total */
+  min-height: calc(100vh - 200px);
 }
 
-/* Ajuste del formulario de ayuda */
 .help-form {
   background-color: #c57dff;
   border-radius: 1rem;
@@ -33,12 +22,38 @@
   color: #000;
 }
 
+.form-submit-btn {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.alert {
+  margin-top: 1rem;
+  color: #fffefe;
+}
+
+.contact-text {
+  color: white;
+}
+
+.contact-tittle {
+  color: black;
+}
+
+/* tema oscuro */
+.background-dark {
+  background: #1a1919;
+}
+
+.help-container-dark {
+  background: linear-gradient(to bottom, #333333, #1F1F1F);
+}
+
 .help-form-dark {
   background-color: #333;
   color: #fff;
 }
 
-/* Estilos de campos de formulario en tema oscuro */
 .form-control-dark {
   background-color: #555;
   color: #fff;
@@ -47,12 +62,6 @@
 
 .form-control-dark::placeholder {
   color: #ccc;
-}
-
-/* Botón de enviar en el formulario */
-.form-submit-btn {
-  text-align: center;
-  margin-top: 1.5rem;
 }
 
 .button-dark {
@@ -64,13 +73,7 @@
   background-color: #222;
 }
 
-/* Estilos de las alertas */
-.alert {
-  margin-top: 1rem;
-  color: #333;
-}
-
 .alert-dark {
   background-color: #444;
   color: #fff;
-} 
+}

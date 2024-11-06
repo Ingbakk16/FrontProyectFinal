@@ -17,14 +17,14 @@ const RegisterWorkerFinal = () => {
   const [canProceed, setCanProceed] = useState(false);
 
   const [formData, setFormData] = useState({
-    dni: "",
-    jobId: "",
-    direccion: "",
-    phoneNumber: "",
-    description: "",
-    imageUrl: "",
-    rating: 0,
-  });
+  dni: "",
+  jobId: "",
+  direccion: "",
+  phoneNumber: "",
+  description: "",
+  imageUrls: [],  
+  rating: 0,
+});
 
   const DNI_MIN_LENGTH = 6;
   const DNI_MAX_LENGTH = 8;
@@ -106,20 +106,21 @@ const RegisterWorkerFinal = () => {
     fetchCategories();
   }, [token]);
 
-  const validateStep = () => {
-    const newErrors = {};
-    if (step === 1) {
-      newErrors.dni = validateDNI(formData.dni);
-      newErrors.jobId = validateJobId(formData.jobId);
-      newErrors.direccion = validateDireccion(formData.direccion);
-      newErrors.phoneNumber = validatePhoneNumber(formData.phoneNumber);
-    } else if (step === 2) {
-      newErrors.imageUrl = validateImageUrl(formData.imageUrl);
-      newErrors.description = validateDescription(formData.description);
-    }
-    setErrors(newErrors);
-    return Object.values(newErrors).every((error) => !error);
-  };
+const validateStep = () => {
+  const newErrors = {};
+  if (step === 1) {
+    newErrors.dni = validateDNI(formData.dni);
+    newErrors.jobId = validateJobId(formData.jobId);
+    newErrors.direccion = validateDireccion(formData.direccion);
+    newErrors.phoneNumber = validatePhoneNumber(formData.phoneNumber);
+  } else if (step === 2) {
+    newErrors.imageUrls = validateImageUrls(formData.imageUrls); 
+    newErrors.description = validateDescription(formData.description);
+  }
+  setErrors(newErrors);
+  return Object.values(newErrors).every((error) => !error);
+};
+
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -164,7 +165,8 @@ const RegisterWorkerFinal = () => {
     }
   };
 
-  const renderStep = () => {
+
+const renderStep = () => {
     switch (step) {
       case 1:
         return (
@@ -210,6 +212,7 @@ const RegisterWorkerFinal = () => {
         return null;
     }
   };
+
 
   return (
     <Container fluid className={`register-container ${theme === 'dark' ? 'register-container-dark' : ''}`}>

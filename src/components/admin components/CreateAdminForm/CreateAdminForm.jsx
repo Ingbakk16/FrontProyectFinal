@@ -43,7 +43,7 @@ const CreateAdminForm = () => {
 
       if (response.ok) {
         console.log("Administrador creado con éxito");
-        navigate("/admin"); // Redirige a la página de administración
+        navigate(-1);
       } else {
         console.error("Error al crear administrador");
       }
@@ -65,7 +65,7 @@ const CreateAdminForm = () => {
           <Sidebar />
         </Col>
         
-        {/* Main Content */}
+
         <Col md={10} className="p-4">
           <Form onSubmit={handleSubmit} className={`create-admin-form ${theme === "dark" ? "form-dark" : ""}`}>
             <h3>Crear Administrador</h3>

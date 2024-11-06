@@ -8,13 +8,24 @@
   justify-content: space-between;
   height: 100%;
   transition: background 0.3s ease, color 0.3s ease;
+
 }
+
+.worker-card-light .worker-text {
+  color: white;
+}
+
+.worker-card-dark .worker-text {
+  color: #e8eaed;
+}
+
 
 /* Modo Claro */
 .worker-card-light {
   background: linear-gradient(180deg, #6BF8EF, #87ACF7, #645DB5);
   color: white;
 }
+
 
 .worker-avatar-initials {
   width: 50px;
@@ -27,7 +38,7 @@
   margin: 0 auto;
 }
 
-/* Estilo para el avatar en modo claro */
+
 .avatar-light {
   background-color: #4A67C3;
   color: white;

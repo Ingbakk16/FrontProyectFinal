@@ -1,25 +1,36 @@
-import React, { useContext, useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import Header from '../../header/header';
-import Footer from '../../footer/footer';
-import SidebarButton from '../sidebar button/sidebarMenu';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ThemeContext } from '../../services/ThemeContext/Theme.context';
-import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
-import './MakeWorkerForm.css';
+import React, { useContext, useState, useEffect } from "react";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import Header from "../../header/header";
+import Footer from "../../footer/footer";
+import SidebarButton from "../sidebar button/sidebarMenu";
+import { useNavigate, useParams } from "react-router-dom";
+import { ThemeContext } from "../../services/ThemeContext/Theme.context";
+import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+import "./MakeWorkerForm.css";
 
-const MakeWorkerForm = ({ initialWorker = { description: '', dni: '', direccion: '', jobId: '', imageUrl: '' } }) => {
+const MakeWorkerForm = ({
+  initialWorker = {
+    description: "",
+    dni: "",
+    direccion: "",
+    jobId: "",
+    imageUrl: "",
+  },
+}) => {
   const [formData, setFormData] = useState({
     description: initialWorker.description,
     dni: initialWorker.dni,
     direccion: initialWorker.direccion,
     jobId: initialWorker.jobId,
     imageUrl: initialWorker.imageUrl,
+    phoneNumber: initialWorker.phoneNumber || "", 
   });
 
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
-  const { id } = useParams(); // Captura el userId desde la URL
+  const { id: userId } = useParams(); 
+  const [categories, setCategories] = useState([]); 
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -27,42 +38,77 @@ const MakeWorkerForm = ({ initialWorker = { description: '', dni: '', direccion:
     setFormData({ ...formData, [name]: value });
   };
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:8081/api/jobs/all", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Error al obtener las categorías");
+        }
+        const data = await response.json();
+        setCategories(data); // Guarda las categorías en el estado
+      } catch (error) {
+        console.error("Error al cargar las categorías:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [token]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     try {
-      const response = await fetch(`http://localhost:8081/api/admin/worker/${id}`, {
-        method: 'PUT', 
+      const response = await fetch(`http://localhost:8081/api/admin/worker/${userId}`, { 
+        method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData), 
       });
-
-      if (response.ok) {
-        navigate('/AdminEditWorkers'); 
-      } else {
-        throw new Error('Error al crear o actualizar el trabajador');
+  
+      if (!response.ok) {
+        throw new Error('Error al actualizar el perfil del trabajador');
       }
+  
+      navigate('/admin/adminWorkersPage'); 
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
     }
   };
+  
+  
 
   const handleCancel = () => {
     navigate(-1);
   };
 
   return (
-    <div className={`page-background ${theme === "dark" ? "background-dark" : "background-light"}`}>
+    <div
+      className={`page-background ${
+        theme === "dark" ? "background-dark" : "background-light"
+      }`}
+    >
       <Header />
-      <Container fluid className="d-flex" style={{ minHeight: '90vh' }}>
+      <Container fluid className="d-flex" style={{ minHeight: "90vh" }}>
         <Col md={2} className="bg-dark text-light sidebar-button-padding">
           <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
           <h2 className="text-center mb-4">Formulario de Trabajador</h2>
-          <Form onSubmit={handleSubmit} className={`edit-category-form ${theme === "dark" ? "edit-category-form-dark" : ""}`}>
+          <Form
+            onSubmit={handleSubmit}
+            className={`edit-category-form ${
+              theme === "dark" ? "edit-category-form-dark" : ""
+            }`}
+          >
             <Row>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerDescription">
@@ -94,6 +140,20 @@ const MakeWorkerForm = ({ initialWorker = { description: '', dni: '', direccion:
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
+                <Form.Group controlId="workerPhoneNumber">
+                  <Form.Label>Número de Teléfono</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="phoneNumber"
+                    placeholder="Ingresa el número de teléfono"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    className={theme === "dark" ? "form-control-dark" : ""}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6} className="mb-3">
                 <Form.Group controlId="workerDireccion">
                   <Form.Label>Dirección</Form.Label>
                   <Form.Control
@@ -109,18 +169,25 @@ const MakeWorkerForm = ({ initialWorker = { description: '', dni: '', direccion:
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerJobId">
-                  <Form.Label>ID del Trabajo</Form.Label>
+                  <Form.Label>Trabajo</Form.Label>
                   <Form.Control
-                    type="text"
+                    as="select"
                     name="jobId"
-                    placeholder="Ingresa el ID del trabajo"
                     value={formData.jobId}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
                     required
-                  />
+                  >
+                    <option value="">Selecciona un trabajo</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.title}{" "}
+                      </option>
+                    ))}
+                  </Form.Control>
                 </Form.Group>
               </Col>
+
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerImageUrl">
                   <Form.Label>URL de la Imagen</Form.Label>
@@ -139,7 +206,11 @@ const MakeWorkerForm = ({ initialWorker = { description: '', dni: '', direccion:
               <Button type="submit" className="btn-save me-2">
                 Guardar
               </Button>
-              <Button type="button" className="btn-cancel" onClick={handleCancel}>
+              <Button
+                type="button"
+                className="btn-cancel"
+                onClick={handleCancel}
+              >
                 Cancelar
               </Button>
             </div>

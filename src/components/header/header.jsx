@@ -78,7 +78,7 @@ const Header = ({ setSearchTerm }) => {
             alt="Logo" 
             className="logo" 
             onClick={() => navigate("/mainPage")} 
-            style={{ cursor: 'pointer', height: '40px' }} // Adjust height as needed
+            style={{ cursor: 'pointer', height: '40px' }} 
           />
           </Button>
 
@@ -88,7 +88,7 @@ const Header = ({ setSearchTerm }) => {
               type="text" 
               placeholder="Search by name or lastname" 
               className={theme === 'dark' ? 'search-dark' : ''}
-              onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
+              onChange={(e) => setSearchTerm(e.target.value)} 
               aria-label="Buscar" 
             />
           </Form>
@@ -203,7 +203,6 @@ const Header = ({ setSearchTerm }) => {
                   )}
                   <li><a onClick={EditHandler}>Edit</a></li>
                   <li><a onClick={SavedWorkerHandler}>Favourite workers</a></li>
-                  <li><a onClick={settingsHandler}>Settings</a></li>
                 </ul>
               </div>
             </Collapse>

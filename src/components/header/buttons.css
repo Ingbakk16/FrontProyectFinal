@@ -1,4 +1,4 @@
-/* Modo Claro */
+/* tema claro */
 .header-navbar {
   background-color: #685BEB;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -19,7 +19,6 @@
   display: inline-block;
 }
 
-/* Estilo para los botones en modo claro */
 .menu-button {
   background-color: #C8C3FC;  
   color: #000000;  
@@ -41,18 +40,15 @@
   cursor: pointer;
 }
 
-/* Animación hover en modo claro (se aclara) */
 .menu-button:hover {
   background-color: #B0A0F0;  
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ajuste para hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Remove arrow for Settings and Help */
 .menu-button.no-arrow svg {
   display: none;
 }
 
-/* Dropdown de categorías */
 .menu-dropdown {
   cursor: pointer;
   position: absolute;
@@ -68,12 +64,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
   width: 100%;
-  display: none; /* Hidden by default */
+  display: none;
   transition: all 0.3s ease-in-out;
 }
 
 .menu-container:hover .menu-dropdown {
-  display: block; /* Show dropdown on hover */
+  display: block;
 }
 
 .menu-dropdown ul {
@@ -92,10 +88,19 @@
   color: #333;
 }
 
-/* Modo Oscuro */
+.search-form {
+  background-color: #F9F9F9;
+  border-radius: 8px;
+}
+
+.color {
+  color: #FFFFFF;
+}
+
+/* tema oscuro */
 .header-dark {
   background-color: #1F1F1F;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombras más profundas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .navbar-dark {
@@ -110,7 +115,6 @@
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover en modo oscuro (se oscurece más) */
 .menu-button-dark:hover {
   background-color: #444444;  
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
@@ -128,7 +132,6 @@
   color: #FFFFFF;
 }
 
-/* Ajustes adicionales */
 .logout-dark {
   color: #FFFFFF;
 }
@@ -139,38 +142,10 @@
   border-color: #444444;
 }
 
-/* Ajustes para el color de texto en temas */
-.color {
-  color: #FFFFFF;
-}
-
 .color-dark {
   color: #FFFFFF;
 }
 
-/* Ajustes para las animaciones de hover */
-.menu-button:hover,
-.menu-button-dark:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Ajustes para la barra de búsqueda */
-.search-form {
-  background-color: #F9F9F9;
-  border-radius: 8px;
-}
-
-.search-dark {
-  background-color: #333333;
-}
-
-/* Transiciones y animaciones */
-.menu-dropdown,
-.menu-dropdown-dark {
-  transition: all 0.3s ease-in-out;
-}
-
-/* Ajuste para la altura de los menús */
 .menu-button,
 .menu-button-dark {
   border-bottom-left-radius: 3vw;  
@@ -190,7 +165,7 @@
   transform: rotate(180deg);
 }
 
-.menu-button:hover .arrow-icon, 
+.menu-button:hover .arrow-icon,
 .rotate {
   transform: rotate(180deg);
   transition: transform 0.3s ease;

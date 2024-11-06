@@ -10,14 +10,14 @@ const SidebarMenu = () => {
 
   if (!themeContext) {
     console.error;
-    return null; // O un mensaje alternativo para los usuarios
+    return null; 
   }
 
   const { theme } = themeContext;
 
   const handleEditUser = () => navigate('/Admin');
-  const handleEditCategory = () => navigate('/AdminEditCategory');
-  const handleEditWorker = () => navigate('/adminWorkersPage');
+  const handleEditCategory = () => navigate('/admin/AdminEditCategory');
+  const handleEditWorker = () => navigate('/admin/adminWorkersPage');
 
   return (
     <div className={`sidebar-container ${theme === 'dark' ? 'sidebar-container-dark' : ''}`}>

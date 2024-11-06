@@ -37,7 +37,7 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
       });
       
       if (response.ok) {
-        navigate('/AdminEditCategory'); 
+        navigate('/admin/AdminEditCategory'); 
       } else {
         throw new Error('Error al crear la categoría');
       }

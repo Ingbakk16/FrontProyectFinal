@@ -1,25 +1,13 @@
-/* Modo Claro - Fondo con Degradado */
+/* tema claro */
 .profile-light {
   background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
   min-height: 100vh;
 }
 
-.background-light-profile{
+.background-light-profile {
   background: linear-gradient(45deg, #322A94, #645DB5, #87ACF7, #6BF8EF);
 }
 
-
-.background-dark-profile{
-  background: #1F1F1F;
-}
-
-/* Modo Oscuro */
-.profile-dark {
-  background: linear-gradient(45deg, #1F1F1F, #333333, #444444, #2B2B2B);
-  min-height: 100vh;
-}
-
-/* Contenedor principal del perfil */
 .profile-container {
   padding-top: 4rem;
   padding-bottom: 2rem;
@@ -27,7 +15,6 @@
   max-width: 500px;
 }
 
-/* Card del perfil en modo claro */
 .profile-card {
   background-color: #8677C2;
   border-radius: 20px;
@@ -37,19 +24,6 @@
   padding-bottom: 4rem;
 }
 
-/* Card del perfil en modo oscuro */
-.profile-card-dark {
-  background-color: #333333;
-}
-
-/* Botón de retroceso */
-.back-button {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-/* Estilo del círculo de iniciales */
 .profile-initials-circle {
   width: 100px;
   height: 100px;
@@ -61,6 +35,24 @@
   font-size: 36px;
   color: #fff;
   margin: 0 auto 2rem;
+}
+
+.text-dark {
+  color: #000;
+}
+
+/* tema oscuro */
+.profile-dark {
+  background: linear-gradient(45deg, #1F1F1F, #333333, #444444, #2B2B2B);
+  min-height: 100vh;
+}
+
+.background-dark-profile {
+  background: #1F1F1F;
+}
+
+.profile-card-dark {
+  background-color: #333333;
 }
 
 .profile-initials-circle-dark {
@@ -76,11 +68,12 @@
   margin: 0 auto 2rem;
 }
 
-/* Texto oscuro y claro */
-.text-dark {
-  color: #000;
-}
-
 .text-light {
   color: #FFF;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
