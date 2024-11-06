@@ -28,18 +28,10 @@ const Protected = ({ allowedRoles }) => {
       }
 
 
-    console.log("Token:", token);
-    console.log("Role:", role); 
-    console.log("Allowed roles:", allowedRoles);
-    console.log("Current role:", role);
-    console.log("Role included in allowedRoles:", allowedRoles.includes(role)) 
-    console.log("Allowed roles:", allowedRoles);
-    console.log("Current role:", role);
-    console.log("Role included in allowedRoles:", allowedRoles.includes(role));   
+     
 
     
 
-    // Render child routes if authenticated and authorized
     return <Outlet />;
 };
 
