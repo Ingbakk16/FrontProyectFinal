@@ -2,15 +2,15 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Navbar, Form, FormControl, Button, Container, Collapse } from 'react-bootstrap';
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
-import { ThemeContext } from '../services/ThemeContext/Theme.context'; // Importa el ThemeContext
+import { ThemeContext } from '../services/ThemeContext/Theme.context'; 
 import { useNavigate } from "react-router-dom";
 import './buttons.css';
 import logo from "../../assets/logo.png";
 
 
 const Header = ({ setSearchTerm }) => {
-  const { handleLogout, isWorker, isAdmin, setToken } = useContext(AuthenticationContext);  // Incluye isAdmin
-  const { theme } = useContext(ThemeContext); // Incluye el theme del ThemeContext
+  const { handleLogout, isWorker, isAdmin, setToken } = useContext(AuthenticationContext);  
+  const { theme } = useContext(ThemeContext); 
   const navigate = useNavigate();
   const [showProfile, setShowProfile] = useState(false);
   const [showCategories, setShowCategories] = useState(false);
@@ -26,7 +26,7 @@ const Header = ({ setSearchTerm }) => {
   const settingsHandler = () => navigate("/settings");
   const helpHandler = () => navigate("/help");
   const EditHandler = () => navigate("/profile");
-  const EditWorkerHandler = () => navigate("/editWorker");
+  const EditWorkerHandler = () => navigate("/worker/editWorker");
   const BecomeWorkerHandler = () => navigate("/registerWorker");
   const SavedWorkerHandler = () => navigate("/favWorkers");
   const AdminHandler = () => navigate("/Admin");
@@ -98,8 +98,8 @@ const Header = ({ setSearchTerm }) => {
              variant="outline-primary" 
              className={`rounded-circle border-0 p-2 shadow-none logout-button ${theme === 'dark' ? 'logout-dark' : ''}`} 
              onClick={() => {
-               handleLogout(); // Call handleLogout from context
-               navigate('/login'); // Redirect to login after logout
+               handleLogout(); 
+               navigate('/login'); 
              }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
