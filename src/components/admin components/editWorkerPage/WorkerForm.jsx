@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import "./WorkerForm.css";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Importa el componente de alerta
 
 const WorkerForm = () => {
   const [worker, setWorker] = useState({
@@ -31,9 +32,15 @@ const WorkerForm = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleConfirmSubmit = () => {
+    AdminConfirmationAlert({
+      title: "¿Está seguro de que desea actualizar el perfil?",
+      text: "Esta acción guardará los cambios realizados en el perfil del trabajador.",
+      onConfirm: handleSubmit, // Llama a handleSubmit solo si se confirma
+    });
+  };
 
+  const handleSubmit = async () => {
     try {
       const response = await fetch(
         `http://localhost:8081/api/admin/edit_profile/${userId}`,
@@ -73,9 +80,12 @@ const WorkerForm = () => {
           <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
-          <h2 className="text-center mb-4">Crear Trabajador</h2>
+          <h2 className="text-center mb-4">editar Trabajador</h2>
           <Form
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleConfirmSubmit(); // Llama a la función de confirmación en lugar de enviar directamente
+            }}
             className={`edit-worker-form ${
               theme === "dark" ? "edit-worker-form-dark" : ""
             }`}

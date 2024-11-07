@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
-import Sidebar from "../sidebar button/sidebarMenu";
+import SidebarButton from "../sidebar button/sidebarMenu";
 import { useNavigate, useParams } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
@@ -10,7 +10,7 @@ import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert";
 import "./EditUserForm.css";
 
 const EditUserForm = () => {
-  const { id } = useParams(); // Captura el ID del usuario desde los parámetros
+  const { id } = useParams();
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
@@ -39,14 +39,22 @@ const EditUserForm = () => {
       });
 
       if (response.ok) {
-        toast.success("Usuario actualizado con éxito");
-        navigate("/Admin"); // Solo redirige si es necesario
+        console.log("Usuario actualizado con éxito");
+        navigate("/Admin");
       } else {
         throw new Error("Error al actualizar el usuario");
       }
     } catch (error) {
-      toast.error("Error al actualizar el usuario");
+      console.error("Error al actualizar el usuario:", error);
     }
+  };
+
+  const handleConfirmSave = () => {
+    AdminConfirmationAlert({
+      title: "¿Confirmar actualización?",
+      text: "Esta acción actualizará la información del usuario.",
+      onConfirm: handleSave,
+    });
   };
 
   const handleCancel = () => {
@@ -62,10 +70,14 @@ const EditUserForm = () => {
       <Header />
       <Container fluid className="d-flex">
         <Col md={2} className="bg-dark text-light sidebar-button-padding">
-          <Sidebar />
+          <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
           <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleConfirmSave();
+            }}
             className={`edit-user-form ${
               theme === "dark" ? "edit-user-form-dark" : ""
             }`}
@@ -123,11 +135,9 @@ const EditUserForm = () => {
               </Col>
             </Row>
             <div className="form-actions">
-              <AdminConfirmationAlert
-                title="¿Confirmar actualización?"
-                text="Esta acción actualizará la información del usuario."
-                onConfirm={handleSave} 
-              />
+              <Button type="submit" className="btn-save">
+                Guardar
+              </Button>
               <Button
                 type="button"
                 className="btn-cancel"
