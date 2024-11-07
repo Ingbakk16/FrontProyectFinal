@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
@@ -15,19 +15,34 @@ const EditUserForm = () => {
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    username: "",
-    name: "",
-    lastname: "",
-    email: "",
-    password: "",
+  // References for form fields
+  const usernameRef = useRef(null);
+  const nameRef = useRef(null);
+  const lastnameRef = useRef(null);
+  const emailRef = useRef(null);
+  const [errors, setErrors] = useState({
+    username: false,
+    name: false,
+    lastname: false,
+    email: false,
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleBlur = (ref, fieldName) => {
+    if (ref.current && ref.current.value.trim() === "") {
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: true }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
+    }
   };
 
   const handleSave = async () => {
+    const formData = {
+      username: usernameRef.current.value,
+      name: nameRef.current.value,
+      lastname: lastnameRef.current.value,
+      email: emailRef.current.value,
+    };
+
     try {
       const response = await fetch(`http://localhost:8081/api/admin/edit/${id}`, {
         method: "PUT",
@@ -63,9 +78,7 @@ const EditUserForm = () => {
 
   return (
     <div
-      className={`page-background ${
-        theme === "dark" ? "background-dark" : "background-light"
-      }`}
+      className={`page-background ${theme === "dark" ? "background-dark" : "background-light"}`}
     >
       <Header />
       <Container fluid className="d-flex">
@@ -78,9 +91,7 @@ const EditUserForm = () => {
               e.preventDefault();
               handleConfirmSave();
             }}
-            className={`edit-user-form ${
-              theme === "dark" ? "edit-user-form-dark" : ""
-            }`}
+            className={`edit-user-form ${theme === "dark" ? "edit-user-form-dark" : ""}`}
           >
             <Row>
               <Col md={6}>
@@ -89,10 +100,11 @@ const EditUserForm = () => {
                   <Form.Control
                     type="text"
                     name="username"
-                    value={formData.username}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    ref={usernameRef}
+                    onBlur={() => handleBlur(usernameRef, 'username')}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.username ? 'border-danger' : ''}`}
                   />
+                  {errors.username && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -101,10 +113,11 @@ const EditUserForm = () => {
                   <Form.Control
                     type="text"
                     name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    ref={nameRef}
+                    onBlur={() => handleBlur(nameRef, 'name')}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.name ? 'border-danger' : ''}`}
                   />
+                  {errors.name && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
             </Row>
@@ -115,10 +128,11 @@ const EditUserForm = () => {
                   <Form.Control
                     type="text"
                     name="lastname"
-                    value={formData.lastname}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    ref={lastnameRef}
+                    onBlur={() => handleBlur(lastnameRef, 'lastname')}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.lastname ? 'border-danger' : ''}`}
                   />
+                  {errors.lastname && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -127,10 +141,11 @@ const EditUserForm = () => {
                   <Form.Control
                     type="email"
                     name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    ref={emailRef}
+                    onBlur={() => handleBlur(emailRef, 'email')}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.email ? 'border-danger' : ''}`}
                   />
+                  {errors.email && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
             </Row>

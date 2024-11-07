@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
@@ -15,12 +15,22 @@ const Profile = () => {
   const { token, handleLogout } = useContext(AuthenticationContext);
   const { theme } = useContext(ThemeContext);
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    lastname: '',
-    username: '',
+
+  // UseState for name and lastname to handle initials correctly
+  const [name, setName] = useState('');
+  const [lastname, setLastname] = useState('');
+
+  // UseRef for other inputs
+  const emailRef = useRef(null);
+  const usernameRef = useRef(null);
+
+  const [errors, setErrors] = useState({
+    name: false,
+    email: false,
+    lastname: false,
+    username: false,
   });
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,12 +54,10 @@ const Profile = () => {
         }
 
         const data = await response.json();
-        setFormData({
-          name: data.name,
-          email: data.email,
-          lastname: data.lastname,
-          username: data.username,
-        });
+        setName(data.name);
+        setLastname(data.lastname);
+        if (emailRef.current) emailRef.current.value = data.email;
+        if (usernameRef.current) usernameRef.current.value = data.username;
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -58,11 +66,12 @@ const Profile = () => {
     fetchUserProfile();
   }, [token]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleBlur = (refName) => {
+    if (refName.current && refName.current.value === "") {
+      setErrors((prevErrors) => ({ ...prevErrors, [refName.current.name]: true }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [refName.current.name]: false }));
+    }
   };
 
   const handleEditClick = () => {
@@ -85,6 +94,13 @@ const Profile = () => {
   };
 
   const handleSaveProfile = async () => {
+    const updatedFormData = {
+      name,
+      lastname,
+      email: emailRef.current.value,
+      username: usernameRef.current.value,
+    };
+
     try {
       const response = await fetch('http://localhost:8081/api/users/edit', {
         method: 'PUT',
@@ -92,22 +108,17 @@ const Profile = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(updatedFormData)
       });
 
       if (!response.ok) {
         throw new Error('Failed to update profile');
       }
 
-      const updatedData = await response.json();
-      setFormData(updatedData);
       setIsEditing(false);
-      
-  
       handleLogout();
     } catch (error) {
       console.error("Error updating profile:", error);
-     
     }
   };
 
@@ -120,8 +131,6 @@ const Profile = () => {
   };
 
   const getInitials = () => {
-    const { name, lastname } = formData;
-    if (!name || !lastname) return '';
     return `${name.charAt(0).toUpperCase()}${lastname.charAt(0).toUpperCase()}`;
   };
 
@@ -137,7 +146,7 @@ const Profile = () => {
                   <div className="back-button">
                     <Button variant="link" className="text-light" onClick={backHandler}>
                       <i className="bi bi-arrow-left text-dark">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                           <path d="M400-120 160-360l241-241 56 57-144 144h367v-400h80v480H313l144 143-57 57Z" />
                         </svg>
                       </i>
@@ -156,9 +165,9 @@ const Profile = () => {
                         readOnly={!isEditing}
                         type="text"
                         name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}
+                        ref={usernameRef}
+                        onBlur={() => handleBlur(usernameRef)}
+                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'} ${errors.username && 'border-danger'}`}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
@@ -168,9 +177,9 @@ const Profile = () => {
                         readOnly={!isEditing}
                         type="text"
                         name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'} ${errors.name && 'border-danger'}`}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
@@ -180,9 +189,9 @@ const Profile = () => {
                         readOnly={!isEditing}
                         type="email"
                         name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}
+                        ref={emailRef}
+                        onBlur={() => handleBlur(emailRef)}
+                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'} ${errors.email && 'border-danger'}`}
                       />
                     </Form.Group>
                     <Form.Group className="mb-3">
@@ -192,9 +201,9 @@ const Profile = () => {
                         readOnly={!isEditing}
                         type="text"
                         name="lastname"
-                        value={formData.lastname}
-                        onChange={handleChange}
-                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'}`}
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
+                        className={`${theme === 'dark' ? 'text-light' : 'text-dark'} ${errors.lastname && 'border-danger'}`}
                       />
                     </Form.Group>
                     {isEditing ? (

@@ -36,7 +36,7 @@ const WorkerForm = () => {
     AdminConfirmationAlert({
       title: "¿Está seguro de que desea actualizar el perfil?",
       text: "Esta acción guardará los cambios realizados en el perfil del trabajador.",
-      onConfirm: handleSubmit, // Llama a handleSubmit solo si se confirma
+      onConfirm: handleSubmit,
     });
   };
 
@@ -84,7 +84,7 @@ const WorkerForm = () => {
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              handleConfirmSubmit(); // Llama a la función de confirmación en lugar de enviar directamente
+              handleConfirmSubmit(); 
             }}
             className={`edit-worker-form ${
               theme === "dark" ? "edit-worker-form-dark" : ""
@@ -121,7 +121,6 @@ const WorkerForm = () => {
                 </Form.Group>
               </Col>
             </Row>
-
             <Row className="mt-3">
               <Col md={6}>
                 <Form.Group controlId="workerDireccion">
@@ -136,48 +135,7 @@ const WorkerForm = () => {
                     required
                   />
                 </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group controlId="workerImageUrl">
-                  <Form.Label>URL de la Imagen</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="URL de la imagen"
-                    name="imageUrl"
-                    value={worker.imageUrl}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row className="mt-3">
-              <Col md={6}>
-                <Form.Group controlId="workerImageUrl2">
-                  <Form.Label>URL de la Imagen 2</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="URL de la imagen 2"
-                    name="imageUrl2"
-                    value={worker.imageUrl2}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group controlId="workerImageUrl3">
-                  <Form.Label>URL de la Imagen 3</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="URL de la imagen 3"
-                    name="imageUrl3"
-                    value={worker.imageUrl3}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
-                  />
-                </Form.Group>
-              </Col>
+              </Col>  
             </Row>
             <Row className="mt-4 text-center">
               <Col>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
@@ -6,7 +6,7 @@ import Sidebar from "../sidebar button/sidebarMenu";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Asegúrate de la ruta correcta
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert";
 import "../editUserAdmin/EditUserForm.css";
 
 const AdminCreateUserForm = () => {
@@ -14,28 +14,45 @@ const AdminCreateUserForm = () => {
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    username: "",
-    name: "",
-    lastname: "",
-    email: "",
-    password: "",
+  // Refs for form fields
+  const usernameRef = useRef(null);
+  const nameRef = useRef(null);
+  const lastnameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const [errors, setErrors] = useState({
+    username: false,
+    name: false,
+    lastname: false,
+    email: false,
+    password: false,
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleBlur = (ref, fieldName) => {
+    if (ref.current && ref.current.value.trim() === "") {
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: true }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
+    }
   };
 
-  // Muestra la alerta de confirmación y ejecuta el envío si se confirma
   const handleConfirmSubmit = () => {
     AdminConfirmationAlert({
       title: "Confirmar creación de usuario",
       text: "¿Estás seguro de que deseas crear este usuario?",
-      onConfirm: handleSubmit, // Llama a handleSubmit si se confirma
+      onConfirm: handleSubmit,
     });
   };
 
   const handleSubmit = async () => {
+    const formData = {
+      username: usernameRef.current.value,
+      name: nameRef.current.value,
+      lastname: lastnameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+
     try {
       const response = await fetch("http://localhost:8081/api/admin/register", {
         method: "POST",
@@ -62,11 +79,7 @@ const AdminCreateUserForm = () => {
   };
 
   return (
-    <div
-      className={`page-background ${
-        theme === "dark" ? "background-dark" : "background-light"
-      }`}
-    >
+    <div className={`page-background ${theme === "dark" ? "background-dark" : "background-light"}`}>
       <Header />
       <Container fluid className="d-flex">
         <Col md={2} className="bg-dark text-light sidebar-button-padding">
@@ -77,11 +90,9 @@ const AdminCreateUserForm = () => {
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              handleConfirmSubmit(); // Llama a la función de confirmación
+              handleConfirmSubmit();
             }}
-            className={`edit-user-form ${
-              theme === "dark" ? "edit-user-form-dark" : ""
-            }`}
+            className={`edit-user-form ${theme === "dark" ? "edit-user-form-dark" : ""}`}
           >
             <Row>
               <Col md={6}>
@@ -90,11 +101,12 @@ const AdminCreateUserForm = () => {
                   <Form.Control
                     type="text"
                     name="username"
-                    value={formData.username}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    ref={usernameRef}
+                    onBlur={() => handleBlur(usernameRef, "username")}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.username ? "border-danger" : ""}`}
                     required
                   />
+                  {errors.username && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -103,11 +115,12 @@ const AdminCreateUserForm = () => {
                   <Form.Control
                     type="text"
                     name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    ref={nameRef}
+                    onBlur={() => handleBlur(nameRef, "name")}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.name ? "border-danger" : ""}`}
                     required
                   />
+                  {errors.name && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
             </Row>
@@ -118,11 +131,12 @@ const AdminCreateUserForm = () => {
                   <Form.Control
                     type="text"
                     name="lastname"
-                    value={formData.lastname}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    ref={lastnameRef}
+                    onBlur={() => handleBlur(lastnameRef, "lastname")}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.lastname ? "border-danger" : ""}`}
                     required
                   />
+                  {errors.lastname && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -131,11 +145,12 @@ const AdminCreateUserForm = () => {
                   <Form.Control
                     type="email"
                     name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    ref={emailRef}
+                    onBlur={() => handleBlur(emailRef, "email")}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.email ? "border-danger" : ""}`}
                     required
                   />
+                  {errors.email && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
             </Row>
@@ -146,11 +161,12 @@ const AdminCreateUserForm = () => {
                   <Form.Control
                     type="password"
                     name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    ref={passwordRef}
+                    onBlur={() => handleBlur(passwordRef, "password")}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.password ? "border-danger" : ""}`}
                     required
                   />
+                  {errors.password && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
             </Row>
@@ -158,11 +174,7 @@ const AdminCreateUserForm = () => {
               <Button type="submit" className="btn-save">
                 Crear Usuario
               </Button>
-              <Button
-                type="button"
-                className="btn-cancel"
-                onClick={handleCancel}
-              >
+              <Button type="button" className="btn-cancel" onClick={handleCancel}>
                 Cancelar
               </Button>
             </div>
