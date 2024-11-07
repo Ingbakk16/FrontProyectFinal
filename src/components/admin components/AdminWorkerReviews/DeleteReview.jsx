@@ -33,7 +33,7 @@ const DeleteReview = () => {
         const data = await response.json();
         setReviews(data);
       } catch (error) {
-        console.error("Error al cargar las reseñas:", error);
+        
       } finally {
         setLoading(false);
       }

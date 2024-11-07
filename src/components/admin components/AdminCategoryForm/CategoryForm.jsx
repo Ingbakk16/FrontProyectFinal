@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
@@ -6,46 +6,34 @@ import SidebarButton from '../sidebar button/sidebarMenu';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
 import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
-import AdminConfirmationAlert from '../../ConfirmationAlert/ConfirmationAlert';
+import AdminConfirmationAlert from '../../ConfirmationAlert/ConfirmationAlert'; // Asegúrate de que esta ruta sea correcta
 import './CategoryForm.css';
 
 const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRequired: '' } }) => {
-  const titleRef = useRef(null);
-  const descriptionRef = useRef(null);
-  const skillsRequiredRef = useRef(null);
-  const [errors, setErrors] = useState({
-    title: false,
-    description: false,
-    skillsRequired: false,
+  const [formData, setFormData] = useState({
+    title: initialCategory.title,
+    description: initialCategory.description,
+    skillsRequired: initialCategory.skillsRequired,
   });
-
+  
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-  const handleBlur = (ref, fieldName) => {
-    if (ref.current.value === '') {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: true }));
-    } else {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const confirmAndSubmit = () => {
     AdminConfirmationAlert({
       title: "¿Confirmar creación de categoría?",
       text: "Esta acción creará una nueva categoría.",
-      onConfirm: handleSubmit, 
+      onConfirm: handleSubmit, // Ejecuta handleSubmit si el usuario confirma
     });
   };
 
   const handleSubmit = async () => {
-    const formData = {
-      title: titleRef.current.value,
-      description: descriptionRef.current.value,
-      skillsRequired: skillsRequiredRef.current.value,
-    };
-
     try {
       const response = await fetch('http://localhost:8081/api/admin/jobs', {
         method: 'POST',
@@ -62,7 +50,7 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
         throw new Error('Error al crear la categoría');
       }
     } catch (error) {
-      
+      console.error('Error al enviar el formulario:', error);
     }
   };
 
@@ -82,7 +70,7 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              confirmAndSubmit(); 
+              confirmAndSubmit(); // Llama a la función de confirmación
             }}
             className={`edit-category-form ${theme === "dark" ? "edit-category-form-dark" : ""}`}
           >
@@ -94,12 +82,11 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
                     type="text"
                     name="title"
                     placeholder="Ingresa el título de la categoría"
-                    ref={titleRef}
-                    onBlur={() => handleBlur(titleRef, 'title')}
-                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.title ? 'border-danger' : ''}`}
+                    value={formData.title}
+                    onChange={handleChange}
+                    className={theme === "dark" ? "form-control-dark" : ""}
                     required
                   />
-                  {errors.title && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
@@ -109,13 +96,12 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
                     as="textarea"
                     name="description"
                     placeholder="Ingresa la descripción de la categoría"
-                    ref={descriptionRef}
-                    onBlur={() => handleBlur(descriptionRef, 'description')}
+                    value={formData.description}
+                    onChange={handleChange}
                     rows={3}
-                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.description ? 'border-danger' : ''}`}
+                    className={theme === "dark" ? "form-control-dark" : ""}
                     required
                   />
-                  {errors.description && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
@@ -125,11 +111,10 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
                     type="text"
                     name="skillsRequired"
                     placeholder="Especifica las habilidades requeridas"
-                    ref={skillsRequiredRef}
-                    onBlur={() => handleBlur(skillsRequiredRef, 'skillsRequired')}
-                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.skillsRequired ? 'border-danger' : ''}`}
+                    value={formData.skillsRequired}
+                    onChange={handleChange}
+                    className={theme === "dark" ? "form-control-dark" : ""}
                   />
-                  {errors.skillsRequired && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
             </Row>

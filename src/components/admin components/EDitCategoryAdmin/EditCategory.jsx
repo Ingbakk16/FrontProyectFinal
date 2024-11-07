@@ -40,7 +40,7 @@ const AdminCategoriesPage = () => {
       });
 
       if (response.ok) {
-        console.log(`Categoría con ID ${categoryId} eliminada con éxito`);
+        
         setCategories((prevCategories) =>
           prevCategories.filter((category) => category.id !== categoryId)
         );

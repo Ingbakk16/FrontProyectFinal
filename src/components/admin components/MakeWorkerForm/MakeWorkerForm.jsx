@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
@@ -15,37 +15,31 @@ const MakeWorkerForm = ({
     dni: "",
     direccion: "",
     jobId: "",
-    imageUrl: "",
+    imageUrl: "", // valor predeterminado vacío
     phoneNumber: "",
   },
 }) => {
-  const descriptionRef = useRef(null);
-  const dniRef = useRef(null);
-  const direccionRef = useRef(null);
-  const jobIdRef = useRef(null);
-  const imageUrlRef = useRef(null);
-  const phoneNumberRef = useRef(null);
-
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const { id: userId } = useParams();
+  const navigate = useNavigate();
+
+  // useState para cada campo del formulario
+  const [formData, setFormData] = useState(initialWorker);
   const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({
     description: false,
     dni: false,
     direccion: false,
     jobId: false,
-    imageUrl: false,
     phoneNumber: false,
   });
-  const navigate = useNavigate();
 
-  const handleBlur = (ref, fieldName) => {
-    if (ref.current && ref.current.value.trim() === "") {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: true }));
-    } else {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
-    }
+  const handleBlur = (field) => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: formData[field].trim() === "",
+    }));
   };
 
   useEffect(() => {
@@ -71,6 +65,11 @@ const MakeWorkerForm = ({
     fetchCategories();
   }, [token]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
   const handleConfirmSubmit = () => {
     AdminConfirmationAlert({
       title: "Confirmar creación de trabajador",
@@ -80,13 +79,9 @@ const MakeWorkerForm = ({
   };
 
   const handleSubmit = async () => {
-    const formData = {
-      description: descriptionRef.current.value,
-      dni: dniRef.current.value,
-      direccion: direccionRef.current.value,
-      jobId: jobIdRef.current.value,
-      imageUrl: imageUrlRef.current.value,
-      phoneNumber: phoneNumberRef.current.value,
+    const payload = {
+      ...formData,
+      imageUrl: formData.imageUrl || "", // asegura que imageUrl sea vacío si no se especifica
     };
 
     try {
@@ -98,7 +93,7 @@ const MakeWorkerForm = ({
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(payload),
         }
       );
 
@@ -139,9 +134,10 @@ const MakeWorkerForm = ({
                   <Form.Control
                     as="textarea"
                     name="description"
-                    ref={descriptionRef}
-                    onBlur={() => handleBlur(descriptionRef, "description")}
                     placeholder="Descripción de la experiencia"
+                    value={formData.description}
+                    onChange={handleChange}
+                    onBlur={() => handleBlur("description")}
                     rows={3}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.description ? "border-danger" : ""}`}
                     required
@@ -155,9 +151,10 @@ const MakeWorkerForm = ({
                   <Form.Control
                     type="text"
                     name="dni"
-                    ref={dniRef}
-                    onBlur={() => handleBlur(dniRef, "dni")}
                     placeholder="Ingresa el DNI"
+                    value={formData.dni}
+                    onChange={handleChange}
+                    onBlur={() => handleBlur("dni")}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.dni ? "border-danger" : ""}`}
                     required
                   />
@@ -170,58 +167,61 @@ const MakeWorkerForm = ({
                   <Form.Control
                     type="text"
                     name="phoneNumber"
-                    ref={phoneNumberRef}
-                    onBlur={() => handleBlur(phoneNumberRef, "phoneNumber")}
                     placeholder="Ingresa el número de teléfono"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    onBlur={() => handleBlur("phoneNumber")}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.phoneNumber ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.phoneNumber && <small className="text-danger">this field is mandatory.</small>}
+                  {errors.phoneNumber && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerDireccion">
-                  <Form.Label>Dress</Form.Label>
+                  <Form.Label>Dirección</Form.Label>
                   <Form.Control
                     type="text"
                     name="direccion"
-                    ref={direccionRef}
-                    onBlur={() => handleBlur(direccionRef, "direccion")}
-                    placeholder="Ingresa la Dress"
+                    placeholder="Ingresa la Dirección"
+                    value={formData.direccion}
+                    onChange={handleChange}
+                    onBlur={() => handleBlur("direccion")}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.direccion ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.direccion && <small className="text-danger">this field is mandatory.</small>}
+                  {errors.direccion && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerJobId">
-                  <Form.Label>work</Form.Label>
+                  <Form.Label>Trabajo</Form.Label>
                   <Form.Control
                     as="select"
                     name="jobId"
-                    ref={jobIdRef}
-                    onBlur={() => handleBlur(jobIdRef, "jobId")}
+                    value={formData.jobId}
+                    onChange={handleChange}
+                    onBlur={() => handleBlur("jobId")}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.jobId ? "border-danger" : ""}`}
                     required
                   >
-                    <option value="">select a job</option>
+                    <option value="">Selecciona un trabajo</option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
                         {category.title}
                       </option>
                     ))}
                   </Form.Control>
-                  {errors.jobId && <small className="text-danger">this field is mandatory..</small>}
+                  {errors.jobId && <small className="text-danger">Este campo es obligatorio.</small>}
                 </Form.Group>
               </Col>
             </Row>
             <div className="text-center">
               <Button type="submit" className="btn-save me-2">
-                Save
+                Guardar
               </Button>
               <Button type="button" className="btn-cancel" onClick={handleCancel}>
-                Cancel
+                Cancelar
               </Button>
             </div>
           </Form>

@@ -54,7 +54,7 @@ const EditUserForm = () => {
       });
 
       if (response.ok) {
-        console.log("Usuario actualizado con éxito");
+        
         navigate("/Admin");
       } else {
         throw new Error("Error al actualizar el usuario");
