@@ -21,6 +21,11 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
 
   const isAddImageSlide = editable && currentImageIndex >= images.length;
 
+  console.log(images)
+
+  console.log(currentImageIndex.imageUrl)
+  
+
   return (
     <div className={`carousel-container ${theme === 'dark' ? 'carousel-dark' : 'carousel-light'}`}>
       <div className="image-wrapper">
@@ -33,13 +38,14 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
             <Image
               src={images[currentImageIndex]}
               className="carousel-image"
+              
             />
             {editable && onDelete && (
               <Button
                 variant="danger"
                 size="sm"
                 className="delete-button"
-                onClick={() => onDelete(images)}
+                onClick={() => onDelete(images[currentImageIndex])}
               >
                 🗑️
               </Button>
@@ -53,6 +59,7 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
           {'>'}
         </Button>
       </div>
+      
     </div>
   );
 };

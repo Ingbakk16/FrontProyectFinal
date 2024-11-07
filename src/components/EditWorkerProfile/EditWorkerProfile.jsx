@@ -127,7 +127,9 @@ const EditWorkerProfile = () => {
    
 
   const handleAddImage = async () => {
-    const newImage = prompt("Enter image URL"); // Placeholder for actual image upload
+    const newImage = prompt("Enter image URL");
+    
+    // Ensure there is a new image URL and the current images are fewer than 3
     if (newImage && formData.workImages.length < 3) {
       try {
         const response = await fetch("http://localhost:8081/api/workers/images/add", {
@@ -136,9 +138,11 @@ const EditWorkerProfile = () => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newImage),
+          body: JSON.stringify({ imageUrl: newImage }), // Send as a JSON object with key imageUrl
         });
+  
         if (response.ok) {
+          // Add new image URL to the formData
           setFormData((prevState) => ({
             ...prevState,
             workImages: [...prevState.workImages, newImage],
@@ -150,6 +154,8 @@ const EditWorkerProfile = () => {
       } catch (error) {
         console.error("Error adding image:", error);
       }
+    } else if (formData.workImages.length >= 3) {
+      alert("Maximum of 3 images allowed.");
     }
   };
 
@@ -162,9 +168,11 @@ const EditWorkerProfile = () => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(imageUrl),
+        body: JSON.stringify({ imageUrl }), // Send imageUrl as a JSON object
       });
+  
       if (response.ok) {
+        // Update the images in the formData to reflect the deletion
         setFormData((prevState) => ({
           ...prevState,
           workImages: prevState.workImages.filter((img) => img !== imageUrl),

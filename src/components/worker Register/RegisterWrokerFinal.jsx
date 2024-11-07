@@ -73,9 +73,7 @@ const RegisterWorkerFinal = () => {
       case 'phoneNumber':
         errorMessage = validatePhoneNumber(value);
         break;
-      case 'imageUrl':
-        errorMessage = validateImageUrl(value);
-        break;
+      
       case 'description':
         errorMessage = validateDescription(value);
         break;
@@ -114,7 +112,7 @@ const validateStep = () => {
     newErrors.direccion = validateDireccion(formData.direccion);
     newErrors.phoneNumber = validatePhoneNumber(formData.phoneNumber);
   } else if (step === 2) {
-    newErrors.imageUrls = validateImageUrls(formData.imageUrls); 
+     
     newErrors.description = validateDescription(formData.description);
   }
   setErrors(newErrors);
