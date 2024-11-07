@@ -45,19 +45,16 @@ const RegisterWorkerFinal = () => {
       newErrors.direccion = validateDireccion(formData.direccion);
       newErrors.phoneNumber = validatePhoneNumber(formData.phoneNumber);
     } else if (step === 2) {
-      newErrors.description = validateDescription(formData.description); // Solo validamos la descripción
+      newErrors.description = validateDescription(formData.description);
     }
     setErrors(newErrors);
     return Object.values(newErrors).every((error) => !error);
   }, [formData, step]);
 
-  // Funciones de validación
   const validateDNI = (value) => {
     if (!value) return "DNI is mandatory";
-    if (value.length < DNI_MIN_LENGTH)
-      return `Debe tener al menos ${DNI_MIN_LENGTH} caracteres`;
-    if (value.length > DNI_MAX_LENGTH)
-      return `No puede superar ${DNI_MAX_LENGTH} caracteres`;
+    if (value.length < DNI_MIN_LENGTH) return `Debe tener al menos ${DNI_MIN_LENGTH} caracteres`;
+    if (value.length > DNI_MAX_LENGTH) return `No puede superar ${DNI_MAX_LENGTH} caracteres`;
     return "";
   };
 
@@ -66,7 +63,6 @@ const RegisterWorkerFinal = () => {
   const validatePhoneNumber = (value) => (!value ? "Número de teléfono es obligatorio" : "");
   const validateDescription = (value) => (!value ? "La descripción es obligatoria" : "");
 
-  // Manejo de cambios en los campos
   const handleChange = (field) => (event) => {
     const value = event.target.value;
     setFormData((prevData) => ({ ...prevData, [field]: value }));
@@ -171,22 +167,10 @@ const RegisterWorkerFinal = () => {
       case 1:
         return (
           <>
-            <InputField
-              label="DNI"
-              name="dni"
-              value={formData.dni}
-              onChange={handleChange("dni")}
-              error={errors.dni}
-              touched={touchedFields.dni}
-            />
+            <InputField label="DNI" name="dni" value={formData.dni} onChange={handleChange("dni")} error={errors.dni} touched={touchedFields.dni} />
             <Form.Group controlId="jobId" className="mt-3">
               <Form.Label>Selecciona un Trabajo</Form.Label>
-              <Form.Control
-                as="select"
-                name="jobId"
-                value={formData.jobId}
-                onChange={handleChange("jobId")}
-              >
+              <Form.Control as="select" name="jobId" value={formData.jobId} onChange={handleChange("jobId")}>
                 <option value="">Selecciona una opción</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
@@ -194,50 +178,19 @@ const RegisterWorkerFinal = () => {
                   </option>
                 ))}
               </Form.Control>
-              {errors.jobId && touchedFields.jobId && (
-                <p className="pt-2 text-danger">{errors.jobId}</p>
-              )}
+              {errors.jobId && touchedFields.jobId && <p className="pt-2 text-danger">{errors.jobId}</p>}
             </Form.Group>
-            <InputField
-              label="Dirección"
-              name="direccion"
-              value={formData.direccion}
-              onChange={handleChange("direccion")}
-              error={errors.direccion}
-              touched={touchedFields.direccion}
-            />
-            <InputField
-              label="Phone Number"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange("phoneNumber")}
-              error={errors.phoneNumber}
-              touched={touchedFields.phoneNumber}
-            />
+            <InputField label="Dirección" name="direccion" value={formData.direccion} onChange={handleChange("direccion")} error={errors.direccion} touched={touchedFields.direccion} />
+            <InputField label="Phone Number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange("phoneNumber")} error={errors.phoneNumber} touched={touchedFields.phoneNumber} />
           </>
         );
       case 2:
         return (
           <>
             {formData.imageUrls.map((url, index) => (
-              <InputField
-                key={index}
-                label={`URL de Imagen ${index + 1}`}
-                name={`imageUrl${index}`}
-                value={url}
-                onChange={handleUrlChange(index)}
-                error=""
-                touched={touchedFields[`imageUrls${index}`]}
-              />
+              <InputField key={index} label={`URL de Imagen ${index + 1}`} name={`imageUrl${index}`} value={url} onChange={handleUrlChange(index)} error="" touched={touchedFields[`imageUrls${index}`]} />
             ))}
-            <InputField
-              label="Descripción"
-              name="description"
-              value={formData.description}
-              onChange={handleChange("description")}
-              error={errors.description}
-              touched={touchedFields.description}
-            />
+            <InputField label="Descripción" name="description" value={formData.description} onChange={handleChange("description")} error={errors.description} touched={touchedFields.description} />
           </>
         );
       case 3:
@@ -259,10 +212,7 @@ const RegisterWorkerFinal = () => {
   };
 
   return (
-    <Container
-      fluid
-      className={`register-container ${theme === "dark" ? "register-container-dark" : ""}`}
-    >
+    <Container fluid className={`register-container ${theme === "dark" ? "register-container-dark" : ""}`}>
       <Row>
         <Col xs={12} md={8} lg={10} className={`register-col ${theme === "dark" ? "register-col-dark" : ""}`}>
           <Form onSubmit={step === 3 ? handleSubmit : handleNext}>
@@ -292,13 +242,7 @@ const RegisterWorkerFinal = () => {
 const InputField = ({ label, name, value, onChange, error, touched }) => (
   <Form.Group controlId={name} className="mt-3">
     <Form.Label>{label}</Form.Label>
-    <Form.Control
-      type="text"
-      name={name}
-      value={value}
-      onChange={onChange}
-      className={error && touched ? "border border-danger" : ""}
-    />
+    <Form.Control type="text" name={name} value={value} onChange={onChange} className={error && touched ? "border border-danger" : ""} />
     {error && touched && <p className="pt-2 text-danger">{error}</p>}
   </Form.Group>
 );
