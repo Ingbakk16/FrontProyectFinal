@@ -21,9 +21,7 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
 
   const isAddImageSlide = editable && currentImageIndex >= images.length;
 
-  console.log(images)
-
-  console.log(currentImageIndex.imageUrl)
+  
   
 
   return (

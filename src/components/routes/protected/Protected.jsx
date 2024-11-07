@@ -19,12 +19,7 @@ const Protected = ({ allowedRoles }) => {
         return <Navigate to="/unauthorized" replace />;
     }
 
-    // Puedes mantener o eliminar estos logs según tu necesidad de depuración
-    console.log("Token:", token);
-    console.log("Role:", role); 
-    console.log("Allowed roles:", allowedRoles);
-    console.log("Current role:", role);
-    console.log("Role included in allowedRoles:", allowedRoles.includes(role));
+   
 
     return <Outlet />;
 };

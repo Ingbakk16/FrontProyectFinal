@@ -8,6 +8,8 @@ import { ThemeContext } from "../services/ThemeContext/Theme.context";
 import "../WorkerProfile/WorkerStyle.css";
 import StarRating from "../starRating/starRating";
 import Carousel from "../Carousel/Carousel";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const WorkerProfile = () => {
   const { id } = useParams();
@@ -112,13 +114,19 @@ const WorkerProfile = () => {
 
         // Check if the user has already commented
         const userHasCommented = data.some(
-          (comment) => comment.userId === user.id
+          (comment) => comment.ratedByUserId === user.username
         ); // assuming `currentUser.id` is the logged-in user ID
+
+        console.log(comments)
+        console.log("Fetched Data:", user)
+
         setHasCommented(userHasCommented);
       } catch (error) {
         console.error("Error fetching comments:", error);
       }
     };
+
+    
 
     fetchComments();
   }, [id, token, user.id]); // Se ejecuta cada vez que cambian `id` o `token`
@@ -137,6 +145,11 @@ const WorkerProfile = () => {
           body: JSON.stringify(newComment),
         }
       );
+
+      if (response.ok){
+        toast.success("Comment added succesfully");
+
+      }
 
       if (!response.ok) {
         throw new Error("Error adding comment");
