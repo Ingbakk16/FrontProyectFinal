@@ -34,7 +34,9 @@ const App = () => {
 
     {
       path: "/",
-      element: <Protected allowedRoles={['ROLE_USER', 'ROLE_WORKER', 'ROLE_ADMIN']} />,
+      element: (
+        <Protected allowedRoles={["ROLE_USER", "ROLE_WORKER", "ROLE_ADMIN"]} />
+      ),
       children: [
         { path: "profile", element: <Profile /> },
         { path: "help", element: <HelpSeccion /> },
@@ -43,15 +45,23 @@ const App = () => {
         { path: "workerProfile/:id", element: <WorkerProfile /> },
         { path: "categories", element: <CategoriesPage /> },
         { path: "favWorkers", element: <FavoritesPage /> },
-        { path: "editWorker", element: <EditWorkerProfile /> },
         { path: "registerWorker", element: <RegisterWorkerFinal /> },
 
         {
+          path: "worker",
+          element: <Protected allowedRoles={["ROLE_WORKER"]} />,
+          children: [{ path: "editWorker", element: <EditWorkerProfile /> }],
+        },
+
+        {
           path: "admin",
-          element: <Protected allowedRoles={['ROLE_ADMIN']} />,
+          element: <Protected allowedRoles={["ROLE_ADMIN"]} />,
           children: [
             { path: "", element: <SysAdmin /> },
-            { path: "AdminCategoryForm/:categoryId", element: <CategoryForm /> },
+            {
+              path: "AdminCategoryForm/:categoryId",
+              element: <CategoryForm />,
+            },
             { path: "editUserAdmin/:id", element: <EditUserForm /> },
             { path: "adminWorkersPage", element: <AdminWorkersPage /> },
             { path: "adminWorkersEdit/:id", element: <WorkerForm /> },
