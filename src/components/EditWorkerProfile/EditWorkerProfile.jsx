@@ -9,6 +9,7 @@ import {
   Col,
   Form,
 } from "react-bootstrap";
+import Swal from 'sweetalert2';
 import Header from "../header/header";
 import Footer from "../footer/footer";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
@@ -101,7 +102,22 @@ const EditWorkerProfile = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = () => {
+    Swal.fire({
+      title: "¿Confirmar actualización?",
+      text: "¿Deseas guardar los cambios realizados en el perfil?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, guardar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleSaveProfile(); // Llama a la función para guardar cambios
+      }
+    });
+  };
+  
+  const handleSaveProfile = async () => {
     try {
       const response = await fetch(
         "http://localhost:8081/api/workers/edit_profile",

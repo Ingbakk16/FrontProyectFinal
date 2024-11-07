@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
 import { ThemeContext } from '../services/ThemeContext/Theme.context';
 import { toast } from "react-toastify";
+import Swal from 'sweetalert2';
 import 'react-toastify/dist/ReactToastify.css';
 import './Profile.css';
 
@@ -68,7 +69,22 @@ const Profile = () => {
     setIsEditing(true);
   };
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = () => {
+    Swal.fire({
+      title: "Confirmar actualización",
+      text: "¿Deseas guardar los cambios?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, guardar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleSaveProfile();
+      }
+    });
+  };
+
+  const handleSaveProfile = async () => {
     try {
       const response = await fetch('http://localhost:8081/api/users/edit', {
         method: 'PUT',
@@ -87,16 +103,11 @@ const Profile = () => {
       setFormData(updatedData);
       setIsEditing(false);
       
-      // Muestra el toast de éxito
-      toast.success('Perfil actualizado exitosamente');
-
-      // Llama a logout para redirigir al usuario a la página de inicio de sesión
+  
       handleLogout();
     } catch (error) {
       console.error("Error updating profile:", error);
-
-      // Muestra el toast de error
-      toast.error('Error actualizando el perfil');
+     
     }
   };
 
