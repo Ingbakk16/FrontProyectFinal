@@ -34,8 +34,8 @@ const WorkerForm = () => {
 
   const handleConfirmSubmit = () => {
     AdminConfirmationAlert({
-      title: "¿Está seguro de que desea actualizar el perfil?",
-      text: "Esta acción guardará los cambios realizados en el perfil del trabajador.",
+      title: "¿aare you sure about do this ?",
+      text: "this action save the changes in the workerss profile.",
       onConfirm: handleSubmit,
     });
   };
@@ -80,7 +80,7 @@ const WorkerForm = () => {
           <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
-          <h2 className="text-center mb-4">editar Trabajador</h2>
+          <h2 className="text-center mb-4">edit Worker</h2>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -93,7 +93,7 @@ const WorkerForm = () => {
             <Row>
               <Col md={6}>
                 <Form.Group controlId="workerDescription">
-                  <Form.Label>Descripción</Form.Label>
+                  <Form.Label>Descriptión</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={3}
@@ -108,7 +108,7 @@ const WorkerForm = () => {
               </Col>
               <Col md={6}>
                 <Form.Group controlId="workerPhoneNumber">
-                  <Form.Label>Número de Teléfono</Form.Label>
+                  <Form.Label>Phone Number</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Número de Teléfono"
@@ -124,7 +124,7 @@ const WorkerForm = () => {
             <Row className="mt-3">
               <Col md={6}>
                 <Form.Group controlId="workerDireccion">
-                  <Form.Label>Dirección</Form.Label>
+                  <Form.Label>Dress</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Dirección"
@@ -140,14 +140,14 @@ const WorkerForm = () => {
             <Row className="mt-4 text-center">
               <Col>
                 <Button type="submit" className="btn-save">
-                  Guardar
+                  save
                 </Button>
                 <Button
                   type="button"
                   className="ms-3 btn-cancel"
                   onClick={handleCancel}
                 >
-                  Cancelar
+                  cancel
                 </Button>
               </Col>
             </Row>

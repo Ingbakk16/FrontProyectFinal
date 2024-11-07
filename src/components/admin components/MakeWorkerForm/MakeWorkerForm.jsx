@@ -176,27 +176,27 @@ const MakeWorkerForm = ({
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.phoneNumber ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.phoneNumber && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.phoneNumber && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerDireccion">
-                  <Form.Label>Dirección</Form.Label>
+                  <Form.Label>Dress</Form.Label>
                   <Form.Control
                     type="text"
                     name="direccion"
                     ref={direccionRef}
                     onBlur={() => handleBlur(direccionRef, "direccion")}
-                    placeholder="Ingresa la dirección"
+                    placeholder="Ingresa la Dress"
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.direccion ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.direccion && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.direccion && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerJobId">
-                  <Form.Label>Trabajo</Form.Label>
+                  <Form.Label>work</Form.Label>
                   <Form.Control
                     as="select"
                     name="jobId"
@@ -205,23 +205,23 @@ const MakeWorkerForm = ({
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.jobId ? "border-danger" : ""}`}
                     required
                   >
-                    <option value="">Selecciona un trabajo</option>
+                    <option value="">select a job</option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
                         {category.title}
                       </option>
                     ))}
                   </Form.Control>
-                  {errors.jobId && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.jobId && <small className="text-danger">this field is mandatory..</small>}
                 </Form.Group>
               </Col>
             </Row>
             <div className="text-center">
               <Button type="submit" className="btn-save me-2">
-                Guardar
+                Save
               </Button>
               <Button type="button" className="btn-cancel" onClick={handleCancel}>
-                Cancelar
+                Cancel
               </Button>
             </div>
           </Form>

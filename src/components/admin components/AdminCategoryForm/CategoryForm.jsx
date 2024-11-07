@@ -62,7 +62,7 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
         throw new Error('Error al crear la categoría');
       }
     } catch (error) {
-      console.error('Error al enviar el formulario:', error);
+      
     }
   };
 

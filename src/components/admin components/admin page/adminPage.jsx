@@ -74,22 +74,22 @@ const SysAdmin = () => {
           <Col md={10} className="p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2 className={theme === "dark" ? "text-light" : "text-dark"}>
-                Administrar Usuarios y Administradores
+                Handle Users and Admins
               </h2>
 
               {/* Botones para añadir usuario o administrador */}
               <div className="d-flex">
                 <Button className={`add-admin-button mx-2 ${theme === "dark" ? "button-dark" : ""}`} onClick={() => navigate("/admin/AdminCreateForm")}>
-                  Añadir Administrador
+                  Add Admin
                 </Button>
                 <Button className={`add-user-button ${theme === "dark" ? "button-dark" : ""}`} onClick={() => navigate("/admin/adminCreateUserForm")}>
-                  Añadir Usuario
+                  Add User
                 </Button>
               </div>
             </div>
 
             {loading ? (
-              <p>Cargando usuarios...</p>
+              <p>Loading Users...</p>
             ) : (
               <div className="user-list-container">
                 <Row>

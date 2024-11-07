@@ -38,8 +38,8 @@ const AdminCreateUserForm = () => {
 
   const handleConfirmSubmit = () => {
     AdminConfirmationAlert({
-      title: "Confirmar creación de usuario",
-      text: "¿Estás seguro de que deseas crear este usuario?",
+      title: "confirm User Create",
+      text: "¿Are you sure about create this user?",
       onConfirm: handleSubmit,
     });
   };
@@ -64,13 +64,13 @@ const AdminCreateUserForm = () => {
       });
 
       if (response.ok) {
-        console.log("Usuario creado con éxito");
+       
         navigate("/Admin"); 
       } else {
         throw new Error("Error al crear el usuario");
       }
     } catch (error) {
-      console.error("Error al enviar el formulario:", error);
+      
     }
   };
 
@@ -86,7 +86,7 @@ const AdminCreateUserForm = () => {
           <Sidebar />
         </Col>
         <Col md={10} className="p-4">
-          <h2>Crear Nuevo Usuario</h2>
+          <h2>Create new User</h2>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -97,7 +97,7 @@ const AdminCreateUserForm = () => {
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Nombre de Usuario</Form.Label>
+                  <Form.Label>User Name</Form.Label>
                   <Form.Control
                     type="text"
                     name="username"
@@ -106,12 +106,12 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.username ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.username && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.username && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Nombre</Form.Label>
+                  <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
                     name="name"
@@ -120,14 +120,14 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.name ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.name && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.name && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
             </Row>
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Apellido</Form.Label>
+                  <Form.Label>Lastname</Form.Label>
                   <Form.Control
                     type="text"
                     name="lastname"
@@ -136,7 +136,7 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.lastname ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.lastname && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.lastname && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -150,14 +150,14 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.email ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.email && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.email && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
             </Row>
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Contraseña</Form.Label>
+                  <Form.Label>password</Form.Label>
                   <Form.Control
                     type="password"
                     name="password"
@@ -166,16 +166,16 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.password ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.password && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.password && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
             </Row>
             <div className="form-actions">
               <Button type="submit" className="btn-save">
-                Crear Usuario
+                Create User
               </Button>
               <Button type="button" className="btn-cancel" onClick={handleCancel}>
-                Cancelar
+                Cancel
               </Button>
             </div>
           </Form>

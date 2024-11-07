@@ -96,7 +96,7 @@ const EditUserForm = () => {
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Nombre de Usuario</Form.Label>
+                  <Form.Label>user Names</Form.Label>
                   <Form.Control
                     type="text"
                     name="username"
@@ -104,12 +104,12 @@ const EditUserForm = () => {
                     onBlur={() => handleBlur(usernameRef, 'username')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.username ? 'border-danger' : ''}`}
                   />
-                  {errors.username && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.username && <small className="text-danger">this field is mandatory..</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Nombre</Form.Label>
+                  <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
                     name="name"
@@ -117,14 +117,14 @@ const EditUserForm = () => {
                     onBlur={() => handleBlur(nameRef, 'name')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.name ? 'border-danger' : ''}`}
                   />
-                  {errors.name && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.name && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
             </Row>
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Apellido</Form.Label>
+                  <Form.Label>lastname</Form.Label>
                   <Form.Control
                     type="text"
                     name="lastname"
@@ -151,14 +151,14 @@ const EditUserForm = () => {
             </Row>
             <div className="form-actions">
               <Button type="submit" className="btn-save">
-                Guardar
+                save
               </Button>
               <Button
                 type="button"
                 className="btn-cancel"
                 onClick={handleCancel}
               >
-                Cancelar
+                Cancel
               </Button>
             </div>
           </Form>
