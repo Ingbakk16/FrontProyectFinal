@@ -1,5 +1,7 @@
+// UserCard.js
 import React from "react";
 import { Card, Button } from "react-bootstrap";
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert";
 
 const UserCard = ({
   username,
@@ -8,8 +10,16 @@ const UserCard = ({
   email,
   onEdit,
   onDelete,
-  onBecomeWorker, 
+  onBecomeWorker,
 }) => {
+  const handleDeleteClick = () => {
+    AdminConfirmationAlert({
+      title: "Confirmar eliminación",
+      text: "¿Estás seguro de que deseas eliminar este usuario?",
+      onConfirm: onDelete, // Ejecuta la acción de eliminar solo si se confirma
+    });
+  };
+
   return (
     <Card className="p-3 bg-primary text-light d-flex align-items-center justify-content-between">
       <div>
@@ -24,7 +34,7 @@ const UserCard = ({
         <Button variant="outline-light" className="mx-2" onClick={onBecomeWorker}>
           Hacer Trabajador
         </Button>
-        <Button variant="outline-danger" className="mx-2" onClick={onDelete}>
+        <Button variant="outline-danger" className="mx-2" onClick={handleDeleteClick}>
           Eliminar
         </Button>
       </div>

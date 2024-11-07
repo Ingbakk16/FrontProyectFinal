@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
 import { ThemeContext } from "../services/ThemeContext/Theme.context";
 import "./RegisterWorkerFinal.css";
+import { toast } from "react-toastify";
 
 const RegisterWorkerFinal = () => {
   const [step, setStep] = useState(1);
@@ -30,7 +31,7 @@ const RegisterWorkerFinal = () => {
     direccion: "",
     phoneNumber: "",
     description: "",
-    imageUrls: ["", "", ""], // Tres campos para URLs
+    imageUrls: [], // Array vacío para URLs
     rating: 0,
   });
 
@@ -70,12 +71,6 @@ const RegisterWorkerFinal = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [field]: validateField(field, value) }));
   };
 
-  const handleUrlChange = (index) => (event) => {
-    const newUrls = [...formData.imageUrls];
-    newUrls[index] = event.target.value;
-    setFormData((prevData) => ({ ...prevData, imageUrls: newUrls }));
-  };
-
   const validateField = (field, value) => {
     switch (field) {
       case "dni":
@@ -111,7 +106,6 @@ const RegisterWorkerFinal = () => {
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
         setErrors({ general: "Error al obtener las categorías de trabajo" });
       }
     };
@@ -147,18 +141,20 @@ const RegisterWorkerFinal = () => {
         },
         body: JSON.stringify(payload),
       });
-
+  
       if (response.ok) {
+        toast.success("¡Registro exitoso!", { position: "top-right" });
         setSuccess(true);
         handleLogout();
         navigate("/login");
       } else {
         const errorData = await response.json();
         setErrors({ general: errorData.message });
+        toast.error("Error en el registro", { position: "top-right" });
       }
     } catch (error) {
       setErrors({ general: "Error al registrar el trabajador." });
-      console.error("Error submitting form:", error);
+      toast.error("Error al registrar el trabajador.", { position: "top-right" });
     }
   };
 
@@ -187,9 +183,6 @@ const RegisterWorkerFinal = () => {
       case 2:
         return (
           <>
-            {formData.imageUrls.map((url, index) => (
-              <InputField key={index} label={`URL de Imagen ${index + 1}`} name={`imageUrl${index}`} value={url} onChange={handleUrlChange(index)} error="" touched={touchedFields[`imageUrls${index}`]} />
-            ))}
             <InputField label="Descripción" name="description" value={formData.description} onChange={handleChange("description")} error={errors.description} touched={touchedFields.description} />
           </>
         );
@@ -203,7 +196,6 @@ const RegisterWorkerFinal = () => {
             <p><strong>Dirección:</strong> {formData.direccion}</p>
             <p><strong>Número de Teléfono:</strong> {formData.phoneNumber}</p>
             <p><strong>Descripción:</strong> {formData.description}</p>
-            <p><strong>URLs de Imágenes:</strong> {formData.imageUrls.join(", ")}</p>
           </div>
         );
       default:

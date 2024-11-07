@@ -2,12 +2,13 @@ import React, { useState, useContext, useEffect } from "react";
 import { Button, Card, Form, FormGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../services/ThemeContext/Theme.context";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import './register.css';
 
 const Register = () => {
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -101,22 +102,19 @@ const Register = () => {
       });
 
       if (response.ok) {
-        setShowSuccessPopup(true);  
-        setTimeout(() => {
-          setShowSuccessPopup(false);
-          setUsername("");
-          setName("");
-          setLastname("");
-          setEmail("");
-          setPassword("");
-          navigate("/login");
-        }, 1500);
+        toast.success("Registro exitoso! Redirigiendo al login...");
+        setUsername("");
+        setName("");
+        setLastname("");
+        setEmail("");
+        setPassword("");
+        setTimeout(() => navigate("/login"), 1500);
       } else {
         throw new Error("Error en el registro");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Hubo un error al registrarse. Por favor, intente nuevamente.");
+      toast.error("Hubo un error al registrarse. Por favor, intente nuevamente.");
     }
   };
 
@@ -184,13 +182,6 @@ const Register = () => {
           </Form>
         </Card.Body>
       </Card>
-
-      {/* Success Popup */}
-      {showSuccessPopup && (
-        <div className="success-popup">
-          Registro exitoso!
-        </div>
-      )}
     </div>
   );
 };

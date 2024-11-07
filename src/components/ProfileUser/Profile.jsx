@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Card, Form, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
 import { ThemeContext } from '../services/ThemeContext/Theme.context';
+import { toast } from "react-toastify";
+import Swal from 'sweetalert2';
+import 'react-toastify/dist/ReactToastify.css';
 import './Profile.css';
 
 const Profile = () => {
-  const { token, handleLogout } = useContext(AuthenticationContext); // Añade logout aquí
+  const { token, handleLogout } = useContext(AuthenticationContext);
   const { theme } = useContext(ThemeContext);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -18,8 +21,6 @@ const Profile = () => {
     lastname: '',
     username: '',
   });
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,7 +69,22 @@ const Profile = () => {
     setIsEditing(true);
   };
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = () => {
+    Swal.fire({
+      title: "Confirmar actualización",
+      text: "¿Deseas guardar los cambios?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, guardar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleSaveProfile();
+      }
+    });
+  };
+
+  const handleSaveProfile = async () => {
     try {
       const response = await fetch('http://localhost:8081/api/users/edit', {
         method: 'PUT',
@@ -86,14 +102,12 @@ const Profile = () => {
       const updatedData = await response.json();
       setFormData(updatedData);
       setIsEditing(false);
-      setSuccessMessage('Profile updated successfully');
-      setErrorMessage('');
-
-      // Llama a logout para redirigir al usuario a la página de inicio de sesión
+      
+  
       handleLogout();
     } catch (error) {
-      setErrorMessage('Error updating profile');
-      setSuccessMessage('');
+      console.error("Error updating profile:", error);
+     
     }
   };
 
@@ -133,9 +147,6 @@ const Profile = () => {
                   <div className={`${theme === 'dark' ? 'profile-initials-circle-dark' : 'profile-initials-circle'}`}>
                     {getInitials()}
                   </div>
-
-                  {successMessage && <Alert variant="success">{successMessage}</Alert>}
-                  {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
                   <Form>
                     <Form.Group className="mb-3">

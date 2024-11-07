@@ -3,9 +3,10 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import Header from '../../header/header';
 import Footer from '../../footer/footer';
 import SidebarButton from '../sidebar button/sidebarMenu';
-import CategoryCard from '../EditCategoryCard/CategoryCard ';
+import CategoryCard from '../EditCategoryCard/CategoryCard';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
+import AdminConfirmationAlert from '../../ConfirmationAlert/ConfirmationAlert';
 import './AdminCategoriesPage.css';
 import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
 
@@ -20,9 +21,15 @@ const AdminCategoriesPage = () => {
     navigate('/admin/AdminCategoryForm/new');
   };
 
-  const handleDeleteCategory = async (categoryId) => {
-    if (!window.confirm("¿Estás seguro de que deseas eliminar esta categoría?")) return;
+  const confirmDeleteCategory = (categoryId) => {
+    AdminConfirmationAlert({
+      title: "¿Estás seguro de eliminar esta categoría?",
+      text: "Esta acción no se puede deshacer.",
+      onConfirm: () => handleDeleteCategory(categoryId),
+    });
+  };
 
+  const handleDeleteCategory = async (categoryId) => {
     try {
       const response = await fetch(`http://localhost:8081/api/admin/jobs/${categoryId}`, {
         method: 'DELETE',
@@ -99,7 +106,7 @@ const AdminCategoriesPage = () => {
                       categoryName={category.title}
                       categoryDescription={category.description}
                       onEdit={() => handleEditCategory(category.id)}
-                      onDelete={() => handleDeleteCategory(category.id)}
+                      onDelete={() => confirmDeleteCategory(category.id)}
                       darkMode={theme === 'dark'}
                     />
                   </Col>

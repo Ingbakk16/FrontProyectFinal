@@ -6,10 +6,11 @@ import Footer from "../../footer/footer";
 import SidebarButton from "../sidebar button/sidebarMenu";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Asegúrate de que la ruta sea correcta
 import "./DeleteReview.css";
 
 const DeleteReview = () => {
-  const { workerId } = useParams(); 
+  const { workerId } = useParams();
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
   const [reviews, setReviews] = useState([]);
@@ -19,7 +20,6 @@ const DeleteReview = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        console.log(workerId)
         const response = await fetch(`http://localhost:8081/api/workers/${workerId}/comments`, {
           method: "GET",
           headers: {
@@ -42,12 +42,20 @@ const DeleteReview = () => {
     fetchReviews();
   }, [workerId, token]);
 
+  const confirmAndDeleteReview = (reviewId) => {
+    AdminConfirmationAlert({
+      title: "¿Confirmar eliminación?",
+      text: "Esta acción eliminará la reseña permanentemente.",
+      onConfirm: () => handleDeleteReview(reviewId), // Ejecuta la eliminación solo si el usuario confirma
+    });
+  };
+
   const handleDeleteReview = async (reviewId) => {
     try {
       const response = await fetch(`http://localhost:8081/api/admin/workers/${workerId}/comments/${reviewId}`, {
         method: "DELETE",
         headers: {
-           Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -64,7 +72,7 @@ const DeleteReview = () => {
   };
 
   const handleBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   return (
@@ -97,7 +105,12 @@ const DeleteReview = () => {
                         <p><strong>Usuario:</strong> {review.ratedByUserId}</p>
                         <p><strong>Reseña:</strong> {review.comment}</p>
                         <p><strong>Rating:</strong> {review.rating}</p>
-                        <Button variant="danger" onClick={() => handleDeleteReview(review.id)}>Eliminar Reseña</Button>
+                        <Button
+                          variant="danger"
+                          onClick={() => confirmAndDeleteReview(review.id)} // Llama a la función de confirmación
+                        >
+                          Eliminar Reseña
+                        </Button>
                       </div>
                     </Col>
                   ))}

@@ -6,7 +6,8 @@ import Sidebar from "../sidebar button/sidebarMenu";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import "../editUserAdmin/EditUserForm.css"; 
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Asegúrate de la ruta correcta
+import "../editUserAdmin/EditUserForm.css";
 
 const AdminCreateUserForm = () => {
   const { theme } = useContext(ThemeContext);
@@ -25,8 +26,16 @@ const AdminCreateUserForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Muestra la alerta de confirmación y ejecuta el envío si se confirma
+  const handleConfirmSubmit = () => {
+    AdminConfirmationAlert({
+      title: "Confirmar creación de usuario",
+      text: "¿Estás seguro de que deseas crear este usuario?",
+      onConfirm: handleSubmit, // Llama a handleSubmit si se confirma
+    });
+  };
+
+  const handleSubmit = async () => {
     try {
       const response = await fetch("http://localhost:8081/api/admin/register", {
         method: "POST",
@@ -66,7 +75,10 @@ const AdminCreateUserForm = () => {
         <Col md={10} className="p-4">
           <h2>Crear Nuevo Usuario</h2>
           <Form
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleConfirmSubmit(); // Llama a la función de confirmación
+            }}
             className={`edit-user-form ${
               theme === "dark" ? "edit-user-form-dark" : ""
             }`}

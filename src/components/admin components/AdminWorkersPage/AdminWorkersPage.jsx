@@ -8,6 +8,7 @@ import SidebarButton from "../sidebar button/sidebarMenu";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import "./AdminWOrkersPage.css";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Ajusta la ruta si es necesario
 
 const AdminWorkersPage = () => {
   const navigate = useNavigate();
@@ -31,11 +32,10 @@ const AdminWorkersPage = () => {
         }
         const data = await response.json();
 
-        // Agrega `workerId` y `userId` usando ambos `id` de nivel superior y `user`
         const workersWithIds = data.map((worker) => ({
           ...worker,
-          workerId: worker.id, 
-          userId: worker.user.id, 
+          workerId: worker.id,
+          userId: worker.user.id,
         }));
 
         setWorkers(workersWithIds);
@@ -53,37 +53,37 @@ const AdminWorkersPage = () => {
     navigate(`/admin/adminWorkersEdit/${userId}`);
   };
 
-  const handleDeleteWorker = async (userId) => {
-    if (
-      !window.confirm("¿Estás seguro de que deseas eliminar este trabajador?")
-    )
-      return;
-  
-    try {
-      const response = await fetch(
-        `http://localhost:8081/api/admin/${userId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+  const handleDeleteWorker = (userId) => {
+    AdminConfirmationAlert({
+      title: "¿Estás seguro de que deseas eliminar este trabajador?",
+      text: "Esta acción no se puede deshacer.",
+      onConfirm: async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:8081/api/admin/${userId}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Error al eliminar el trabajador");
+          }
+
+          setWorkers((prevWorkers) =>
+            prevWorkers.filter((worker) => worker.userId !== userId)
+          );
+          console.log(`Trabajador ${userId} eliminado exitosamente`);
+        } catch (error) {
+          console.error("Error al intentar eliminar el trabajador:", error);
         }
-      );
-  
-      if (!response.ok) {
-        throw new Error("Error al eliminar el trabajador");
-      }
-  
-      setWorkers((prevWorkers) =>
-        prevWorkers.filter((worker) => worker.userId !== userId)
-      ); 
-      console.log(`Trabajador ${userId} eliminado exitosamente`);
-    } catch (error) {
-      console.error("Error al intentar eliminar el trabajador:", error);
-    }
+      },
+    });
   };
-  
 
   const handleViewReviews = (workerId) => {
     navigate(`/admin/DeleteReview/${workerId}`);
@@ -111,7 +111,7 @@ const AdminWorkersPage = () => {
           <Col md={10} className="p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2 className={theme === "dark" ? "text-light" : "text-dark"}>
-                Administrar Trabajador
+                Administrar Trabajadores
               </h2>
             </div>
 
@@ -123,10 +123,10 @@ const AdminWorkersPage = () => {
                   {workers.map((worker) => (
                     <Col md={12} className="mb-3" key={worker.id}>
                       <AdminWorkerCard
-                        username={worker.user.username} 
-                        name={worker.user.name} 
-                        lastname={worker.user.lastname} 
-                        email={worker.user.email} 
+                        username={worker.user.username}
+                        name={worker.user.name}
+                        lastname={worker.user.lastname}
+                        email={worker.user.email}
                         onEdit={() => handleEditWorker(worker.userId)}
                         onDelete={() => handleDeleteWorker(worker.userId)}
                         onViewReviews={() => handleViewReviews(worker.workerId)}

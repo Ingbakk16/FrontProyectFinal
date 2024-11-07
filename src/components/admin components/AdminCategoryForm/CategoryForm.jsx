@@ -6,6 +6,7 @@ import SidebarButton from '../sidebar button/sidebarMenu';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
 import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
+import AdminConfirmationAlert from '../../ConfirmationAlert/ConfirmationAlert'; // Asegúrate de que esta ruta sea correcta
 import './CategoryForm.css';
 
 const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRequired: '' } }) => {
@@ -24,8 +25,15 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const confirmAndSubmit = () => {
+    AdminConfirmationAlert({
+      title: "¿Confirmar creación de categoría?",
+      text: "Esta acción creará una nueva categoría.",
+      onConfirm: handleSubmit, // Ejecuta handleSubmit si el usuario confirma
+    });
+  };
+
+  const handleSubmit = async () => {
     try {
       const response = await fetch('http://localhost:8081/api/admin/jobs', {
         method: 'POST',
@@ -59,7 +67,13 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
         </Col>
         <Col md={10} className="p-4">
           <h2 className="text-center mb-4">Formulario de Categoría</h2>
-          <Form onSubmit={handleSubmit} className={`edit-category-form ${theme === "dark" ? "edit-category-form-dark" : ""}`}>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              confirmAndSubmit(); // Llama a la función de confirmación
+            }}
+            className={`edit-category-form ${theme === "dark" ? "edit-category-form-dark" : ""}`}
+          >
             <Row>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="categoryTitle">
