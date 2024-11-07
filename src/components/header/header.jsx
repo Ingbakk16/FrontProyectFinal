@@ -1,6 +1,6 @@
 // Header.js
 import React, { useContext, useState, useEffect } from 'react';
-import { Navbar, Form, FormControl, Button, Container, Collapse } from 'react-bootstrap';
+import { Navbar, Form, FormControl, Button, Container, Collapse, Modal } from 'react-bootstrap';
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
 import { ThemeContext } from '../services/ThemeContext/Theme.context'; 
 import { useNavigate } from "react-router-dom";
@@ -33,8 +33,14 @@ const Header = ({ setSearchTerm }) => {
 
   const navigationHandler = (path) => navigate(path);
 
-  
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
+  
+  const handleLogoutModalOpen = () => setShowLogoutModal(true);
+  const handleLogoutModalClose = () => {
+    setShowLogoutModal(false);
+    
+  };
   
 
 
@@ -98,8 +104,8 @@ const Header = ({ setSearchTerm }) => {
              variant="outline-primary" 
              className={`rounded-circle border-0 p-2 shadow-none logout-button ${theme === 'dark' ? 'logout-dark' : ''}`} 
              onClick={() => {
-               handleLogout(); 
-               navigate('/login'); 
+               handleLogoutModalOpen(); 
+               
              }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
@@ -125,35 +131,10 @@ const Header = ({ setSearchTerm }) => {
                 <path  d="M3 4h4v4H3zm0 6h4v4H3zm0 6h4v4H3zm6-12h12v4H9zm0 6h12v4H9zm0 6h12v4H9z"/>
               </svg>
               <span>Categories</span>
-              <svg 
-                className={`arrow-icon ${showCategories ? 'rotate' : ''}`} 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="16" 
-                height="16" 
-                viewBox="0 0 24 24"
-              >
-                <path fill="currentColor" d="M7 10l5 5 5-5z"/>
-              </svg>
+              
             </Button>
 
-            <Collapse in={showCategories}>
-              <div className={`menu-dropdown ${theme === 'dark' ? 'menu-dropdown-dark' : ''}`}>
-                {loading ? (
-                  <p>Loading categories...</p>
-                ) : (
-                  <ul>
-                    {categories.slice(0, 4).map(category => (
-                      <li key={category.id}>
-                        <a href={`/categories/${category.id}`}>{category.title}</a>
-                      </li>
-                    ))}
-                    <li>
-                      <a href="/categories">Show All...</a>
-                    </li>
-                  </ul>
-                )}
-              </div>
-            </Collapse>
+            
           </div>
 
           {/* Settings Button */}
@@ -164,7 +145,7 @@ const Header = ({ setSearchTerm }) => {
             <span>Settings</span>
           </Button>
 
-          {/* Admin Button - Condicional para Admins */}
+          {/* Admin Button  */}
           {role === "ROLE_ADMIN" &&(
             <Button className={`menu-button ${theme === 'dark' ? 'menu-button-dark' : ''}`} onClick={AdminHandler}>
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" >
@@ -208,6 +189,32 @@ const Header = ({ setSearchTerm }) => {
             </Collapse>
           </div>
         </Container>
+
+        <Modal
+                  show={showLogoutModal}
+                  onHide={handleLogoutModalClose}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Confirm Logout</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    Are you sure you want to logout from the app?
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={handleLogoutModalClose}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="danger" onClick={handleLogout}>
+                      Logout
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+
+
+
       </div>
     </div>
   );
