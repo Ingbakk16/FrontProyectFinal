@@ -10,6 +10,7 @@
 
 .register-background.default {
   background: linear-gradient(45deg, #6BF8EF, #87ACF7, #645DB5, #322A94);
+  height: 100ch;
 }
 
 .register-card {
