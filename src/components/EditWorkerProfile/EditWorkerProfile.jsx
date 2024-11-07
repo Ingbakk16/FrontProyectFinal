@@ -3,6 +3,7 @@ import {
   Card,
   Button,
   Image,
+  Modal,
   Container,
   Row,
   Col,
@@ -29,38 +30,45 @@ const EditWorkerProfile = () => {
     workImages: [],
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showAddImageModal, setShowAddImageModal] = useState(false);
+  const [newImageUrl, setNewImageUrl] = useState("");
+  const [showDeleteImageModal, setShowDeleteImageModal] = useState(false);
+  const [imageToDelete, setImageToDelete] = useState(null);
 
   useEffect(() => {
     const fetchWorkerProfile = async () => {
       try {
-        const response = await fetch("http://localhost:8081/api/workers/profile", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-  
+        const response = await fetch(
+          "http://localhost:8081/api/workers/profile",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
         if (response.ok) {
           const data = await response.json();
-          
-          
+
           console.log("Fetched worker data:", data);
-  
+
           const parsedImageUrls = Array.isArray(data.imageUrls)
-            ? data.imageUrls.map((item) => {
-                try {
-                  // Check if item is a string and parse it
-                  const parsedItem = JSON.parse(item);
-                  return parsedItem.imageUrl; // Extract imageUrl
-                } catch (e) {
-                  console.error("Error parsing image URL:", e);
-                  return null; // Skip invalid items
-                }
-              }).filter(Boolean) // Remove null values
+            ? data.imageUrls
+                .map((item) => {
+                  try {
+                    // Check if item is a string and parse it
+                    const parsedItem = JSON.parse(item);
+                    return parsedItem.imageUrl; // Extract imageUrl
+                  } catch (e) {
+                    console.error("Error parsing image URL:", e);
+                    return null; // Skip invalid items
+                  }
+                })
+                .filter(Boolean) // Remove null values
             : []; // Set to empty array if data.imageUrls is not an array
-  
+
           setWorker(data);
           setFormData({
             description: data.description || "",
@@ -68,7 +76,7 @@ const EditWorkerProfile = () => {
             direccion: data.direccion || "",
             workImages: parsedImageUrls,
           });
-  
+
           console.log("Parsed image URLs:", parsedImageUrls);
         } else {
           throw new Error("Error fetching worker profile");
@@ -77,13 +85,9 @@ const EditWorkerProfile = () => {
         console.error(error);
       }
     };
-  
+
     fetchWorkerProfile();
   }, [token]);
-
-  
-  
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -122,34 +126,35 @@ const EditWorkerProfile = () => {
     }
   };
 
-  
-
-   
+  const handleAddImageModalOpen = () => setShowAddImageModal(true);
+  const handleAddImageModalClose = () => {
+    setShowAddImageModal(false);
+    setNewImageUrl("");
+  };
 
   const handleAddImage = async () => {
-    const newImage = prompt("Enter image URL");
-    
-    // Ensure there is a new image URL and the current images are fewer than 3
-    if (newImage && formData.workImages.length < 3) {
+    if (newImageUrl && formData.workImages.length < 3) {
       try {
-        const response = await fetch("http://localhost:8081/api/workers/images/add", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ imageUrl: newImage }), // Send as a JSON object with key imageUrl
-        });
-  
+        const response = await fetch(
+          "http://localhost:8081/api/workers/images/add",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ imageUrl: newImageUrl }),
+          }
+        );
+
         if (response.ok) {
-          // Add new image URL to the formData
           setFormData((prevState) => ({
             ...prevState,
-            workImages: [...prevState.workImages, newImage],
+            workImages: [...prevState.workImages, newImageUrl],
           }));
+          handleAddImageModalClose();
         } else {
-          const errorMsg = await response.text();
-          alert(`Error adding image: ${errorMsg}`);
+          alert("Error adding image");
         }
       } catch (error) {
         console.error("Error adding image:", error);
@@ -159,33 +164,50 @@ const EditWorkerProfile = () => {
     }
   };
 
-  // Updated handleDeleteImage to integrate with backend
-  const handleDeleteImage = async (imageUrl) => {
+  // Delete Image Modal Logic
+  const handleDeleteImageModalOpen = (imageUrl) => {
+    setImageToDelete(imageUrl);
+    setShowDeleteImageModal(true);
+  };
+
+  const handleDeleteImageModalClose = () => {
+    setShowDeleteImageModal(false);
+    setImageToDelete(null);
+  };
+
+  const handleDeleteImage = async () => {
     try {
-      const response = await fetch("http://localhost:8081/api/workers/images/delete", {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ imageUrl }), // Send imageUrl as a JSON object
-      });
-  
+      const response = await fetch(
+        "http://localhost:8081/api/workers/images/delete",
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ imageUrl: imageToDelete }),
+        }
+      );
+
       if (response.ok) {
-        // Update the images in the formData to reflect the deletion
         setFormData((prevState) => ({
           ...prevState,
-          workImages: prevState.workImages.filter((img) => img !== imageUrl),
+          workImages: prevState.workImages.filter(
+            (img) => img !== imageToDelete
+          ),
         }));
+        handleDeleteImageModalClose();
       } else {
-        const errorMsg = await response.text();
-        alert(`Error deleting image: ${errorMsg}`);
+        alert("Error deleting image");
       }
     } catch (error) {
       console.error("Error deleting image:", error);
     }
   };
 
+  if (!worker) {
+    return <p>Loading...</p>;
+  }
 
   const getInitials = (name, lastname) => {
     if (!name || !lastname) return "";
@@ -287,14 +309,74 @@ const EditWorkerProfile = () => {
                 </p>
 
                 {formData.workImages && (
-              <Carousel
-                images={formData.workImages} 
-                editable={true}
-                onDelete={handleDeleteImage}
-                onAddImage={handleAddImage}
-                theme={theme}
-              />
-            )}
+                  <Carousel
+                    images={formData.workImages}
+                    editable={true}
+                    onAddImage={handleAddImageModalOpen}
+                    onDelete={handleDeleteImageModalOpen}
+                    theme={theme}
+                  />
+                )}
+
+                {/* Add Image Modal */}
+                <Modal
+                  show={showAddImageModal}
+                  onHide={handleAddImageModalClose}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Add Image URL</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Form.Group>
+                      <Form.Label>Image URL</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter image URL"
+                        value={newImageUrl}
+                        onChange={(e) => setNewImageUrl(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={handleAddImageModalClose}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="primary"
+                      onClick={handleAddImage}
+                      disabled={!newImageUrl}
+                    >
+                      Add Image
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+
+                {/* Delete Image Confirmation Modal */}
+                <Modal
+                  show={showDeleteImageModal}
+                  onHide={handleDeleteImageModalClose}
+                >
+                  <Modal.Header closeButton>
+                    <Modal.Title>Confirm Deletion</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    Are you sure you want to delete this image?
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="secondary"
+                      onClick={handleDeleteImageModalClose}
+                    >
+                      Cancel
+                    </Button>
+                    <Button variant="danger" onClick={handleDeleteImage}>
+                      Delete
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
 
                 <Button
                   variant="primary"
