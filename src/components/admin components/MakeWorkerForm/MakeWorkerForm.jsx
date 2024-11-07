@@ -6,6 +6,7 @@ import SidebarButton from "../sidebar button/sidebarMenu";
 import { useNavigate, useParams } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert";
 import "./MakeWorkerForm.css";
 
 const MakeWorkerForm = ({
@@ -23,14 +24,13 @@ const MakeWorkerForm = ({
     direccion: initialWorker.direccion,
     jobId: initialWorker.jobId,
     imageUrl: initialWorker.imageUrl,
-    phoneNumber: initialWorker.phoneNumber || "", 
+    phoneNumber: initialWorker.phoneNumber || "",
   });
 
   const { theme } = useContext(ThemeContext);
   const { token } = useContext(AuthenticationContext);
-  const { id: userId } = useParams(); 
-  const [categories, setCategories] = useState([]); 
-
+  const { id: userId } = useParams();
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -52,7 +52,7 @@ const MakeWorkerForm = ({
           throw new Error("Error al obtener las categorías");
         }
         const data = await response.json();
-        setCategories(data); // Guarda las categorías en el estado
+        setCategories(data);
       } catch (error) {
         console.error("Error al cargar las categorías:", error);
       }
@@ -61,30 +61,38 @@ const MakeWorkerForm = ({
     fetchCategories();
   }, [token]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
+  // Muestra la alerta de confirmación antes de enviar el formulario
+  const handleConfirmSubmit = () => {
+    AdminConfirmationAlert({
+      title: "Confirmar creación de trabajador",
+      text: "¿Estás seguro de que deseas crear o actualizar este perfil de trabajador?",
+      onConfirm: handleSubmit, // Llama a handleSubmit si se confirma
+    });
+  };
+
+  const handleSubmit = async () => {
     try {
-      const response = await fetch(`http://localhost:8081/api/admin/worker/${userId}`, { 
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData), 
-      });
-  
+      const response = await fetch(
+        `http://localhost:8081/api/admin/worker/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
       if (!response.ok) {
-        throw new Error('Error al actualizar el perfil del trabajador');
+        throw new Error("Error al actualizar el perfil del trabajador");
       }
-  
-      navigate('/admin/adminWorkersPage'); 
+
+      navigate("/admin/adminWorkersPage");
     } catch (error) {
-      console.error('Error al enviar el formulario:', error);
+      console.error("Error al enviar el formulario:", error);
     }
   };
-  
-  
 
   const handleCancel = () => {
     navigate(-1);
@@ -104,7 +112,10 @@ const MakeWorkerForm = ({
         <Col md={10} className="p-4">
           <h2 className="text-center mb-4">Formulario de Trabajador</h2>
           <Form
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleConfirmSubmit(); // Llama a la función de confirmación
+            }}
             className={`edit-category-form ${
               theme === "dark" ? "edit-category-form-dark" : ""
             }`}
@@ -181,13 +192,12 @@ const MakeWorkerForm = ({
                     <option value="">Selecciona un trabajo</option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
-                        {category.title}{" "}
+                        {category.title}
                       </option>
                     ))}
                   </Form.Control>
                 </Form.Group>
               </Col>
-
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerImageUrl">
                   <Form.Label>URL de la Imagen</Form.Label>
@@ -206,11 +216,7 @@ const MakeWorkerForm = ({
               <Button type="submit" className="btn-save me-2">
                 Guardar
               </Button>
-              <Button
-                type="button"
-                className="btn-cancel"
-                onClick={handleCancel}
-              >
+              <Button type="button" className="btn-cancel" onClick={handleCancel}>
                 Cancelar
               </Button>
             </div>

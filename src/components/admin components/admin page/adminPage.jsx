@@ -1,3 +1,4 @@
+// SysAdmin.js
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import Header from "../../header/header";
@@ -6,8 +7,8 @@ import UserCard from "../AdminUserCard/UserCard";
 import { useNavigate } from "react-router-dom";
 import SidebarButton from "../sidebar button/sidebarMenu";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
-import "./SysAdmin.css";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+import "./SysAdmin.css";
 
 const SysAdmin = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const SysAdmin = () => {
         const response = await fetch("http://localhost:8081/api/users/all", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
@@ -32,73 +33,39 @@ const SysAdmin = () => {
         const data = await response.json();
         setUsers(data);
       } catch (error) {
-        console.error("Error al cargar los usuarios:", error);
+     
       } finally {
         setLoading(false);
       }
     };
 
     fetchUsers();
-  }, [theme]);
+  }, [theme, token]);
 
-  const handleMakeWorker = (userId) => {
-    console.log("Navigating to MakeWorkerForm for user ID:", userId);
-    navigate(`/admin/MakeWorkerForm/${userId}`);
-  };
-  
-  const handleEdit = (userId) => {
-    navigate(`/admin/editUserAdmin/${userId}`);
-  };
-
-  const handleDelete = async (userId) => {
-    if (!window.confirm("¿Estás seguro de que deseas eliminar este usuario?"))
-      return;
-
+  const handleDeleteUser = async (userId) => {
     try {
-      const response = await fetch(
-        `http://localhost:8081/api/admin/${userId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://localhost:8081/api/admin/${userId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.ok) {
-        console.log(`Usuario con ID ${userId} eliminado con éxito`);
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
       } else {
         throw new Error("Error al eliminar el usuario");
       }
     } catch (error) {
-      console.error("Error al intentar eliminar el usuario:", error);
+
     }
   };
 
-  const handleAddAdmin = () => {
-    navigate("/admin/AdminCreateForm");
-  };
-
-  const handleAddUser = () => {
-    navigate("/admin/adminCreateUserForm");
-  };
-
   return (
-    <div
-      className={`background ${
-        theme === "dark" ? "APage-background-dark" : "APage-background-light"
-      }`}
-    >
+    <div className={`background ${theme === "dark" ? "APage-background-dark" : "APage-background-light"}`}>
       <Header />
-      <Container
-        fluid
-        className={`sys-admin-page-background ${
-          theme === "dark" ? "admin-page-dark" : "admin-page-light"
-        } d-flex flex-column justify-content-center align-items-center`}
-        style={{ minHeight: "90vh" }}
-      >
+      <Container fluid className={`sys-admin-page-background ${theme === "dark" ? "admin-page-dark" : "admin-page-light"} d-flex flex-column justify-content-center align-items-center`} style={{ minHeight: "90vh" }}>
         <Row className="justify-content-center align-items-center w-100 full-height-row">
           <Col md={2} className="bg-dark text-light sidebar-button-padding">
             <SidebarButton />
@@ -110,22 +77,12 @@ const SysAdmin = () => {
                 Administrar Usuarios y Administradores
               </h2>
 
+              {/* Botones para añadir usuario o administrador */}
               <div className="d-flex">
-                <Button
-                  className={`add-admin-button mx-2 ${
-                    theme === "dark" ? "button-dark" : ""
-                  }`}
-                  onClick={handleAddAdmin}
-                >
+                <Button className={`add-admin-button mx-2 ${theme === "dark" ? "button-dark" : ""}`} onClick={() => navigate("/admin/AdminCreateForm")}>
                   Añadir Administrador
                 </Button>
-
-                <Button
-                  className={`add-user-button ${
-                    theme === "dark" ? "button-dark" : ""
-                  }`}
-                  onClick={handleAddUser}
-                >
+                <Button className={`add-user-button ${theme === "dark" ? "button-dark" : ""}`} onClick={() => navigate("/admin/adminCreateUserForm")}>
                   Añadir Usuario
                 </Button>
               </div>
@@ -144,9 +101,9 @@ const SysAdmin = () => {
                         lastname={user.lastname}
                         email={user.email}
                         role={user.role?.name || "Usuario"}
-                        onEdit={() => handleEdit(user.id)}
-                        onDelete={() => handleDelete(user.id)}
-                        onBecomeWorker={() => handleMakeWorker(user.id)} 
+                        onEdit={() => navigate(`/admin/editUserAdmin/${user.id}`)}
+                        onDelete={() => handleDeleteUser(user.id)}
+                        onBecomeWorker={() => navigate(`/admin/MakeWorkerForm/${user.id}`)}
                       />
                     </Col>
                   ))}

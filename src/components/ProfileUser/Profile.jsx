@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Button, Card, Form, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';
 import { ThemeContext } from '../services/ThemeContext/Theme.context';
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import './Profile.css';
 
 const Profile = () => {
-  const { token, handleLogout } = useContext(AuthenticationContext); // Añade logout aquí
+  const { token, handleLogout } = useContext(AuthenticationContext);
   const { theme } = useContext(ThemeContext);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -18,8 +20,6 @@ const Profile = () => {
     lastname: '',
     username: '',
   });
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -86,14 +86,17 @@ const Profile = () => {
       const updatedData = await response.json();
       setFormData(updatedData);
       setIsEditing(false);
-      setSuccessMessage('Profile updated successfully');
-      setErrorMessage('');
+      
+      // Muestra el toast de éxito
+      toast.success('Perfil actualizado exitosamente');
 
       // Llama a logout para redirigir al usuario a la página de inicio de sesión
       handleLogout();
     } catch (error) {
-      setErrorMessage('Error updating profile');
-      setSuccessMessage('');
+      console.error("Error updating profile:", error);
+
+      // Muestra el toast de error
+      toast.error('Error actualizando el perfil');
     }
   };
 
@@ -133,9 +136,6 @@ const Profile = () => {
                   <div className={`${theme === 'dark' ? 'profile-initials-circle-dark' : 'profile-initials-circle'}`}>
                     {getInitials()}
                   </div>
-
-                  {successMessage && <Alert variant="success">{successMessage}</Alert>}
-                  {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
                   <Form>
                     <Form.Group className="mb-3">

@@ -6,6 +6,7 @@ import Sidebar from "../sidebar button/sidebarMenu";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Asegúrate de la ruta correcta
 import "./CreateAdminForm.css";
 
 const CreateAdminForm = () => {
@@ -29,8 +30,16 @@ const CreateAdminForm = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Muestra la alerta de confirmación antes de guardar
+  const handleConfirmSubmit = () => {
+    AdminConfirmationAlert({
+      title: "Confirmar creación de administrador",
+      text: "¿Estás seguro de que deseas crear este administrador?",
+      onConfirm: handleSubmit, // Llama a handleSubmit si se confirma
+    });
+  };
+
+  const handleSubmit = async () => {
     try {
       const response = await fetch("http://localhost:8081/api/admin/create-admin", {
         method: "POST",
@@ -42,13 +51,11 @@ const CreateAdminForm = () => {
       });
 
       if (response.ok) {
-        console.log("Administrador creado con éxito");
+        
         navigate(-1);
       } else {
-        console.error("Error al crear administrador");
       }
     } catch (error) {
-      console.error("Error en la solicitud:", error);
     }
   };
 
@@ -65,9 +72,13 @@ const CreateAdminForm = () => {
           <Sidebar />
         </Col>
         
-
         <Col md={10} className="p-4">
-          <Form onSubmit={handleSubmit} className={`create-admin-form ${theme === "dark" ? "form-dark" : ""}`}>
+          <Form onSubmit={(e) => {
+              e.preventDefault();
+              handleConfirmSubmit(); // Llama a la función de confirmación
+            }}
+            className={`create-admin-form ${theme === "dark" ? "form-dark" : ""}`}
+          >
             <h3>Crear Administrador</h3>
             <Row>
               <Col md={6}>

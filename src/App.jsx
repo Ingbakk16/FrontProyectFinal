@@ -25,6 +25,8 @@ import CreateAdminForm from "./components/admin components/CreateAdminForm/Creat
 import MakeWorkerForm from "./components/admin components/MakeWorkerForm/MakeWorkerForm.jsx";
 import DeleteReview from "./components/admin components/AdminWorkerReviews/DeleteReview.jsx";
 import AdminCreateUserForm from "./components/admin components/AdminCreateUser/AdminCreateUser.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -80,6 +82,7 @@ const App = () => {
     <ThemeContextProvider>
       <AuthenticationContextProvider>
         <RouterProvider router={router} />
+        <ToastContainer position="top-right" autoClose={3000} />
       </AuthenticationContextProvider>
     </ThemeContextProvider>
   );
