@@ -28,10 +28,10 @@ const RegisterWorkerFinal = () => {
   const [formData, setFormData] = useState({
     dni: "",
     jobId: "",
-    direccion: "",
+    address: "",
     phoneNumber: "",
     description: "",
-    imageUrls: [], // Array vacío para URLs
+    imageUrls: [], // Empty array for URLs
     rating: 0,
   });
 
@@ -43,7 +43,7 @@ const RegisterWorkerFinal = () => {
     if (step === 1) {
       newErrors.dni = validateDNI(formData.dni);
       newErrors.jobId = validateJobId(formData.jobId);
-      newErrors.direccion = validateDireccion(formData.direccion);
+      newErrors.address = validateAddress(formData.address);
       newErrors.phoneNumber = validatePhoneNumber(formData.phoneNumber);
     } else if (step === 2) {
       newErrors.description = validateDescription(formData.description);
@@ -54,15 +54,15 @@ const RegisterWorkerFinal = () => {
 
   const validateDNI = (value) => {
     if (!value) return "DNI is mandatory";
-    if (value.length < DNI_MIN_LENGTH) return `Debe tener al menos ${DNI_MIN_LENGTH} caracteres`;
-    if (value.length > DNI_MAX_LENGTH) return `No puede superar ${DNI_MAX_LENGTH} caracteres`;
+    if (value.length < DNI_MIN_LENGTH) return `Must have at least ${DNI_MIN_LENGTH} characters`;
+    if (value.length > DNI_MAX_LENGTH) return `Cannot exceed ${DNI_MAX_LENGTH} characters`;
     return "";
   };
 
-  const validateJobId = (value) => (!value ? "Selecting a Job is mandatory" : "");
-  const validateDireccion = (value) => (!value ? "La dirección es obligatoria" : "");
-  const validatePhoneNumber = (value) => (!value ? "Número de teléfono es obligatorio" : "");
-  const validateDescription = (value) => (!value ? "La descripción es obligatoria" : "");
+  const validateJobId = (value) => (!value ? "Selecting a job is mandatory" : "");
+  const validateAddress = (value) => (!value ? "Address is mandatory" : "");
+  const validatePhoneNumber = (value) => (!value ? "Phone number is mandatory" : "");
+  const validateDescription = (value) => (!value ? "Description is mandatory" : "");
 
   const handleChange = (field) => (event) => {
     const value = event.target.value;
@@ -77,8 +77,8 @@ const RegisterWorkerFinal = () => {
         return validateDNI(value);
       case "jobId":
         return validateJobId(value);
-      case "direccion":
-        return validateDireccion(value);
+      case "address":
+        return validateAddress(value);
       case "phoneNumber":
         return validatePhoneNumber(value);
       case "description":
@@ -106,7 +106,7 @@ const RegisterWorkerFinal = () => {
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        setErrors({ general: "Error al obtener las categorías de trabajo" });
+        setErrors({ general: "Error fetching job categories" });
       }
     };
 
@@ -143,18 +143,18 @@ const RegisterWorkerFinal = () => {
       });
   
       if (response.ok) {
-        toast.success("¡Registro exitoso!", { position: "top-right" });
+        toast.success("Registration successful!", { position: "top-right" });
         setSuccess(true);
         handleLogout();
         navigate("/login");
       } else {
         const errorData = await response.json();
         setErrors({ general: errorData.message });
-        toast.error("Error en el registro", { position: "top-right" });
+        toast.error("Registration error", { position: "top-right" });
       }
     } catch (error) {
-      setErrors({ general: "Error al registrar el trabajador." });
-      toast.error("Error al registrar el trabajador.", { position: "top-right" });
+      setErrors({ general: "Error registering the worker." });
+      toast.error("Error registering the worker.", { position: "top-right" });
     }
   };
 
@@ -165,9 +165,9 @@ const RegisterWorkerFinal = () => {
           <>
             <InputField label="DNI" name="dni" value={formData.dni} onChange={handleChange("dni")} error={errors.dni} touched={touchedFields.dni} />
             <Form.Group controlId="jobId" className="mt-3">
-              <Form.Label>Selecciona un Trabajo</Form.Label>
+              <Form.Label>Select a Job</Form.Label>
               <Form.Control as="select" name="jobId" value={formData.jobId} onChange={handleChange("jobId")}>
-                <option value="">Selecciona una opción</option>
+                <option value="">Select an option</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
                     {category.title}
@@ -176,26 +176,26 @@ const RegisterWorkerFinal = () => {
               </Form.Control>
               {errors.jobId && touchedFields.jobId && <p className="pt-2 text-danger">{errors.jobId}</p>}
             </Form.Group>
-            <InputField label="Dirección" name="direccion" value={formData.direccion} onChange={handleChange("direccion")} error={errors.direccion} touched={touchedFields.direccion} />
+            <InputField label="Address" name="address" value={formData.address} onChange={handleChange("address")} error={errors.address} touched={touchedFields.address} />
             <InputField label="Phone Number" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange("phoneNumber")} error={errors.phoneNumber} touched={touchedFields.phoneNumber} />
           </>
         );
       case 2:
         return (
           <>
-            <InputField label="Descripción" name="description" value={formData.description} onChange={handleChange("description")} error={errors.description} touched={touchedFields.description} />
+            <InputField label="Description" name="description" value={formData.description} onChange={handleChange("description")} error={errors.description} touched={touchedFields.description} />
           </>
         );
       case 3:
         const selectedCategory = categories.find((cat) => cat.id === formData.jobId)?.title || "N/A";
         return (
           <div className="review-step-container">
-            <h4 className="text-center">Revisa tu información</h4>
+            <h4 className="text-center">Review Your Information</h4>
             <p><strong>DNI:</strong> {formData.dni}</p>
-            <p><strong>Trabajo:</strong> {selectedCategory}</p>
-            <p><strong>Dirección:</strong> {formData.direccion}</p>
-            <p><strong>Número de Teléfono:</strong> {formData.phoneNumber}</p>
-            <p><strong>Descripción:</strong> {formData.description}</p>
+            <p><strong>Job:</strong> {selectedCategory}</p>
+            <p><strong>Address:</strong> {formData.address}</p>
+            <p><strong>Phone Number:</strong> {formData.phoneNumber}</p>
+            <p><strong>Description:</strong> {formData.description}</p>
           </div>
         );
       default:
@@ -208,19 +208,19 @@ const RegisterWorkerFinal = () => {
       <Row>
         <Col xs={12} md={8} lg={10} className={`register-col ${theme === "dark" ? "register-col-dark" : ""}`}>
           <Form onSubmit={step === 3 ? handleSubmit : handleNext}>
-            <h3>Registro de Trabajador</h3>
+            <h3>Worker Registration</h3>
             {errors.general && <Alert variant="danger">{errors.general}</Alert>}
-            {success && <Alert variant="success">¡Registro exitoso!</Alert>}
+            {success && <Alert variant="success">Registration successful!</Alert>}
             <ProgressBar now={(step / 3) * 100} />
             {renderStep()}
             <div className="button-container d-flex justify-content-between">
-              <Button variant="danger" onClick={handleCancel}>Cancelar</Button>
+              <Button variant="danger" onClick={handleCancel}>Cancel</Button>
               <div>
-                {step > 1 && <Button variant="secondary" onClick={handleBack}>Atrás</Button>}
+                {step > 1 && <Button variant="secondary" onClick={handleBack}>Back</Button>}
                 {step < 3 ? (
-                  <Button variant="primary" type="submit" disabled={!canProceed && step < 3}>Continuar</Button>
+                  <Button variant="primary" type="submit" disabled={!canProceed && step < 3}>Next</Button>
                 ) : (
-                  <Button variant="success" type="submit" disabled={!canProceed && step < 3}>Registrarse</Button>
+                  <Button variant="success" type="submit" disabled={!canProceed && step < 3}>Register</Button>
                 )}
               </div>
             </div>
