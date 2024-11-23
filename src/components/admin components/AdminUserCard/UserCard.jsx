@@ -14,9 +14,9 @@ const UserCard = ({
 }) => {
   const handleDeleteClick = () => {
     AdminConfirmationAlert({
-      title: "Confirmar eliminación",
-      text: "¿Estás seguro de que deseas eliminar este usuario?",
-      onConfirm: onDelete, // Ejecuta la acción de eliminar solo si se confirma
+      title: "Confirm deletion",
+      text: "Are you sure you want to delete this user?",
+      onConfirm: onDelete, // Executes the delete action only if confirmed
     });
   };
 
@@ -29,13 +29,13 @@ const UserCard = ({
       </div>
       <div className="d-flex">
         <Button variant="outline-light" className="mx-2" onClick={onEdit}>
-          Editar
+          Edit
         </Button>
         <Button variant="outline-light" className="mx-2" onClick={onBecomeWorker}>
-          Hacer Trabajador
+          Make Worker
         </Button>
         <Button variant="outline-danger" className="mx-2" onClick={handleDeleteClick}>
-          Eliminar
+          Delete
         </Button>
       </div>
     </Card>

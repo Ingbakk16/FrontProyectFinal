@@ -97,7 +97,7 @@ const WorkerForm = () => {
                   <Form.Control
                     as="textarea"
                     rows={3}
-                    placeholder="Breve descripción"
+                    placeholder="Brief description"
                     name="description"
                     value={worker.description}
                     onChange={handleChange}
@@ -111,7 +111,7 @@ const WorkerForm = () => {
                   <Form.Label>Phone Number</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Número de Teléfono"
+                    placeholder="Phone number"
                     name="phoneNumber"
                     value={worker.phoneNumber}
                     onChange={handleChange}
@@ -124,10 +124,10 @@ const WorkerForm = () => {
             <Row className="mt-3">
               <Col md={6}>
                 <Form.Group controlId="workerDireccion">
-                  <Form.Label>Dress</Form.Label>
+                  <Form.Label>Address</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Dirección"
+                    placeholder="Address"
                     name="direccion"
                     value={worker.direccion}
                     onChange={handleChange}

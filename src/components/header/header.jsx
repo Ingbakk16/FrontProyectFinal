@@ -182,8 +182,8 @@ const Header = ({ setSearchTerm }) => {
                   ) : (
                     <li><a onClick={BecomeWorkerHandler}>Become a Worker</a></li>
                   )}
-                  <li><a onClick={EditHandler}>Edit</a></li>
-                  <li><a onClick={SavedWorkerHandler}>Favourite workers</a></li>
+                  <li><a onClick={EditHandler}>Edit User Profile</a></li>
+                  <li><a onClick={SavedWorkerHandler}>Favourite Workers</a></li>
                 </ul>
               </div>
             </Collapse>

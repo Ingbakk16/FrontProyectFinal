@@ -44,9 +44,9 @@ const DeleteReview = () => {
 
   const confirmAndDeleteReview = (reviewId) => {
     AdminConfirmationAlert({
-      title: "¿Confirmar eliminación?",
-      text: "Esta acción eliminará la reseña permanentemente.",
-      onConfirm: () => handleDeleteReview(reviewId), // Ejecuta la eliminación solo si el usuario confirma
+      title: "¿confirm delete?",
+      text: "This action will delete the review permanently.",
+      onConfirm: () => handleDeleteReview(reviewId), 
     });
   };
 
@@ -90,7 +90,7 @@ const DeleteReview = () => {
           
           <Col md={10} className="p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <h2 className={theme === 'dark' ? 'text-light' : 'text-dark'}>Administrar Reseñas</h2>
+              <h2 className={theme === 'dark' ? 'text-light' : 'text-dark'}>Edit Review's</h2>
               <Button variant="secondary" onClick={handleBack}>Back</Button>
             </div>
             
@@ -102,14 +102,14 @@ const DeleteReview = () => {
                   {reviews.map((review) => (
                     <Col md={12} className="mb-3" key={review.id}>
                       <div className={`review-card ${theme === 'dark' ? 'review-card-dark' : 'review-card-light'}`}>
-                        <p><strong>Usuario:</strong> {review.ratedByUserId}</p>
-                        <p><strong>Reseña:</strong> {review.comment}</p>
+                        <p><strong>User:</strong> {review.ratedByUserId}</p>
+                        <p><strong>Review:</strong> {review.comment}</p>
                         <p><strong>Rating:</strong> {review.rating}</p>
                         <Button
                           variant="danger"
-                          onClick={() => confirmAndDeleteReview(review.id)} // Llama a la función de confirmación
+                          onClick={() => confirmAndDeleteReview(review.id)} 
                         >
-                          Eliminar Reseña
+                          Delete Review
                         </Button>
                       </div>
                     </Col>

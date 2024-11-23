@@ -6,16 +6,16 @@ import Footer from "../footer/footer";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
 import { ThemeContext } from "../services/ThemeContext/Theme.context";
 import { useNavigate, useLocation } from "react-router-dom";
-import './mainPage.css';
+import "./mainPage.css";
 
 const MainPage = () => {
   const [workers, setWorkers] = useState([]);
   const { token } = useContext(AuthenticationContext);
   const { theme } = useContext(ThemeContext);
-  const [favorites, setFavorites] = useState([]); 
-  const navigate = useNavigate(); 
+  const [favorites, setFavorites] = useState([]);
+  const navigate = useNavigate();
   const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const params = new URLSearchParams(location.search);
   const jobId = params.get("category");
@@ -31,11 +31,11 @@ const MainPage = () => {
       : [...favorites, workerId];
 
     setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); 
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
   const handleWorkerClick = (workerId) => {
-    navigate(`/workerProfile/${workerId}`); 
+    navigate(`/workerProfile/${workerId}`);
   };
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const MainPage = () => {
         const response = await fetch(url, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
@@ -71,13 +71,18 @@ const MainPage = () => {
     fetchWorkers();
   }, [token, jobId]);
 
-  const filteredWorkers = workers.filter(worker =>
-    worker.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    worker.user?.lastname?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredWorkers = workers.filter(
+    (worker) =>
+      worker.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      worker.user?.lastname?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className={`page-container ${theme === 'dark' ? 'main-dark' : 'main-light'}`}>
+    <div
+      className={`page-container ${
+        theme === "dark" ? "main-dark" : "main-light"
+      }`}
+    >
       <Header setSearchTerm={setSearchTerm} />
       <div className="content">
         <Container>
@@ -86,11 +91,13 @@ const MainPage = () => {
             {filteredWorkers.map((worker, index) => (
               <Col key={index} md={6} className="mb-4">
                 <WorkerCard
-                  id={worker.id} 
-                  name={worker.user?.name || "Nombre no disponible"}
-                  lastname={worker.user?.lastname || "Apellido no disponible"}
-                  description={worker.description || "Sin descripción"}
-                  profession={worker.jobTitles?.join(", ") || "Profesión no disponible"}
+                  id={worker.id}
+                  name={worker.user?.name || "Name not available"}
+                  lastname={worker.user?.lastname || "Last name not available"}
+                  description={worker.description || "No description"}
+                  profession={
+                    worker.jobTitles?.join(", ") || "Profession not available"
+                  }
                   rating={worker.rating || 0}
                   isFavorite={favorites.includes(worker.id)}
                   toggleFavorite={() => toggleFavorite(worker.id)}

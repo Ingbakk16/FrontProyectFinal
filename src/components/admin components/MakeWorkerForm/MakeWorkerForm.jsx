@@ -142,7 +142,7 @@ const MakeWorkerForm = ({
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.description ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.description && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.description && <small className="text-danger">This field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
@@ -151,51 +151,51 @@ const MakeWorkerForm = ({
                   <Form.Control
                     type="text"
                     name="dni"
-                    placeholder="Ingresa el DNI"
+                    placeholder="SUbmit your DNI"
                     value={formData.dni}
                     onChange={handleChange}
                     onBlur={() => handleBlur("dni")}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.dni ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.dni && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.dni && <small className="text-danger">This field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerPhoneNumber">
-                  <Form.Label>Número de Teléfono</Form.Label>
+                  <Form.Label>Phone number</Form.Label>
                   <Form.Control
                     type="text"
                     name="phoneNumber"
-                    placeholder="Ingresa el número de teléfono"
+                    placeholder="Submit your phone number"
                     value={formData.phoneNumber}
                     onChange={handleChange}
                     onBlur={() => handleBlur("phoneNumber")}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.phoneNumber ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.phoneNumber && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.phoneNumber && <small className="text-danger">This field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerDireccion">
-                  <Form.Label>Dirección</Form.Label>
+                  <Form.Label>Direction</Form.Label>
                   <Form.Control
                     type="text"
                     name="direccion"
-                    placeholder="Ingresa la Dirección"
+                    placeholder="Submit your direction"
                     value={formData.direccion}
                     onChange={handleChange}
                     onBlur={() => handleBlur("direccion")}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.direccion ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.direccion && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.direccion && <small className="text-danger">This field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="workerJobId">
-                  <Form.Label>Trabajo</Form.Label>
+                  <Form.Label>Work</Form.Label>
                   <Form.Control
                     as="select"
                     name="jobId"
@@ -212,16 +212,16 @@ const MakeWorkerForm = ({
                       </option>
                     ))}
                   </Form.Control>
-                  {errors.jobId && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.jobId && <small className="text-danger">This field is mandatory.</small>}
                 </Form.Group>
               </Col>
             </Row>
             <div className="text-center">
               <Button type="submit" className="btn-save me-2">
-                Guardar
+                Save
               </Button>
               <Button type="button" className="btn-cancel" onClick={handleCancel}>
-                Cancelar
+                Cancel
               </Button>
             </div>
           </Form>

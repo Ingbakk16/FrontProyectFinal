@@ -6,7 +6,7 @@ import SidebarButton from '../sidebar button/sidebarMenu';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../services/ThemeContext/Theme.context';
 import { AuthenticationContext } from '../../services/authenticationContext/authentication.context';
-import AdminConfirmationAlert from '../../ConfirmationAlert/ConfirmationAlert'; // Asegúrate de que esta ruta sea correcta
+import AdminConfirmationAlert from '../../ConfirmationAlert/ConfirmationAlert'; 
 import './CategoryForm.css';
 
 const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRequired: '' } }) => {
@@ -27,9 +27,9 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
 
   const confirmAndSubmit = () => {
     AdminConfirmationAlert({
-      title: "¿Confirmar creación de categoría?",
-      text: "Esta acción creará una nueva categoría.",
-      onConfirm: handleSubmit, // Ejecuta handleSubmit si el usuario confirma
+      title: "¿Confirm category creation?",
+      text: "this action is gonna create a new category.",
+      onConfirm: handleSubmit, 
     });
   };
 
@@ -66,22 +66,22 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
           <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
-          <h2 className="text-center mb-4">Formulario de Categoría</h2>
+          <h2 className="text-center mb-4">Category Form</h2>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              confirmAndSubmit(); // Llama a la función de confirmación
+              confirmAndSubmit(); 
             }}
             className={`edit-category-form ${theme === "dark" ? "edit-category-form-dark" : ""}`}
           >
             <Row>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="categoryTitle">
-                  <Form.Label>Título de la Categoría</Form.Label>
+                  <Form.Label>Category Title</Form.Label>
                   <Form.Control
                     type="text"
                     name="title"
-                    placeholder="Ingresa el título de la categoría"
+                    placeholder="Enter the category title"
                     value={formData.title}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
@@ -91,11 +91,11 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="categoryDescription">
-                  <Form.Label>Descripción</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Form.Control
                     as="textarea"
                     name="description"
-                    placeholder="Ingresa la descripción de la categoría"
+                    placeholder="Enter the category description"
                     value={formData.description}
                     onChange={handleChange}
                     rows={3}
@@ -106,11 +106,11 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
               </Col>
               <Col md={6} className="mb-3">
                 <Form.Group controlId="categorySkillsRequired">
-                  <Form.Label>Habilidades Requeridas</Form.Label>
+                  <Form.Label>skills required</Form.Label>
                   <Form.Control
                     type="text"
                     name="skillsRequired"
-                    placeholder="Especifica las habilidades requeridas"
+                    placeholder="Specify the skills required"
                     value={formData.skillsRequired}
                     onChange={handleChange}
                     className={theme === "dark" ? "form-control-dark" : ""}
@@ -120,10 +120,10 @@ const CategoryForm = ({ initialCategory = { title: '', description: '', skillsRe
             </Row>
             <div className="text-center">
               <Button type="submit" className="btn-save me-2">
-                Guardar
+                Save
               </Button>
               <Button type="button" className="btn-cancel" onClick={handleCancel}>
-                Cancelar
+                Cancel
               </Button>
             </div>
           </Form>

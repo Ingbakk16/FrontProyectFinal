@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../services/ThemeContext/Theme.context";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import './register.css';
+import "./register.css";
 
 const Register = () => {
   const { theme } = useContext(ThemeContext);
@@ -31,22 +31,27 @@ const Register = () => {
   const PASSWORD_MAX_LENGTH = 20;
 
   const validateUsername = (value) => {
-    if (!value) return "El nombre de usuario es obligatorio";
-    if (value.length < USERNAME_MIN_LENGTH) return `Debe tener al menos ${USERNAME_MIN_LENGTH} caracteres`;
-    if (value.length > USERNAME_MAX_LENGTH) return `No puede superar ${USERNAME_MAX_LENGTH} caracteres`;
+    if (!value) return "The user name is mandatory";
+    if (value.length < USERNAME_MIN_LENGTH)
+      return `need at least ${USERNAME_MIN_LENGTH} characters`;
+    if (value.length > USERNAME_MAX_LENGTH)
+      return `can't overcome ${USERNAME_MAX_LENGTH} characters`;
     return "";
   };
 
   const validatePassword = (value) => {
-    if (!value) return "La contraseña es obligatoria";
-    if (value.length < PASSWORD_MIN_LENGTH) return `Debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres`;
-    if (value.length > PASSWORD_MAX_LENGTH) return `No puede superar ${PASSWORD_MAX_LENGTH} caracteres`;
+    if (!value) return "The password is mandatory";
+    if (value.length < PASSWORD_MIN_LENGTH)
+      return `need at least ${PASSWORD_MIN_LENGTH} characters`;
+    if (value.length > PASSWORD_MAX_LENGTH)
+      return `can't overcome ${PASSWORD_MAX_LENGTH} characters`;
     return "";
   };
 
-  const validateEmail = (value) => (!value ? "El email es obligatorio" : "");
-  const validateName = (value) => (!value ? "El nombre es obligatorio" : "");
-  const validateLastname = (value) => (!value ? "El apellido es obligatorio" : "");
+  const validateEmail = (value) => (!value ? "The Email is mandatory" : "");
+  const validateName = (value) => (!value ? "The Name is mandatory" : "");
+  const validateLastname = (value) =>
+    !value ? "The Last Name is mandatory" : "";
 
   const handleBlur = (field, validator) => {
     const value = field.current.value;
@@ -75,42 +80,54 @@ const Register = () => {
       });
 
       if (response.ok) {
-        toast.success("Registro exitoso! Redirigiendo al login...");
+        toast.success("Successful signup! Redirecting to login...");
         setTimeout(() => navigate("/login"), 1500);
       } else {
-        throw new Error("Error en el registro");
+        throw new Error("Error in the signup");
       }
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Hubo un error al registrarse. Por favor, intente nuevamente.");
+      toast.error(
+        "Hubo un error al registrarse. Por favor, intente nuevamente."
+      );
     }
   };
 
   return (
-    <div className={`register-background ${theme === "dark" ? "dark" : "default"}`}>
+    <div
+      className={`register-background ${theme === "dark" ? "dark" : "default"}`}
+    >
       <Card className="register-card">
         <Card.Body>
-          <h2 className="text-center mb-4">Registro</h2>
-          <p className="text-center mb-4">Regístrese para formar parte de esta gran familia!</p>
+          <h2 className="text-center mb-4">SignUp</h2>
+          <p className="text-center mb-4">
+            Register to be part of this great family!
+          </p>
           <Form onSubmit={submitHandler}>
             <FormGroup className="mb-3">
               <Form.Control
                 ref={usernameRef}
-                name="username"
-                className={`${errors.username ? "border-danger" : ""} ${theme === "dark" ? "input-dark" : "input-light"}`}
+                name="user name"
+                className={`${errors.username ? "border-danger" : ""} ${
+                  theme === "dark" ? "input-dark" : "input-light"
+                }`}
                 type="text"
-                placeholder="Nombre de usuario"
+                placeholder="User name"
                 onBlur={() => handleBlur(usernameRef, validateUsername)}
               />
-              {errors.username && <p className="pt-2 text-danger">{errors.username}</p>}
+              {errors.username && (
+                <p className="pt-2 text-danger">{errors.username}</p>
+              )}
             </FormGroup>
             <FormGroup className="mb-3">
               <Form.Control
                 ref={nameRef}
                 name="name"
-                className={`${errors.name ? "border-danger" : ""} ${theme === "dark" ? "input-dark" : "input-light"}`}
+                className={`${errors.name ? "border-danger" : ""} ${
+                  theme === "dark" ? "input-dark" : "input-light"
+                }`}
                 type="text"
-                placeholder="Nombre"
+                placeholder="Name"
                 onBlur={() => handleBlur(nameRef, validateName)}
               />
               {errors.name && <p className="pt-2 text-danger">{errors.name}</p>}
@@ -119,39 +136,58 @@ const Register = () => {
               <Form.Control
                 ref={lastnameRef}
                 name="lastname"
-                className={`${errors.lastname ? "border-danger" : ""} ${theme === "dark" ? "input-dark" : "input-light"}`}
+                className={`${errors.lastname ? "border-danger" : ""} ${
+                  theme === "dark" ? "input-dark" : "input-light"
+                }`}
                 type="text"
-                placeholder="Apellido"
+                placeholder="Last Name"
                 onBlur={() => handleBlur(lastnameRef, validateLastname)}
               />
-              {errors.lastname && <p className="pt-2 text-danger">{errors.lastname}</p>}
+              {errors.lastname && (
+                <p className="pt-2 text-danger">{errors.lastname}</p>
+              )}
             </FormGroup>
             <FormGroup className="mb-3">
               <Form.Control
                 ref={emailRef}
                 name="email"
-                className={`${errors.email ? "border-danger" : ""} ${theme === "dark" ? "input-dark" : "input-light"}`}
+                className={`${errors.email ? "border-danger" : ""} ${
+                  theme === "dark" ? "input-dark" : "input-light"
+                }`}
                 type="email"
                 placeholder="E-mail"
                 onBlur={() => handleBlur(emailRef, validateEmail)}
               />
-              {errors.email && <p className="pt-2 text-danger">{errors.email}</p>}
+              {errors.email && (
+                <p className="pt-2 text-danger">{errors.email}</p>
+              )}
             </FormGroup>
             <FormGroup className="mb-3">
               <Form.Control
                 ref={passwordRef}
                 name="password"
-                className={`${errors.password ? "border-danger" : ""} ${theme === "dark" ? "input-dark" : "input-light"}`}
+                className={`${errors.password ? "border-danger" : ""} ${
+                  theme === "dark" ? "input-dark" : "input-light"
+                }`}
                 type="password"
-                placeholder="Contraseña"
+                placeholder="Password"
                 onBlur={() => handleBlur(passwordRef, validatePassword)}
               />
-              {errors.password && <p className="pt-2 text-danger">{errors.password}</p>}
+              {errors.password && (
+                <p className="pt-2 text-danger">{errors.password}</p>
+              )}
             </FormGroup>
-            <Button variant="primary" type="submit" className="w-100" disabled={!isFormValid}>
-              Regístrame
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-100"
+              disabled={!isFormValid}
+            >
+              Continue
             </Button>
-            <p className="text-center mt-3">¿Tiene una cuenta? <a href="/login">Inicie sesión aquí</a></p>
+            <p className="text-center mt-3">
+              Already have an account? <a href="/login">Log in here</a>
+            </p>
           </Form>
         </Card.Body>
       </Card>

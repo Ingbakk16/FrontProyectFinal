@@ -80,12 +80,12 @@ const Profile = () => {
 
   const handleSaveClick = () => {
     Swal.fire({
-      title: "Confirmar actualización",
-      text: "¿Deseas guardar los cambios?",
+      title: "Confirmation",
+      text: "¿are you sure?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Sí, guardar",
-      cancelButtonText: "Cancelar",
+      confirmButtonText: "Yes, save",
+      cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
         handleSaveProfile();

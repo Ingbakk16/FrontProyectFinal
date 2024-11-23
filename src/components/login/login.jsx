@@ -11,7 +11,6 @@ const Login = () => {
   const [loginError, setLoginError] = useState(""); 
   const navigate = useNavigate();
 
-  // Cambiamos a useRef para los valores de usuario y contraseña
   const usernameRef = useRef("");
   const passwordRef = useRef("");
 
@@ -25,15 +24,15 @@ const Login = () => {
   const PASSWORD_MIN_LENGTH = 8;
 
   const validateUsername = (value) => {
-    if (!value) return "El nombre de usuario es obligatorio";
-    if (value.length < USERNAME_MIN_LENGTH) return `Debe tener entre ${USERNAME_MIN_LENGTH} y ${USERNAME_MAX_LENGTH} caracteres`;
-    if (value.length > USERNAME_MAX_LENGTH) return `Debe tener entre ${USERNAME_MIN_LENGTH} y ${USERNAME_MAX_LENGTH} caracteres`;
+    if (!value) return "Username is required";
+    if (value.length < USERNAME_MIN_LENGTH) return `Must be between ${USERNAME_MIN_LENGTH} and ${USERNAME_MAX_LENGTH} characters`;
+    if (value.length > USERNAME_MAX_LENGTH) return `Must be between ${USERNAME_MIN_LENGTH} and ${USERNAME_MAX_LENGTH} characters`;
     return "";
   };
 
   const validatePassword = (value) => {
-    if (!value) return "La contraseña es obligatoria";
-    if (value.length < PASSWORD_MIN_LENGTH) return `Debe tener al menos ${PASSWORD_MIN_LENGTH} caracteres`;
+    if (!value) return "Password is required";
+    if (value.length < PASSWORD_MIN_LENGTH) return `Must be at least ${PASSWORD_MIN_LENGTH} characters`;
     return "";
   };
 
@@ -55,7 +54,7 @@ const Login = () => {
 
     if (usernameError || passwordError) {
       setErrors({ username: usernameError, password: passwordError });
-      return; // No continuar si hay errores
+      return; 
     }
 
     try {
@@ -79,11 +78,11 @@ const Login = () => {
       
         setTimeout(() => navigate("/mainPage"), 100);
       } else {
-        setLoginError("Usuario o contraseña incorrectos.");
+        setLoginError("Incorrect username or password.");
       }
     } catch (error) {
-      console.error("Error al intentar iniciar sesión:", error);
-      setLoginError("Hubo un problema con el servidor. Intenta de nuevo.");
+      console.error("Error trying to log in:", error);
+      setLoginError("There was a server issue. Please try again.");
     }
   };
 
@@ -91,8 +90,8 @@ const Login = () => {
     <div className={`principal d-flex justify-content-center align-items-center vh-100 ${theme === "dark" ? "theme-dark" : "theme-default"}`}>
       <Card className="p-4 shadow" style={{ width: '100%', maxWidth: '400px' }}> 
         <Card.Body>
-          <h2 className="text-center mb-4">Iniciar Sesión</h2>
-          <p className="text-center mb-4">Inicie sesión para disfrutar de todos nuestros servicios</p>
+          <h2 className="text-center mb-4">Login</h2>
+          <p className="text-center mb-4">Log in to enjoy all our services</p>
           <Form onSubmit={submitHandler}>
             {loginError && <p className="text-danger text-center">{loginError}</p>} 
             <FormGroup className="mb-3">
@@ -101,7 +100,7 @@ const Login = () => {
                 ref={usernameRef} 
                 onChange={changeUsernameHandler} 
                 type="text"
-                placeholder="Nombre de usuario"
+                placeholder="Username"
                 style={{
                   backgroundColor: theme === "dark" ? "#2B2B2B" : "#ffffff",
                   color: theme === "dark" ? "#ffffff" : "#000000",
@@ -115,7 +114,7 @@ const Login = () => {
                 ref={passwordRef}
                 onChange={changePasswordHandler} 
                 type="password"
-                placeholder="Contraseña"
+                placeholder="Password"
                 style={{
                   backgroundColor: theme === "dark" ? "#2B2B2B" : "#ffffff",
                   color: theme === "dark" ? "#ffffff" : "#000000",
@@ -124,10 +123,10 @@ const Login = () => {
               {errors.password && <p className="pt-2 text-danger">{errors.password}</p>}
             </FormGroup>
             <Button variant="primary" type="submit" className="w-100">
-              Iniciar sesión
+              Log in
             </Button>
             <p className="text-center mt-3">
-              ¿No tiene una cuenta? <a href="/register">Regístrese aquí</a>
+              Don’t have an account? <a href="/register">Sign up here</a>
             </p>
           </Form>
         </Card.Body>
