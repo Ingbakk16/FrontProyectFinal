@@ -55,8 +55,8 @@ const AdminWorkersPage = () => {
 
   const handleDeleteWorker = (userId) => {
     AdminConfirmationAlert({
-      title: "¿Estás seguro de que deseas eliminar este trabajador?",
-      text: "Esta acción no se puede deshacer.",
+      title: "¿Are you sure you want to delete this worker?",
+      text: "This action cannot be undone.",
       onConfirm: async () => {
         try {
           const response = await fetch(
@@ -77,7 +77,6 @@ const AdminWorkersPage = () => {
           setWorkers((prevWorkers) =>
             prevWorkers.filter((worker) => worker.userId !== userId)
           );
-          console.log(`Trabajador ${userId} eliminado exitosamente`);
         } catch (error) {
           console.error("Error al intentar eliminar el trabajador:", error);
         }
