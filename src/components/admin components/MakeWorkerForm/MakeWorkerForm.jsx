@@ -15,7 +15,7 @@ const MakeWorkerForm = ({
     dni: "",
     direccion: "",
     jobId: "",
-    imageUrl: "", // valor predeterminado vacío
+    imageUrl: "", 
     phoneNumber: "",
   },
 }) => {
@@ -24,7 +24,7 @@ const MakeWorkerForm = ({
   const { id: userId } = useParams();
   const navigate = useNavigate();
 
-  // useState para cada campo del formulario
+ 
   const [formData, setFormData] = useState(initialWorker);
   const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({
@@ -72,8 +72,8 @@ const MakeWorkerForm = ({
 
   const handleConfirmSubmit = () => {
     AdminConfirmationAlert({
-      title: "Confirmar creación de trabajador",
-      text: "¿Estás seguro de que deseas crear o actualizar este perfil de trabajador?",
+      title: "Confirm worker creation",
+      text: "¿Are you sure you want to create or update this worker profile?",
       onConfirm: handleSubmit,
     });
   };
@@ -81,7 +81,7 @@ const MakeWorkerForm = ({
   const handleSubmit = async () => {
     const payload = {
       ...formData,
-      imageUrl: formData.imageUrl || "", // asegura que imageUrl sea vacío si no se especifica
+      imageUrl: formData.imageUrl || "", 
     };
 
     try {
@@ -119,7 +119,7 @@ const MakeWorkerForm = ({
           <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
-          <h2 className="text-center mb-4">Formulario de Trabajador</h2>
+          <h2 className="text-center mb-4">Worker Form</h2>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
@@ -151,7 +151,7 @@ const MakeWorkerForm = ({
                   <Form.Control
                     type="text"
                     name="dni"
-                    placeholder="SUbmit your DNI"
+                    placeholder="Submit your DNI"
                     value={formData.dni}
                     onChange={handleChange}
                     onBlur={() => handleBlur("dni")}
@@ -205,7 +205,7 @@ const MakeWorkerForm = ({
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.jobId ? "border-danger" : ""}`}
                     required
                   >
-                    <option value="">Selecciona un trabajo</option>
+                    <option value="">Select a job</option>
                     {categories.map((category) => (
                       <option key={category.id} value={category.id}>
                         {category.title}

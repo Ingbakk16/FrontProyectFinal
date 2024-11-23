@@ -110,7 +110,7 @@ const AdminWorkersPage = () => {
           <Col md={10} className="p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2 className={theme === "dark" ? "text-light" : "text-dark"}>
-                Administrar Trabajadores
+              Manage Workers
               </h2>
             </div>
 

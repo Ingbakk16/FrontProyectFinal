@@ -16,7 +16,7 @@ const UserCard = ({
     AdminConfirmationAlert({
       title: "Confirm deletion",
       text: "Are you sure you want to delete this user?",
-      onConfirm: onDelete, // Executes the delete action only if confirmed
+      onConfirm: onDelete, 
     });
   };
 
