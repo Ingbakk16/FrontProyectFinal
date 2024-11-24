@@ -37,6 +37,7 @@ const AdminWorkersPage = () => {
           workerId: worker.id,
           userId: worker.user.id,
         }));
+        
 
         setWorkers(workersWithIds);
       } catch (error) {
@@ -45,9 +46,12 @@ const AdminWorkersPage = () => {
         setLoading(false);
       }
     };
+    
 
     fetchWorkers();
   }, [token]);
+
+  
 
   const handleEditWorker = (userId) => {
     navigate(`/admin/adminWorkersEdit/${userId}`);
