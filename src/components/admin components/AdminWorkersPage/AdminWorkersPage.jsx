@@ -59,8 +59,8 @@ const AdminWorkersPage = () => {
 
   const handleDeleteWorker = (userId) => {
     AdminConfirmationAlert({
-      title: "¿Estás seguro de que deseas eliminar este trabajador?",
-      text: "Esta acción no se puede deshacer.",
+      title: "¿Are you sure you want to delete this worker?",
+      text: "This action cannot be undone.",
       onConfirm: async () => {
         try {
           const response = await fetch(
@@ -81,7 +81,6 @@ const AdminWorkersPage = () => {
           setWorkers((prevWorkers) =>
             prevWorkers.filter((worker) => worker.userId !== userId)
           );
-          console.log(`Trabajador ${userId} eliminado exitosamente`);
         } catch (error) {
           console.error("Error al intentar eliminar el trabajador:", error);
         }
@@ -115,7 +114,7 @@ const AdminWorkersPage = () => {
           <Col md={10} className="p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2 className={theme === "dark" ? "text-light" : "text-dark"}>
-                Administrar Trabajadores
+              Manage Workers
               </h2>
             </div>
 

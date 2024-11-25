@@ -64,7 +64,7 @@ const MainPage = () => {
         const data = await response.json();
         setWorkers(data);
       } catch (error) {
-        console.error("Error al obtener los trabajadores:", error);
+        console.error("Error fetching workers:", error);
       }
     };
 
@@ -93,11 +93,11 @@ const MainPage = () => {
                 <Col key={index} md={6} className="mb-4">
                   <WorkerCard
                     id={worker.id}
-                    name={worker.user?.name || "Nombre no disponible"}
-                    lastname={worker.user?.lastname || "Apellido no disponible"}
-                    description={worker.description || "Sin descripción"}
+                    name={worker.user?.name || "Name not available"}
+                    lastname={worker.user?.lastname || "Last name not available"}
+                    description={worker.description || "No description"}
                     profession={
-                      worker.jobTitles?.join(", ") || "Profesión no disponible"
+                      worker.jobTitles?.join(", ") || "Profession not available"
                     }
                     rating={worker.rating || 0}
                     isFavorite={favorites.includes(worker.id)}
@@ -108,16 +108,16 @@ const MainPage = () => {
               ))
             ) : (
               <Col className="mt-4">
-              <div className="centered-text-button">
-                <p>There are no workers in this category yet.</p>
-                <button
-                  className="btn btn-primary mt-3"
-                  onClick={() => navigate('/mainPage')}
-                >
-                  Return to Main Page
-                </button>
-              </div>
-            </Col>
+                <div className="centered-text-button">
+                  <p>There are no workers in this category yet.</p>
+                  <button
+                    className="btn btn-primary mt-3"
+                    onClick={() => navigate("/mainPage")}
+                  >
+                    Return to Main Page
+                  </button>
+                </div>
+              </Col>
             )}
           </Row>
         </Container>

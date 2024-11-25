@@ -23,8 +23,8 @@ const AdminCategoriesPage = () => {
 
   const confirmDeleteCategory = (categoryId) => {
     AdminConfirmationAlert({
-      title: "¿Estás seguro de eliminar esta categoría?",
-      text: "Esta acción no se puede deshacer.",
+      title: "Are you sure you want to delete this category?",
+      text: "This action cannot be undone.",
       onConfirm: () => handleDeleteCategory(categoryId),
     });
   };
@@ -40,15 +40,14 @@ const AdminCategoriesPage = () => {
       });
 
       if (response.ok) {
-        console.log(`Categoría con ID ${categoryId} eliminada con éxito`);
         setCategories((prevCategories) =>
           prevCategories.filter((category) => category.id !== categoryId)
         );
       } else {
-        throw new Error("Error al eliminar la categoría");
+        throw new Error("Error deleting category");
       }
     } catch (error) {
-      console.error("Error al intentar eliminar la categoría:", error);
+      console.error("Error trying to delete the category:", error);
     }
   };
 
@@ -63,12 +62,12 @@ const AdminCategoriesPage = () => {
           },
         });
         if (!response.ok) {
-          throw new Error("Error al obtener las categorías");
+          throw new Error("Error fetching categories");
         }
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        console.error("Error al cargar las categorías:", error);
+        console.error("Error loading categories:", error);
       } finally {
         setLoading(false);
       }
@@ -87,17 +86,17 @@ const AdminCategoriesPage = () => {
           </Col>
           <Col md={10} className="p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <h2 className={theme === 'dark' ? 'text-light' : 'text-dark'}>Administrar Categorías</h2>
+              <h2 className={theme === 'dark' ? 'text-light' : 'text-dark'}>Manage Categories</h2>
               <Button
                 className={`add-category-button ${theme === 'dark' ? 'button-dark' : ''}`}
                 onClick={handleAddCategory}
               >
-                Añadir Categoría
+                Add Category
               </Button>
             </div>
             
             {loading ? (
-              <p>Cargando categorías...</p>
+              <p>Loading categories...</p>
             ) : (
               <Row>
                 {categories.map((category) => (

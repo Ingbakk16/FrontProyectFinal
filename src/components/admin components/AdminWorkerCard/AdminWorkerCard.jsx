@@ -22,11 +22,11 @@ const AdminWorkerCard = ({
       </div>
       <div className="d-flex">
         <Button variant="outline-light" className="mx-2" onClick={onEdit}>
-          Editar
+          Edit
         </Button>
         {showViewProfile && (
           <Button variant="outline-light" className="mx-2" onClick={onViewProfile}>
-            Ver Perfil
+            View Profile
           </Button>
         )}
         {showDeleteReviews && (
@@ -35,7 +35,7 @@ const AdminWorkerCard = ({
           </Button>
         )}
         <Button variant="outline-danger" className="mx-2" onClick={onDelete}>
-          Eliminar
+          Delete
         </Button>
       </div>
     </Card>

@@ -72,7 +72,7 @@ const FavoritesPage = () => {
       <Header />
       <div className="content">
         <Container>
-          <h1 className="text-center my-4">Trabajadores Favoritos</h1>
+          <h1 className="text-center my-4">Favourite workers</h1>
           <Row>
             {favoriteWorkers.length > 0 ? (
               favoriteWorkers.map((worker, index) => (
@@ -80,10 +80,10 @@ const FavoritesPage = () => {
                   <WorkerCard
                     id={worker.id}
                     name={worker.user?.name}
-                    lastname={worker.user?.lastname || "Apellido no disponible"}
-                    description={worker.description || "Sin descripción"}
+                    lastname={worker.user?.lastname || "LastName no available"}
+                    description={worker.description || "Descritpion no available"}
                     profession={
-                      worker.jobTitles?.join(", ") || "Profesión no disponible"
+                      worker.jobTitles?.join(", ") || "Profession no available"
                     }
                     rating={worker.rating || 0}
                     isFavorite={favorites.includes(worker.id)}
@@ -93,7 +93,7 @@ const FavoritesPage = () => {
                 </Col>
               ))
             ) : (
-              <p>No tienes trabajadores favoritos aún.</p>
+              <p>You don't have favorite workers yet...</p>
             )}
           </Row>
         </Container>

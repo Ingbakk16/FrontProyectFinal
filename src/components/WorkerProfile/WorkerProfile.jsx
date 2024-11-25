@@ -73,7 +73,7 @@ const WorkerProfile = () => {
                 const parsedItem = JSON.parse(item); // Parse each item
                 return parsedItem.imageUrl; // Extract imageUrl
               } catch (e) {
-                console.error("Error parsing image URL:", e);
+                
                 return null; // Skip invalid items
               }
             }).filter(Boolean) // Remove null values

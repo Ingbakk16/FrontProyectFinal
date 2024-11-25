@@ -22,13 +22,13 @@ const SidebarMenu = () => {
   return (
     <div className={`sidebar-container ${theme === 'dark' ? 'sidebar-container-dark' : ''}`}>
       <Button className={`sidebar-button ${theme === 'dark' ? 'sidebar-button-dark' : ''}`} onClick={handleEditUser}>
-        Editar usuario
+        Edit User
       </Button>
       <Button className={`sidebar-button ${theme === 'dark' ? 'sidebar-button-dark' : ''}`} onClick={handleEditCategory}>
-        Editar categoría
+        Edit Category
       </Button>
       <Button className={`sidebar-button ${theme === 'dark' ? 'sidebar-button-dark' : ''}`} onClick={handleEditWorker}>
-        Editar trabajador
+        Edit Worker
       </Button>
     </div>
   );

@@ -9,7 +9,7 @@ const CategoryCard = ({ categoryName, onEdit, onDelete }) => {
       </div>
       <div className="d-flex">
         <Button variant="outline-light" className="mx-2" onClick={onDelete}>
-          Borrar
+          Delete
         </Button>
       </div>
     </Card>

@@ -6,7 +6,7 @@ import Sidebar from "../sidebar button/sidebarMenu";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Asegúrate de la ruta correcta
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Ensure the correct path
 import "./CreateAdminForm.css";
 
 const CreateAdminForm = () => {
@@ -30,12 +30,11 @@ const CreateAdminForm = () => {
     });
   };
 
-  // Muestra la alerta de confirmación antes de guardar
   const handleConfirmSubmit = () => {
     AdminConfirmationAlert({
-      title: "Confirmar creación de administrador",
-      text: "¿Estás seguro de que deseas crear este administrador?",
-      onConfirm: handleSubmit, // Llama a handleSubmit si se confirma
+      title: "Confirm Admin Creation",
+      text: "Are you sure you want to create this admin?",
+      onConfirm: handleSubmit, 
     });
   };
 
@@ -51,11 +50,12 @@ const CreateAdminForm = () => {
       });
 
       if (response.ok) {
-        
         navigate(-1);
       } else {
+        throw new Error("Error creating the admin");
       }
     } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -75,15 +75,15 @@ const CreateAdminForm = () => {
         <Col md={10} className="p-4">
           <Form onSubmit={(e) => {
               e.preventDefault();
-              handleConfirmSubmit(); // Llama a la función de confirmación
+              handleConfirmSubmit(); 
             }}
             className={`create-admin-form ${theme === "dark" ? "form-dark" : ""}`}
           >
-            <h3>Crear Administrador</h3>
+            <h3>Create Admin</h3>
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Nombre de Usuario</Form.Label>
+                  <Form.Label>Username</Form.Label>
                   <Form.Control
                     type="text"
                     name="username"
@@ -96,7 +96,7 @@ const CreateAdminForm = () => {
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Nombre</Form.Label>
+                  <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
                     name="name"
@@ -112,7 +112,7 @@ const CreateAdminForm = () => {
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Apellido</Form.Label>
+                  <Form.Label>Last Name</Form.Label>
                   <Form.Control
                     type="text"
                     name="lastname"
@@ -141,7 +141,7 @@ const CreateAdminForm = () => {
             <Row>
               <Col md={12}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Contraseña</Form.Label>
+                  <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"
                     name="password"
@@ -155,8 +155,8 @@ const CreateAdminForm = () => {
             </Row>
 
             <div className="form-actions">
-              <Button type="submit" className="btn-save">Guardar</Button>
-              <Button type="button" className="btn-cancel" onClick={handleCancel}>Cancelar</Button>
+              <Button type="submit" className="btn-save">Save</Button>
+              <Button type="button" className="btn-cancel" onClick={handleCancel}>Cancel</Button>
             </div>
           </Form>
         </Col>

@@ -12,13 +12,13 @@ const SettingsPage = () => {
       <div className="header">
         <Header />
       </div>
-      <h2>Ajustes</h2>
+      <h2>Settings</h2>
       <div className="contenedor">
         <input type="checkbox" id="checkbox" onChange={toggleTheme} />
         <label htmlFor="checkbox" className="label"></label>
       </div>
       <span className="theme-label">
-        {theme === "dark" ? "Modo Oscuro" : "Modo Claro"}
+        {theme === "dark" ? "Dark mode" : "Light mode"}
       </span>
       <div className="footer">
         <Footer />

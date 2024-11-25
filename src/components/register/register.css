@@ -32,6 +32,7 @@
 /* tema oscuro */
 .register-background.dark {
   background-color: #1F1F1F;
+  height: 100ch
 }
 
 .input-dark {

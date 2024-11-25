@@ -54,7 +54,7 @@ const EditUserForm = () => {
       });
 
       if (response.ok) {
-        console.log("Usuario actualizado con éxito");
+        
         navigate("/Admin");
       } else {
         throw new Error("Error al actualizar el usuario");
@@ -66,8 +66,8 @@ const EditUserForm = () => {
 
   const handleConfirmSave = () => {
     AdminConfirmationAlert({
-      title: "¿Confirmar actualización?",
-      text: "Esta acción actualizará la información del usuario.",
+      title: "¿Confirm update?",
+      text: "This action will update the user's information.",
       onConfirm: handleSave,
     });
   };
@@ -96,7 +96,7 @@ const EditUserForm = () => {
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Nombre de Usuario</Form.Label>
+                  <Form.Label>User Name</Form.Label>
                   <Form.Control
                     type="text"
                     name="username"
@@ -104,27 +104,27 @@ const EditUserForm = () => {
                     onBlur={() => handleBlur(usernameRef, 'username')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.username ? 'border-danger' : ''}`}
                   />
-                  {errors.username && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.username && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Nombre</Form.Label>
+                  <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
-                    name="name"
+                    name="Name"
                     ref={nameRef}
                     onBlur={() => handleBlur(nameRef, 'name')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.name ? 'border-danger' : ''}`}
                   />
-                  {errors.name && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.name && <small className="text-danger">this field is mandatory.</small>}
                 </Form.Group>
               </Col>
             </Row>
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Apellido</Form.Label>
+                  <Form.Label>lastname</Form.Label>
                   <Form.Control
                     type="text"
                     name="lastname"
@@ -132,7 +132,7 @@ const EditUserForm = () => {
                     onBlur={() => handleBlur(lastnameRef, 'lastname')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.lastname ? 'border-danger' : ''}`}
                   />
-                  {errors.lastname && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.lastname && <small className="text-danger">This field is mandatory.</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -145,20 +145,20 @@ const EditUserForm = () => {
                     onBlur={() => handleBlur(emailRef, 'email')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.email ? 'border-danger' : ''}`}
                   />
-                  {errors.email && <small className="text-danger">Este campo es obligatorio.</small>}
+                  {errors.email && <small className="text-danger">This field is mandatory.</small>}
                 </Form.Group>
               </Col>
             </Row>
             <div className="form-actions">
               <Button type="submit" className="btn-save">
-                Guardar
+                save
               </Button>
               <Button
                 type="button"
                 className="btn-cancel"
                 onClick={handleCancel}
               >
-                Cancelar
+                Cancel
               </Button>
             </div>
           </Form>
