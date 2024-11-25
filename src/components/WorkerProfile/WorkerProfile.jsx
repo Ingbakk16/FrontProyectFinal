@@ -112,13 +112,12 @@ const WorkerProfile = () => {
         const data = await response.json();
         setComments(data);
 
-        // Check if the user has already commented
+        
         const userHasCommented = data.some(
           (comment) => comment.ratedByUserId === user.username
-        ); // assuming `currentUser.id` is the logged-in user ID
+        ); 
 
         
-        console.log("Fetched Data:", user)
 
         setHasCommented(userHasCommented);
       } catch (error) {
@@ -129,7 +128,7 @@ const WorkerProfile = () => {
     
 
     fetchComments();
-  }, [id, token, user.id]); // Se ejecuta cada vez que cambian `id` o `token`
+  }, [id, token, user.id]); 
 
   const handleAddComment = async () => {
     setIsSubmitting(true);
@@ -155,11 +154,11 @@ const WorkerProfile = () => {
         throw new Error("Error adding comment");
       }
 
-      // Recargar comentarios después de añadir el nuevo comentario
+      
       const addedComment = await response.json();
       setComments([...comments, addedComment]);
       setNewComment({ comment: "", rating: 0 });
-      setHasCommented(true); // Evita que el usuario vuelva a comentar
+      setHasCommented(true); 
     } catch (error) {
       console.error("Error adding comment:", error);
     } finally {
@@ -189,11 +188,11 @@ const WorkerProfile = () => {
   };
 
   if (loading) {
-    return <p>Cargando...</p>;
+    return <p>Loading...</p>;
   }
 
   if (!worker) {
-    return <p>Datos no disponibles</p>;
+    return <p>No data available</p>;
   }
 
   return (
@@ -231,7 +230,7 @@ const WorkerProfile = () => {
                   {worker.phoneNumber || "Worker doesnt have a contact number"}
                 </p>
                 <p className="text-light">
-                  "{worker.description || "Sin descripción"}"
+                  "{worker.description || "There are not any descripción"}"
                 </p>
 
                 <div
@@ -242,7 +241,7 @@ const WorkerProfile = () => {
                   {worker.imageUrls && (
                     <Carousel
                       images={worker.imageUrls} 
-                      editable={false} // View-only mode
+                      editable={false} 
                       theme={theme}
                     />
                   )}
@@ -255,7 +254,7 @@ const WorkerProfile = () => {
                   }`}
                   onClick={toggleComments}
                 >
-                  {showComments ? "OCULTAR COMENTARIOS" : "MOSTRAR COMENTARIOS"}
+                  {showComments ? "HIDE COMMENTS" : "SHOW COMMENTS"}
                 </Button>
 
                 {showCommentForm && (
@@ -266,7 +265,7 @@ const WorkerProfile = () => {
                         : "comments-container-light"
                     }`}
                   >
-                    <h4 className="text-dark">Comentarios:</h4>
+                    <h4 className="text-dark">Commments:</h4>
                     {comments.length > 0 ? (
                       comments.map((comment, index) => (
                         <Card
@@ -280,13 +279,13 @@ const WorkerProfile = () => {
                           <Card.Body>
                             <strong>{comment.ratedByUserId}</strong>
                             <p>{comment.comment}</p>
-                            <p>Calificación: {"★".repeat(comment.rating)}</p>
+                            <p>Rating: {"★".repeat(comment.rating)}</p>
                           </Card.Body>
                         </Card>
                       ))
                     ) : (
                       <p className="text-dark">
-                        No hay comentarios disponibles
+                        No comments available yet
                       </p>
                     )}
                   </div>
@@ -303,7 +302,7 @@ const WorkerProfile = () => {
                         : "comments-container-light"
                     }`}
                   >
-                    <h4 className="text-dark">Comentarios:</h4>
+                    <h4 className="text-dark">Comments:</h4>
                     {comments.length > 0 ? (
                       comments.map((comment, index) => (
                         <Card
@@ -317,13 +316,13 @@ const WorkerProfile = () => {
                           <Card.Body>
                             <strong>{comment.ratedByUserId}</strong>
                             <p>{comment.comment}</p>
-                            <p>Calificación: {"★".repeat(comment.rating)}</p>
+                            <p>Rating: {"★".repeat(comment.rating)}</p>
                           </Card.Body>
                         </Card>
                       ))
                     ) : (
                       <p className="text-dark">
-                        No hay comentarios disponibles
+                        No comments available yet
                       </p>
                     )}
                   </div>
@@ -339,18 +338,17 @@ const WorkerProfile = () => {
                     onClick={toggleCommentForm}
                   >
                     {showCommentForm
-                      ? "OCULTAR AGREGAR COMENTARIO"
-                      : "AGREGAR COMENTARIO"}
+                      ? "HIDE ADD COMMENTS" : "ADD COMMENTS"}
                   </Button>
                 )}
 
                 {/* Add Comment Form */}
                 {!hasCommented && showCommentForm && (
                   <div className="add-comment-form mt-4 show">
-                    <h5>Añadir un nuevo comentario</h5>
+                    <h5>Add a new comment</h5>
                     <textarea
                       name="comment"
-                      placeholder="Tu comentario"
+                      placeholder="You comment"
                       value={newComment.comment}
                       onChange={handleCommentChange}
                       className={`form-control mb-2 ${
@@ -371,7 +369,7 @@ const WorkerProfile = () => {
                       disabled={isSubmitting}
                       className={theme === "dark" ? "button-dark" : ""}
                     >
-                      {isSubmitting ? "Enviando..." : "Añadir Comentario"}
+                      {isSubmitting ? "Submitting..." : "Add Comment"}
                     </Button>
                   </div>
                 )}
@@ -379,7 +377,7 @@ const WorkerProfile = () => {
                 {/* Message if User Already Commented */}
                 {hasCommented && (
                   <p className="text-muted mt-2">
-                    Ya has comentado a este trabajador.
+                    You have already commented this worker.
                   </p>
                 )}
               </Card>

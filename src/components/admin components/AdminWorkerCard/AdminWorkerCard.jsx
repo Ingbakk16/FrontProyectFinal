@@ -12,7 +12,6 @@ const AdminWorkerCard = ({
   onViewReviews,
   showViewProfile,
   showDeleteReviews,
-  isWorker,
 }) => {
   return (
     <Card className="p-3 bg-primary text-light d-flex align-items-center justify-content-between">

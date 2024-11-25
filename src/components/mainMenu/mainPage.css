@@ -38,3 +38,11 @@ footer {
 .main-dark h1 {
   color: #e8eaed;
 }
+
+
+.centered-text-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

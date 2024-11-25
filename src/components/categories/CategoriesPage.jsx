@@ -31,7 +31,7 @@ const CategoriesPage = () => {
                     throw new Error('Error al obtener las categorías');
                 }
                 const data = await response.json();
-                console.log("Fetched categories:", data);
+                
                 setCategories(data.map(category => ({ title: category.title, jobId: category.id })));
             } catch (error) {
                 console.error('Error fetching categories:', error);
@@ -71,7 +71,7 @@ const CategoriesPage = () => {
                          className={`category-button ${theme === 'dark' ? 'category-button-dark' : ''}`}
                          onClick={() => handleCategoryClick(category.jobId)} 
                      >
-                         {category.title} {/* Display the title only */}
+                         {category.title} 
                      </button>
                     ))}
                     <div className="pagination">
