@@ -31,7 +31,7 @@ const RegisterWorkerFinal = () => {
     address: "",
     phoneNumber: "",
     description: "",
-    imageUrls: [], // Empty array for URLs
+    imageUrls: [], 
     rating: 0,
   });
 
@@ -211,7 +211,9 @@ const RegisterWorkerFinal = () => {
             <h3>Worker Registration</h3>
             {errors.general && <Alert variant="danger">{errors.general}</Alert>}
             {success && <Alert variant="success">Registration successful!</Alert>}
+            <div style={{ marginBottom: "10%" }}>
             <ProgressBar now={(step / 3) * 100} />
+            </div>
             {renderStep()}
             <div className="button-container d-flex justify-content-between">
               <Button variant="danger" onClick={handleCancel}>Cancel</Button>
