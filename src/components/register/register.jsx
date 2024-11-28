@@ -29,27 +29,32 @@ const Register = () => {
   const USERNAME_MAX_LENGTH = 15;
   const PASSWORD_MIN_LENGTH = 8;
   const PASSWORD_MAX_LENGTH = 20;
+  const NAME_MIN_LENGHT = 2;
 
   const validateUsername = (value) => {
     if (!value) return "The user name is mandatory";
     if (value.length < USERNAME_MIN_LENGTH)
-      return `need at least ${USERNAME_MIN_LENGTH} characters`;
+      return `Need at least ${USERNAME_MIN_LENGTH} characters`;
     if (value.length > USERNAME_MAX_LENGTH)
-      return `can't overcome ${USERNAME_MAX_LENGTH} characters`;
+      return `Can't overcome ${USERNAME_MAX_LENGTH} characters`;
     return "";
   };
 
   const validatePassword = (value) => {
     if (!value) return "The password is mandatory";
     if (value.length < PASSWORD_MIN_LENGTH)
-      return `need at least ${PASSWORD_MIN_LENGTH} characters`;
+      return `Need at least ${PASSWORD_MIN_LENGTH} characters`;
     if (value.length > PASSWORD_MAX_LENGTH)
-      return `can't overcome ${PASSWORD_MAX_LENGTH} characters`;
+      return `Can't overcome ${PASSWORD_MAX_LENGTH} characters`;
     return "";
   };
 
   const validateEmail = (value) => (!value ? "The Email is mandatory" : "");
-  const validateName = (value) => (!value ? "The Name is mandatory" : "");
+
+  const validateName = (value) => { if (!value) return "The Name is mandatory"; 
+    if (value.length < NAME_MIN_LENGHT) return `Need at least ${NAME_MIN_LENGHT} characters`;
+    return "";
+  }
   const validateLastname = (value) =>
     !value ? "The Last Name is mandatory" : "";
 
@@ -107,7 +112,7 @@ const Register = () => {
             <FormGroup className="mb-3">
               <Form.Control
                 ref={usernameRef}
-                name="user name"
+                name="username"
                 className={`${errors.username ? "border-danger" : ""} ${
                   theme === "dark" ? "input-dark" : "input-light"
                 }`}

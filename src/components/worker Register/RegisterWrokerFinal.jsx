@@ -66,7 +66,12 @@ const RegisterWorkerFinal = () => {
 
   const handleChange = (field) => (event) => {
     const value = event.target.value;
-    setFormData((prevData) => ({ ...prevData, [field]: value }));
+    if (field === "dni" || field === "phoneNumber") {
+      const numericValue = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      setFormData({ ...formData, [field]: numericValue });
+    } else {
+      
+    setFormData((prevData) => ({ ...prevData, [field]: value }));}
     setTouchedFields((prevTouched) => ({ ...prevTouched, [field]: true }));
     setErrors((prevErrors) => ({ ...prevErrors, [field]: validateField(field, value) }));
   };

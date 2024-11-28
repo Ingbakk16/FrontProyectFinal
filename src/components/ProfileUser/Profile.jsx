@@ -16,11 +16,11 @@ const Profile = () => {
   const { theme } = useContext(ThemeContext);
   const [isEditing, setIsEditing] = useState(false);
 
-  // UseState for name and lastname to handle initials correctly
+  
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
 
-  // UseRef for other inputs
+  
   const emailRef = useRef(null);
   const usernameRef = useRef(null);
 
@@ -30,6 +30,8 @@ const Profile = () => {
     lastname: false,
     username: false,
   });
+
+  const [formValid, setFormValid] = useState(true);  
 
   const navigate = useNavigate();
 
@@ -54,8 +56,8 @@ const Profile = () => {
         }
 
         const data = await response.json();
-        setName(data.name);
-        setLastname(data.lastname);
+        setName(data.name || '');  
+        setLastname(data.lastname || '');  
         if (emailRef.current) emailRef.current.value = data.email;
         if (usernameRef.current) usernameRef.current.value = data.username;
       } catch (error) {
@@ -68,10 +70,33 @@ const Profile = () => {
 
   const handleBlur = (refName) => {
     if (refName.current && refName.current.value === "") {
-      setErrors((prevErrors) => ({ ...prevErrors, [refName.current.name]: true }));
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [refName.current?.name || '']: true,
+      }));
     } else {
-      setErrors((prevErrors) => ({ ...prevErrors, [refName.current.name]: false }));
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [refName.current?.name || '']: false,
+      }));
     }
+    validateForm();
+  };
+
+  const validateForm = () => {
+    const nameValid = name.trim() !== '';
+    const lastnameValid = lastname.trim() !== '';
+    const emailValid = emailRef.current?.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
+    const usernameValid = usernameRef.current?.value.trim() !== '';
+
+    setErrors({
+      name: !nameValid,
+      lastname: !lastnameValid,
+      email: !emailValid,
+      username: !usernameValid,
+    });
+
+    setFormValid(nameValid && lastnameValid && emailValid && usernameValid);
   };
 
   const handleEditClick = () => {
@@ -81,7 +106,7 @@ const Profile = () => {
   const handleSaveClick = () => {
     Swal.fire({
       title: "Confirmation",
-      text: "¿are you sure?",
+      text: "Are you sure you want to save?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, save",
@@ -95,10 +120,10 @@ const Profile = () => {
 
   const handleSaveProfile = async () => {
     const updatedFormData = {
-      name,
-      lastname,
-      email: emailRef.current.value,
-      username: usernameRef.current.value,
+      name: name.trim(),
+      lastname: lastname.trim(), 
+      email: emailRef.current.value.trim(),
+      username: usernameRef.current.value.trim(),
     };
 
     try {
@@ -131,7 +156,9 @@ const Profile = () => {
   };
 
   const getInitials = () => {
-    return `${name.charAt(0).toUpperCase()}${lastname.charAt(0).toUpperCase()}`;
+    
+    const initials = `${name ? name.charAt(0).toUpperCase() : ''}${lastname ? lastname.charAt(0).toUpperCase() : ''}`;
+    return initials;
   };
 
   return (
@@ -146,7 +173,7 @@ const Profile = () => {
                   <div className="back-button">
                     <Button variant="link" className="text-light" onClick={backHandler}>
                       <i className="bi bi-arrow-left text-dark">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                           <path d="M400-120 160-360l241-241 56 57-144 144h367v-400h80v480H313l144 143-57 57Z" />
                         </svg>
                       </i>
@@ -179,6 +206,7 @@ const Profile = () => {
                         name="name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        onBlur={() => handleBlur(name)}
                         className={`${theme === 'dark' ? 'text-light' : 'text-dark'} ${errors.name && 'border-danger'}`}
                       />
                     </Form.Group>
@@ -203,12 +231,18 @@ const Profile = () => {
                         name="lastname"
                         value={lastname}
                         onChange={(e) => setLastname(e.target.value)}
+                        onBlur={() => handleBlur(lastname)}
                         className={`${theme === 'dark' ? 'text-light' : 'text-dark'} ${errors.lastname && 'border-danger'}`}
                       />
                     </Form.Group>
                     {isEditing ? (
                       <>
-                        <Button variant="primary" className="w-100" onClick={handleSaveClick}>
+                        <Button
+                          variant="primary"
+                          className="w-100"
+                          onClick={handleSaveClick}
+                          disabled={!formValid}
+                        >
                           Save
                         </Button>
                         <Button variant="secondary" className="w-100 mt-2" onClick={handleCancelClick}>
