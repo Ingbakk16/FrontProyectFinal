@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
@@ -15,55 +15,56 @@ const EditUserForm = () => {
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-
   const usernameRef = useRef(null);
   const nameRef = useRef(null);
   const lastnameRef = useRef(null);
   const emailRef = useRef(null);
 
- 
   const [errors, setErrors] = useState({
-    username: false,
-    name: false,
-    lastname: false,
-    email: false,
+    username: null,
+    name: null,
+    lastname: null,
+    email: null,
   });
 
-  
+  const [isFormValid, setIsFormValid] = useState(false);
+
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-  
-  const handleBlur = (ref, fieldName) => {
-    const value = ref.current.value.trim();
-
-    
-    if (fieldName === "username") {
-      if (value.length < 3 || value.length > 16) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [fieldName]: "Username must be between 3 and 16 characters.",
-        }));
-      } else {
-        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
-      }
-    } 
-    
-    else if (value === "") {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "This field is mandatory" }));
-    } 
-    
-    else if (fieldName === "email" && !emailRegex.test(value)) {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "Invalid email format" }));
-    } 
-    else {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
+  const validateField = (fieldName, value) => {
+    switch (fieldName) {
+      case "username":
+        return value.length >= 3 && value.length <= 16
+          ? null
+          : "Username must be between 3 and 16 characters.";
+      case "email":
+        return emailRegex.test(value) ? null : "Invalid email format.";
+      case "name":
+      case "lastname":
+        return value.trim() !== "" ? null : "This field is mandatory.";
+      default:
+        return null;
     }
   };
 
-  
-  const isFormValid = !Object.values(errors).some((error) => error !== false);
+  const handleBlur = (ref, fieldName) => {
+    const value = ref.current.value.trim();
+    const error = validateField(fieldName, value);
+    setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: error }));
+  };
 
-  
+  useEffect(() => {
+    const areAllFieldsFilled =
+      usernameRef.current?.value.trim() &&
+      nameRef.current?.value.trim() &&
+      lastnameRef.current?.value.trim() &&
+      emailRef.current?.value.trim();
+
+    const areThereNoErrors = Object.values(errors).every((error) => error === null);
+
+    setIsFormValid(areAllFieldsFilled && areThereNoErrors);
+  }, [errors]);
+
   const handleSave = async () => {
     const formData = {
       username: usernameRef.current.value,
@@ -129,8 +130,10 @@ const EditUserForm = () => {
                     type="text"
                     name="username"
                     ref={usernameRef}
-                    onBlur={() => handleBlur(usernameRef, 'username')}
-                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.username ? 'border-danger' : ''}`}
+                    onBlur={() => handleBlur(usernameRef, "username")}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${
+                      errors.username ? "border-danger" : ""
+                    }`}
                   />
                   {errors.username && <small className="text-danger">{errors.username}</small>}
                 </Form.Group>
@@ -142,8 +145,10 @@ const EditUserForm = () => {
                     type="text"
                     name="name"
                     ref={nameRef}
-                    onBlur={() => handleBlur(nameRef, 'name')}
-                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.name ? 'border-danger' : ''}`}
+                    onBlur={() => handleBlur(nameRef, "name")}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${
+                      errors.name ? "border-danger" : ""
+                    }`}
                   />
                   {errors.name && <small className="text-danger">{errors.name}</small>}
                 </Form.Group>
@@ -157,8 +162,10 @@ const EditUserForm = () => {
                     type="text"
                     name="lastname"
                     ref={lastnameRef}
-                    onBlur={() => handleBlur(lastnameRef, 'lastname')}
-                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.lastname ? 'border-danger' : ''}`}
+                    onBlur={() => handleBlur(lastnameRef, "lastname")}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${
+                      errors.lastname ? "border-danger" : ""
+                    }`}
                   />
                   {errors.lastname && <small className="text-danger">{errors.lastname}</small>}
                 </Form.Group>
@@ -170,8 +177,10 @@ const EditUserForm = () => {
                     type="email"
                     name="email"
                     ref={emailRef}
-                    onBlur={() => handleBlur(emailRef, 'email')}
-                    className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.email ? 'border-danger' : ''}`}
+                    onBlur={() => handleBlur(emailRef, "email")}
+                    className={`${theme === "dark" ? "form-control-dark" : ""} ${
+                      errors.email ? "border-danger" : ""
+                    }`}
                   />
                   {errors.email && <small className="text-danger">{errors.email}</small>}
                 </Form.Group>
@@ -181,11 +190,7 @@ const EditUserForm = () => {
               <Button type="submit" className="btn-save" disabled={!isFormValid}>
                 Save
               </Button>
-              <Button
-                type="button"
-                className="btn-cancel"
-                onClick={handleCancel}
-              >
+              <Button type="button" className="btn-cancel" onClick={handleCancel}>
                 Cancel
               </Button>
             </div>
@@ -196,4 +201,5 @@ const EditUserForm = () => {
     </div>
   );
 };
+
 export default EditUserForm;

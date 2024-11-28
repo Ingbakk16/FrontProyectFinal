@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Header from "../../header/header";
 import Footer from "../../footer/footer";
@@ -14,72 +14,62 @@ const AdminCreateUserForm = () => {
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-
   const usernameRef = useRef(null);
   const nameRef = useRef(null);
   const lastnameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  
   const [errors, setErrors] = useState({
-    username: false,
-    name: false,
-    lastname: false,
-    email: false,
-    password: false,
+    username: null,
+    name: null,
+    lastname: null,
+    email: null,
+    password: null,
   });
 
-  
+  const [isFormValid, setIsFormValid] = useState(false);
+
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-  
-  const handleBlur = (ref, fieldName) => {
-    const value = ref.current.value.trim();
-
-    if (fieldName === "username") {
-      if (value.length < 3 || value.length > 16) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [fieldName]: "Username must be between 3 and 16 characters.",
-        }));
-      } else {
-        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
-      }
-    } else if (fieldName === "email" && value !== "") {
-      if (!emailRegex.test(value)) {
-        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "Invalid email format." }));
-      } else {
-        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
-      }
-    } else if (fieldName === "password") {
-      if (value.length < 6) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          [fieldName]: "Password must be at least 6 characters long.",
-        }));
-      } else {
-        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
-      }
-    } else if (value === "") {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "This field is mandatory." }));
-    } else {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
+  const validateField = (fieldName, value) => {
+    switch (fieldName) {
+      case "username":
+        return value.length >= 3 && value.length <= 16
+          ? null
+          : "Username must be between 3 and 16 characters.";
+      case "email":
+        return emailRegex.test(value) ? null : "Invalid email format.";
+      case "password":
+        return value.length >= 6
+          ? null
+          : "Password must be at least 6 characters long.";
+      case "name":
+      case "lastname":
+        return value.trim() !== "" ? null : "This field is mandatory.";
+      default:
+        return null;
     }
   };
 
-  const isFormValid = () => {
-    const allFieldsFilled =
-      usernameRef.current?.value.trim() !== "" &&
-      nameRef.current?.value.trim() !== "" &&
-      lastnameRef.current?.value.trim() !== "" &&
-      emailRef.current?.value.trim() !== "" &&
-      passwordRef.current?.value.trim() !== "";
-  
-    const noErrors = !Object.values(errors).some((error) => error !== false);
-  
-    return allFieldsFilled && noErrors;
+  const handleBlur = (ref, fieldName) => {
+    const value = ref.current.value.trim();
+    const error = validateField(fieldName, value);
+    setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: error }));
   };
+
+  useEffect(() => {
+    const areAllFieldsFilled =
+      usernameRef.current?.value.trim() &&
+      nameRef.current?.value.trim() &&
+      lastnameRef.current?.value.trim() &&
+      emailRef.current?.value.trim() &&
+      passwordRef.current?.value.trim();
+
+    const areThereNoErrors = Object.values(errors).every((error) => error === null);
+
+    setIsFormValid(areAllFieldsFilled && areThereNoErrors);
+  }, [errors]);
 
   const handleConfirmSubmit = () => {
     AdminConfirmationAlert({
@@ -164,7 +154,7 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.name ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.name && <small className="text-danger">This field is mandatory.</small>}
+                  {errors.name && <small className="text-danger">{errors.name}</small>}
                 </Form.Group>
               </Col>
             </Row>
@@ -180,7 +170,7 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.lastname ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.lastname && <small className="text-danger">This field is mandatory.</small>}
+                  {errors.lastname && <small className="text-danger">{errors.lastname}</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -215,7 +205,7 @@ const AdminCreateUserForm = () => {
               </Col>
             </Row>
             <div className="form-actions">
-              <Button type="submit" className="btn-save" disabled={!isFormValid()}>
+              <Button type="submit" className="btn-save" disabled={!isFormValid}>
                 Create User
               </Button>
               <Button type="button" className="btn-cancel" onClick={handleCancel}>

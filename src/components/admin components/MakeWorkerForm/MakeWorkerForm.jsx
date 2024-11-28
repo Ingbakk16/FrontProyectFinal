@@ -8,6 +8,7 @@ import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
 import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert";
 import "./MakeWorkerForm.css";
+
 const MakeWorkerForm = ({
   initialWorker = {
     description: "",
@@ -30,8 +31,8 @@ const MakeWorkerForm = ({
     direccion: null,
     jobId: null,
     phoneNumber: null,
-    imageUrl: null,
   });
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const validateField = (name, value) => {
     switch (name) {
@@ -45,8 +46,6 @@ const MakeWorkerForm = ({
         return /^[0-9]+$/.test(value) ? null : "Phone number must be numeric.";
       case "jobId":
         return value === "" ? "You must select a job." : null;
-      case "imageUrl":
-        return value.trim() === "" ? "Image URL is required." : null;
       default:
         return null;
     }
@@ -63,7 +62,7 @@ const MakeWorkerForm = ({
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
 
-    // Validate field on change
+    
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: validateField(name, value),
@@ -91,10 +90,16 @@ const MakeWorkerForm = ({
     fetchCategories();
   }, [token]);
 
+  useEffect(() => {
+    const areAllFieldsFilled = Object.values(formData).every((value) => value.trim() !== "");
+    const noErrors = Object.values(errors).every((error) => error === null);
+
+    setIsFormValid(areAllFieldsFilled && noErrors);
+  }, [formData, errors]);
+
   const handleSubmit = async () => {
     const payload = {
       ...formData,
-      imageUrl: formData.imageUrl || "",
     };
 
     try {
@@ -234,7 +239,7 @@ const MakeWorkerForm = ({
               </Col>
             </Row>
             <div className="text-center">
-              <Button type="submit" className="btn-save me-2">
+              <Button type="submit" className="btn-save me-2" disabled={!isFormValid}>
                 Save
               </Button>
               <Button type="button" className="btn-cancel" onClick={handleCancel}>

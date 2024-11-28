@@ -413,7 +413,7 @@ const EditWorkerProfile = () => {
                       }); 
                     }}
                   >
-                    Cancelar
+                    Cancel
                   </Button>
                 )}
               </Card>

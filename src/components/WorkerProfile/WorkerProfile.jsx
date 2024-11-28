@@ -257,11 +257,6 @@ const WorkerProfile = () => {
                   {showComments ? "HIDE COMMENTS" : "SHOW COMMENTS"}
                 </Button>
 
-                
-
-                
-
-                
                 {showComments && (
                   <div
                     className={`mt-4 comments-container ${
