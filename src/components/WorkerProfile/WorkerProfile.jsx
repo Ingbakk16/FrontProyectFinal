@@ -257,43 +257,11 @@ const WorkerProfile = () => {
                   {showComments ? "HIDE COMMENTS" : "SHOW COMMENTS"}
                 </Button>
 
-                {showCommentForm && (
-                  <div
-                    className={`mt-4 comments-container ${
-                      theme === "dark"
-                        ? "comments-container-dark"
-                        : "comments-container-light"
-                    }`}
-                  >
-                    <h4 className="text-dark">Commments:</h4>
-                    {comments.length > 0 ? (
-                      comments.map((comment, index) => (
-                        <Card
-                          key={index}
-                          className={`comment-card ${
-                            theme === "dark"
-                              ? "comment-card-dark"
-                              : "comment-card-light"
-                          } mb-3`}
-                        >
-                          <Card.Body>
-                            <strong>{comment.ratedByUserId}</strong>
-                            <p>{comment.comment}</p>
-                            <p>Rating: {"★".repeat(comment.rating)}</p>
-                          </Card.Body>
-                        </Card>
-                      ))
-                    ) : (
-                      <p className="text-dark">
-                        No comments available yet
-                      </p>
-                    )}
-                  </div>
-                )}
+                
 
-                {/* Button to Show/Hide Comments */}
+                
 
-                {/* Comments Section */}
+                
                 {showComments && (
                   <div
                     className={`mt-4 comments-container ${
@@ -328,7 +296,7 @@ const WorkerProfile = () => {
                   </div>
                 )}
 
-                {/* Button to Add a New Comment, Visible Only if User Hasn't Commented */}
+               
                 {!hasCommented && (
                   <Button
                     variant="primary"
@@ -342,7 +310,7 @@ const WorkerProfile = () => {
                   </Button>
                 )}
 
-                {/* Add Comment Form */}
+                
                 {!hasCommented && showCommentForm && (
                   <div className="add-comment-form mt-4 show">
                     <h5>Add a new comment</h5>
@@ -374,7 +342,7 @@ const WorkerProfile = () => {
                   </div>
                 )}
 
-                {/* Message if User Already Commented */}
+                
                 {hasCommented && (
                   <p className="text-muted mt-2">
                     You have already commented this worker.

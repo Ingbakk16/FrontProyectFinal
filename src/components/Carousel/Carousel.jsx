@@ -20,6 +20,9 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
   };
 
   const isAddImageSlide = editable && currentImageIndex >= images.length;
+  const hasImages = images.length > 0;
+  const disableNavigation =
+  (!hasImages && !editable) || (images.length === 1 && !editable);
 
   
   
@@ -27,7 +30,11 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
   return (
     <div className={`carousel-container ${theme === 'dark' ? 'carousel-dark' : 'carousel-light'}`}>
       <div className="image-wrapper">
-        {isAddImageSlide ? (
+        {!hasImages && !editable ? (
+          <div className="no-images-placeholder">
+            <p>No images available.</p>
+          </div>
+        ) : isAddImageSlide ? (
           <div className="add-image-placeholder" onClick={onAddImage}>
             <span className="add-icon">+</span>
           </div>
@@ -36,7 +43,6 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
             <Image
               src={images[currentImageIndex]}
               className="carousel-image"
-              
             />
             {editable && onDelete && (
               <Button
@@ -50,14 +56,25 @@ const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => 
             )}
           </>
         )}
-        <Button variant="link" onClick={handlePreviousImage} className="carousel-nav-btn left">
+
+        {/* Navigation Buttons */}
+        <Button
+          variant="link"
+          onClick={handlePreviousImage}
+          className={`carousel-nav-btn left ${disableNavigation ? 'disabled' : ''}`}
+          disabled={disableNavigation}
+        >
           {'<'}
         </Button>
-        <Button variant="link" onClick={handleNextImage} className="carousel-nav-btn right">
+        <Button
+          variant="link"
+          onClick={handleNextImage}
+          className={`carousel-nav-btn right ${disableNavigation ? 'disabled' : ''}`}
+          disabled={disableNavigation}
+        >
           {'>'}
         </Button>
       </div>
-      
     </div>
   );
 };
