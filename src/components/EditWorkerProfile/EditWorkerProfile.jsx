@@ -9,18 +9,18 @@ import {
   Col,
   Form,
 } from "react-bootstrap";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import Header from "../header/header";
 import Footer from "../footer/footer";
 import { AuthenticationContext } from "../services/authenticationContext/authentication.context";
-import { ThemeContext } from "../services/ThemeContext/Theme.context"; // Importa ThemeContext
+import { ThemeContext } from "../services/ThemeContext/Theme.context";
 import "../WorkerProfile/WorkerStyle.css";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../Carousel/Carousel";
 
 const EditWorkerProfile = () => {
   const { token } = useContext(AuthenticationContext);
-  const { theme } = useContext(ThemeContext); // Usa el ThemeContext
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   const [worker, setWorker] = useState(null);
@@ -59,16 +59,15 @@ const EditWorkerProfile = () => {
             ? data.imageUrls
                 .map((item) => {
                   try {
-                    // Check if item is a string and parse it
                     const parsedItem = JSON.parse(item);
-                    return parsedItem.imageUrl; // Extract imageUrl
+                    return parsedItem.imageUrl;
                   } catch (e) {
                     console.error("Error parsing image URL:", e);
-                    return null; // Skip invalid items
+                    return null;
                   }
                 })
-                .filter(Boolean) // Remove null values
-            : []; // Set to empty array if data.imageUrls is not an array
+                .filter(Boolean)
+            : [];
 
           setWorker(data);
           setFormData({
@@ -112,11 +111,11 @@ const EditWorkerProfile = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        handleSaveProfile(); // Llama a la función para guardar cambios
+        handleSaveProfile();
       }
     });
   };
-  
+
   const handleSaveProfile = async () => {
     try {
       const response = await fetch(
@@ -401,6 +400,24 @@ const EditWorkerProfile = () => {
                 >
                   {isEditing ? "Guardar Cambios" : "Editar Perfil"}
                 </Button>
+
+                {isEditing && (
+                  <Button
+                    variant="secondary"
+                    className="mt-4 cancel-profile-button ms-2"
+                    onClick={() => {
+                      setIsEditing(false); 
+                      setFormData({
+                        description: worker.description || "",
+                        phoneNumber: worker.phoneNumber || "",
+                        direccion: worker.direccion || "",
+                        workImages: formData.workImages,
+                      }); 
+                    }}
+                  >
+                    Cancelar
+                  </Button>
+                )}
               </Card>
             </Col>
           </Row>
