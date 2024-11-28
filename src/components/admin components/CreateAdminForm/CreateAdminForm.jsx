@@ -6,7 +6,7 @@ import Sidebar from "../sidebar button/sidebarMenu";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Ensure the correct path
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; 
 import "./CreateAdminForm.css";
 
 const CreateAdminForm = () => {

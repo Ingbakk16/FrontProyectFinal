@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, Button } from 'react-bootstrap';
-import './Carousel.css'; // Import custom CSS for styling
+import './Carousel.css'; 
 
 const Carousel = ({ images, editable = false, onDelete, onAddImage, theme }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

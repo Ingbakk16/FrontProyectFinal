@@ -8,7 +8,7 @@ import SidebarButton from "../sidebar button/sidebarMenu";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import "./AdminWOrkersPage.css";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Ajusta la ruta si es necesario
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; 
 
 const AdminWorkersPage = () => {
   const navigate = useNavigate();

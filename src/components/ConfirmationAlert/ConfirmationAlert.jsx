@@ -1,4 +1,3 @@
-// AdminConfirmationAlert.js
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
@@ -19,7 +18,7 @@ const AdminConfirmationAlert = ({ title, text, onConfirm }) => {
     buttonsStyling: false,
   }).then((result) => {
     if (result.isConfirmed) {
-      onConfirm(); // Ejecuta la función de confirmación si se confirma
+      onConfirm(); 
     }
   });
 };
