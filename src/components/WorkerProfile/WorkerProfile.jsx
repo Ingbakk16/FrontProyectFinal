@@ -66,22 +66,22 @@ const WorkerProfile = () => {
           return;
         }
   
-        // Parse image URLs
+     
         const parsedImageUrls = Array.isArray(workerData.imageUrls)
           ? workerData.imageUrls.map((item) => {
               try {
-                const parsedItem = JSON.parse(item); // Parse each item
-                return parsedItem.imageUrl; // Extract imageUrl
+                const parsedItem = JSON.parse(item); 
+                return parsedItem.imageUrl; 
               } catch (e) {
                 
-                return null; // Skip invalid items
+                return null; 
               }
-            }).filter(Boolean) // Remove null values
+            }).filter(Boolean) 
           : [];
   
         setWorker({
           ...workerData,
-          imageUrls: parsedImageUrls, // Update imageUrls with parsed URLs
+          imageUrls: parsedImageUrls, 
         });
   
         

@@ -6,7 +6,7 @@ import Footer from "../../footer/footer";
 import SidebarButton from "../sidebar button/sidebarMenu";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Asegúrate de que la ruta sea correcta
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; 
 import "./DeleteReview.css";
 
 const DeleteReview = () => {
@@ -65,7 +65,7 @@ const DeleteReview = () => {
       }
 
       setReviews(reviews.filter((review) => review.id !== reviewId));
-      console.log(`Reseña ${reviewId} eliminada`);
+      
     } catch (error) {
       console.error("Error al intentar eliminar la reseña:", error);
     }

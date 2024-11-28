@@ -7,8 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ThemeContext } from "../../services/ThemeContext/Theme.context";
 import "./WorkerForm.css";
 import { AuthenticationContext } from "../../services/authenticationContext/authentication.context";
-import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; // Importa el componente de alerta
-
+import AdminConfirmationAlert from "../../ConfirmationAlert/ConfirmationAlert"; 
 const WorkerForm = () => {
   const [worker, setWorker] = useState({
     description: "",

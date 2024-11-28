@@ -1,4 +1,3 @@
-// Header.js
 import React, { useContext, useState, useEffect } from 'react';
 import { Navbar, Form, FormControl, Button, Container, Collapse, Modal } from 'react-bootstrap';
 import { AuthenticationContext } from '../services/authenticationContext/authentication.context';

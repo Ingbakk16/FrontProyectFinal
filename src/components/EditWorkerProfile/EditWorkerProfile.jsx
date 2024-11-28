@@ -53,7 +53,7 @@ const EditWorkerProfile = () => {
         if (response.ok) {
           const data = await response.json();
 
-          console.log("Fetched worker data:", data);
+         
 
           const parsedImageUrls = Array.isArray(data.imageUrls)
             ? data.imageUrls
@@ -77,7 +77,6 @@ const EditWorkerProfile = () => {
             workImages: parsedImageUrls,
           });
 
-          console.log("Parsed image URLs:", parsedImageUrls);
         } else {
           throw new Error("Error fetching worker profile");
         }
@@ -179,7 +178,6 @@ const EditWorkerProfile = () => {
     }
   };
 
-  // Delete Image Modal Logic
   const handleDeleteImageModalOpen = (imageUrl) => {
     setImageToDelete(imageUrl);
     setShowDeleteImageModal(true);

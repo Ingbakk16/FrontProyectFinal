@@ -67,7 +67,7 @@ const RegisterWorkerFinal = () => {
   const handleChange = (field) => (event) => {
     const value = event.target.value;
     if (field === "dni" || field === "phoneNumber") {
-      const numericValue = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      const numericValue = value.replace(/[^0-9]/g, ""); 
       setFormData({ ...formData, [field]: numericValue });
     } else {
       

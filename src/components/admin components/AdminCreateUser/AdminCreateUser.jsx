@@ -14,7 +14,6 @@ const AdminCreateUserForm = () => {
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-  // Refs for form fields
   const usernameRef = useRef(null);
   const nameRef = useRef(null);
   const lastnameRef = useRef(null);

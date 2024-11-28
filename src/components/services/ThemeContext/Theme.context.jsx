@@ -11,7 +11,7 @@ export const ThemeContextProvider = ({ children }) => {
         if (theme === "dark") {
             document.documentElement.setAttribute("data-bs-theme", "dark");
         } else {
-            document.documentElement.removeAttribute("data-bs-theme"); // Remueve el modo oscuro
+            document.documentElement.removeAttribute("data-bs-theme"); 
         }
     }, [theme]);
 

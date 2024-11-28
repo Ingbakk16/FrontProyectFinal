@@ -31,7 +31,7 @@ export const AuthenticationContextProvider = ({ children }) => {
         if (response.ok) {
           const data = await response.json();
           const userRole = data.role?.name;
-          setRole(userRole); // Update role state directly
+          setRole(userRole); 
 
           
         } else {
@@ -41,7 +41,7 @@ export const AuthenticationContextProvider = ({ children }) => {
         console.error("Error fetching user role:", error);
       }
       finally {
-        setLoading(false); // End loading after fetching role
+        setLoading(false); 
       }
     };
 
