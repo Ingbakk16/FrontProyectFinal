@@ -15,11 +15,13 @@ const EditUserForm = () => {
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
-  // References for form fields
+  
   const usernameRef = useRef(null);
   const nameRef = useRef(null);
   const lastnameRef = useRef(null);
   const emailRef = useRef(null);
+
+ 
   const [errors, setErrors] = useState({
     username: false,
     name: false,
@@ -27,14 +29,41 @@ const EditUserForm = () => {
     email: false,
   });
 
+  
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+  
   const handleBlur = (ref, fieldName) => {
-    if (ref.current && ref.current.value.trim() === "") {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: true }));
-    } else {
+    const value = ref.current.value.trim();
+
+    
+    if (fieldName === "username") {
+      if (value.length < 3 || value.length > 16) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [fieldName]: "Username must be between 3 and 16 characters.",
+        }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
+      }
+    } 
+    
+    else if (value === "") {
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "This field is mandatory" }));
+    } 
+    
+    else if (fieldName === "email" && !emailRegex.test(value)) {
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "Invalid email format" }));
+    } 
+    else {
       setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
     }
   };
 
+  
+  const isFormValid = !Object.values(errors).some((error) => error !== false);
+
+  
   const handleSave = async () => {
     const formData = {
       username: usernameRef.current.value,
@@ -54,7 +83,6 @@ const EditUserForm = () => {
       });
 
       if (response.ok) {
-        
         navigate("/Admin");
       } else {
         throw new Error("Error al actualizar el usuario");
@@ -104,7 +132,7 @@ const EditUserForm = () => {
                     onBlur={() => handleBlur(usernameRef, 'username')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.username ? 'border-danger' : ''}`}
                   />
-                  {errors.username && <small className="text-danger">this field is mandatory.</small>}
+                  {errors.username && <small className="text-danger">{errors.username}</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -112,19 +140,19 @@ const EditUserForm = () => {
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     type="text"
-                    name="Name"
+                    name="name"
                     ref={nameRef}
                     onBlur={() => handleBlur(nameRef, 'name')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.name ? 'border-danger' : ''}`}
                   />
-                  {errors.name && <small className="text-danger">this field is mandatory.</small>}
+                  {errors.name && <small className="text-danger">{errors.name}</small>}
                 </Form.Group>
               </Col>
             </Row>
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>lastname</Form.Label>
+                  <Form.Label>Lastname</Form.Label>
                   <Form.Control
                     type="text"
                     name="lastname"
@@ -132,7 +160,7 @@ const EditUserForm = () => {
                     onBlur={() => handleBlur(lastnameRef, 'lastname')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.lastname ? 'border-danger' : ''}`}
                   />
-                  {errors.lastname && <small className="text-danger">This field is mandatory.</small>}
+                  {errors.lastname && <small className="text-danger">{errors.lastname}</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -145,13 +173,13 @@ const EditUserForm = () => {
                     onBlur={() => handleBlur(emailRef, 'email')}
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.email ? 'border-danger' : ''}`}
                   />
-                  {errors.email && <small className="text-danger">This field is mandatory.</small>}
+                  {errors.email && <small className="text-danger">{errors.email}</small>}
                 </Form.Group>
               </Col>
             </Row>
             <div className="form-actions">
-              <Button type="submit" className="btn-save">
-                save
+              <Button type="submit" className="btn-save" disabled={!isFormValid}>
+                Save
               </Button>
               <Button
                 type="button"
@@ -168,5 +196,4 @@ const EditUserForm = () => {
     </div>
   );
 };
-
 export default EditUserForm;
