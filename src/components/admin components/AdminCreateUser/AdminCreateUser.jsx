@@ -14,11 +14,14 @@ const AdminCreateUserForm = () => {
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
+
   const usernameRef = useRef(null);
   const nameRef = useRef(null);
   const lastnameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+
+  
   const [errors, setErrors] = useState({
     username: false,
     name: false,
@@ -27,12 +30,55 @@ const AdminCreateUserForm = () => {
     password: false,
   });
 
+  
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+  
   const handleBlur = (ref, fieldName) => {
-    if (ref.current && ref.current.value.trim() === "") {
-      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: true }));
+    const value = ref.current.value.trim();
+
+    if (fieldName === "username") {
+      if (value.length < 3 || value.length > 16) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [fieldName]: "Username must be between 3 and 16 characters.",
+        }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
+      }
+    } else if (fieldName === "email" && value !== "") {
+      if (!emailRegex.test(value)) {
+        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "Invalid email format." }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
+      }
+    } else if (fieldName === "password") {
+      if (value.length < 6) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [fieldName]: "Password must be at least 6 characters long.",
+        }));
+      } else {
+        setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
+      }
+    } else if (value === "") {
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "This field is mandatory." }));
     } else {
       setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: false }));
     }
+  };
+
+  const isFormValid = () => {
+    const allFieldsFilled =
+      usernameRef.current?.value.trim() !== "" &&
+      nameRef.current?.value.trim() !== "" &&
+      lastnameRef.current?.value.trim() !== "" &&
+      emailRef.current?.value.trim() !== "" &&
+      passwordRef.current?.value.trim() !== "";
+  
+    const noErrors = !Object.values(errors).some((error) => error !== false);
+  
+    return allFieldsFilled && noErrors;
   };
 
   const handleConfirmSubmit = () => {
@@ -63,7 +109,7 @@ const AdminCreateUserForm = () => {
       });
 
       if (response.ok) {
-        navigate("/Admin"); 
+        navigate("/Admin");
       } else {
         throw new Error("Error creating the user");
       }
@@ -104,7 +150,7 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.username ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.username && <small className="text-danger">This field is mandatory.</small>}
+                  {errors.username && <small className="text-danger">{errors.username}</small>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -148,7 +194,7 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.email ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.email && <small className="text-danger">This field is mandatory.</small>}
+                  {errors.email && <small className="text-danger">{errors.email}</small>}
                 </Form.Group>
               </Col>
             </Row>
@@ -164,12 +210,12 @@ const AdminCreateUserForm = () => {
                     className={`${theme === "dark" ? "form-control-dark" : ""} ${errors.password ? "border-danger" : ""}`}
                     required
                   />
-                  {errors.password && <small className="text-danger">This field is mandatory.</small>}
+                  {errors.password && <small className="text-danger">{errors.password}</small>}
                 </Form.Group>
               </Col>
             </Row>
             <div className="form-actions">
-              <Button type="submit" className="btn-save">
+              <Button type="submit" className="btn-save" disabled={!isFormValid()}>
                 Create User
               </Button>
               <Button type="button" className="btn-cancel" onClick={handleCancel}>

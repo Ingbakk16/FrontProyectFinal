@@ -13,9 +13,13 @@ const WorkerForm = () => {
     description: "",
     phoneNumber: "",
     direccion: "",
-    imageUrl: "",
-    imageUrl2: "",
-    imageUrl3: "",
+    
+  });
+
+  const [formErrors, setFormErrors] = useState({
+    description: null,
+    phoneNumber: null,
+    direccion: null,
   });
 
   const { id: userId } = useParams();
@@ -23,20 +27,50 @@ const WorkerForm = () => {
   const { token } = useContext(AuthenticationContext);
   const navigate = useNavigate();
 
+  const validateField = (name, value) => {
+    switch (name) {
+      case "description":
+        return value.trim() === "" ? "Description is required." : null;
+      case "phoneNumber":
+        return /^[0-9]+$/.test(value)
+          ? null
+          : "Phone number must contain only numbers.";
+      case "direccion":
+        return value.trim() === "" ? "Address is required." : null;
+      default:
+        return null;
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setWorker({
       ...worker,
       [name]: value,
     });
+
+    const error = validateField(name, value);
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: error,
+    }));
+  };
+
+  const isFormValid = () => {
+    return (
+      Object.values(worker).every((field) => field.trim() !== "") &&
+      Object.values(formErrors).every((error) => error === null)
+    );
   };
 
   const handleConfirmSubmit = () => {
-    AdminConfirmationAlert({
-      title: "¿aare you sure about do this ?",
-      text: "this action save the changes in the workerss profile.",
-      onConfirm: handleSubmit,
-    });
+    if (isFormValid()) {
+      AdminConfirmationAlert({
+        title: "Are you sure about this?",
+        text: "This action will save the changes in the worker's profile.",
+        onConfirm: handleSubmit,
+      });
+    }
   };
 
   const handleSubmit = async () => {
@@ -54,12 +88,12 @@ const WorkerForm = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Error al actualizar el perfil del trabajador");
+        throw new Error("Error updating the worker's profile");
       }
 
       navigate("/admin/adminWorkersPage");
     } catch (error) {
-      console.error("Error al enviar el formulario:", error);
+      console.error("Error submitting the form:", error);
     }
   };
 
@@ -79,11 +113,11 @@ const WorkerForm = () => {
           <SidebarButton />
         </Col>
         <Col md={10} className="p-4">
-          <h2 className="text-center mb-4">edit Worker</h2>
+          <h2 className="text-center mb-4">Edit Worker</h2>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
-              handleConfirmSubmit(); 
+              handleConfirmSubmit();
             }}
             className={`edit-worker-form ${
               theme === "dark" ? "edit-worker-form-dark" : ""
@@ -92,7 +126,7 @@ const WorkerForm = () => {
             <Row>
               <Col md={6}>
                 <Form.Group controlId="workerDescription">
-                  <Form.Label>Descriptión</Form.Label>
+                  <Form.Label>Description</Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={3}
@@ -100,9 +134,12 @@ const WorkerForm = () => {
                     name="description"
                     value={worker.description}
                     onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    className={formErrors.description ? "is-invalid" : ""}
                     required
                   />
+                  {formErrors.description && (
+                    <div className="invalid-feedback">{formErrors.description}</div>
+                  )}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -114,9 +151,12 @@ const WorkerForm = () => {
                     name="phoneNumber"
                     value={worker.phoneNumber}
                     onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    className={formErrors.phoneNumber ? "is-invalid" : ""}
                     required
                   />
+                  {formErrors.phoneNumber && (
+                    <div className="invalid-feedback">{formErrors.phoneNumber}</div>
+                  )}
                 </Form.Group>
               </Col>
             </Row>
@@ -130,23 +170,30 @@ const WorkerForm = () => {
                     name="direccion"
                     value={worker.direccion}
                     onChange={handleChange}
-                    className={theme === "dark" ? "form-control-dark" : ""}
+                    className={formErrors.direccion ? "is-invalid" : ""}
                     required
                   />
+                  {formErrors.direccion && (
+                    <div className="invalid-feedback">{formErrors.direccion}</div>
+                  )}
                 </Form.Group>
-              </Col>  
+              </Col>
             </Row>
             <Row className="mt-4 text-center">
               <Col>
-                <Button type="submit" className="btn-save">
-                  save
+                <Button
+                  type="submit"
+                  className="btn-save"
+                  disabled={!isFormValid()}
+                >
+                  Save
                 </Button>
                 <Button
                   type="button"
                   className="ms-3 btn-cancel"
                   onClick={handleCancel}
                 >
-                  cancel
+                  Cancel
                 </Button>
               </Col>
             </Row>
